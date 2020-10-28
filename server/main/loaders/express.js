@@ -5,12 +5,12 @@ const indexRouter = require('@routes');
 require('dotenv').config();
 
 const expressLoader = app => {
-	app.use(logger('dev'));
-	app.use(express.static(path.join(__dirname, 'public')));
-	app.use(express.json());
-	app.use(express.urlencoded({ extended: false }));
+  app.use(logger('dev'));
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
 
-	app.use('/', indexRouter);
+  app.use('/', indexRouter);
 };
 
 module.exports = expressLoader;
