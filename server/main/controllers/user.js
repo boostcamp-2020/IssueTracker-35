@@ -9,7 +9,7 @@ class UserController {
     responseHandler(res, 200, { url });
   }
 
-  async githubLogin(req, res, next) {
+  async generateToken(req, res, next) {
     const { user } = req;
     const token = createJWT(user);
 

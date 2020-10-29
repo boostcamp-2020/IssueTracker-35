@@ -3,8 +3,8 @@ const axios = require('axios');
 const { User } = require('../models');
 
 const getAccessToken = async code => {
-  const tokenUrl = 'https://github.com/login/oauth/access_token';
-  const wrongCode = '잘못된 인증 코드 입니다.';
+  const TOKEN_URL = 'https://github.com/login/oauth/access_token';
+  const ERROR_WRONG_CODE = '잘못된 인증 코드 입니다.';
 
   const data = {
     code,
@@ -19,9 +19,9 @@ const getAccessToken = async code => {
   try {
     const {
       data: { access_token },
-    } = await axios.post(tokenUrl, data, config);
+    } = await axios.post(TOKEN_URL, data, config);
 
-    if (!access_token) throw Error(wrongCode);
+    if (!access_token) throw Error(ERROR_WRONG_CODE);
 
     return access_token;
   } catch (err) {
@@ -30,7 +30,7 @@ const getAccessToken = async code => {
 };
 
 const getUserData = async accessToken => {
-  const userDataUrl = 'https://api.github.com/user';
+  const USER_DATA_URL = 'https://api.github.com/user';
 
   const config = {
     headers: {
@@ -40,7 +40,7 @@ const getUserData = async accessToken => {
   };
 
   try {
-    const { data } = await axios.get(userDataUrl, config);
+    const { data } = await axios.get(USER_DATA_URL, config);
     const { login, avatar_url } = data;
 
     return [login, avatar_url];
@@ -49,7 +49,7 @@ const getUserData = async accessToken => {
   }
 };
 
-const githubVerify = async (req, done) => {
+const getGithubUserFromCode = async (req, done) => {
   const { code } = req.body;
 
   try {
@@ -73,5 +73,5 @@ const githubVerify = async (req, done) => {
 };
 
 module.exports = passport => {
-  passport.use('custom-github', new customStrategy(githubVerify));
+  passport.use('custom-github', new customStrategy(getGithubUserFromCode));
 };
