@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-function LoginContainer() {
+const LoginContainer = () => {
   const githubLoginHandler = async () => {
     const {
       data: { url },

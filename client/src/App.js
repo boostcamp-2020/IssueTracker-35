@@ -10,8 +10,8 @@ const App = () => {
 
   return (
     <Switch>
-      <Route path="/" exact component={token === undefined ? IssueContainer : LoginContainer} />
-      <Route path="/users/github/callback" cb={setToken} component={GitHubCallback} />
+      <Route path="/" exact component={!token ? LoginContainer : IssueContainer} />
+      <Route path="/users/github/callback" render={props => <GitHubCallback {...props} cb={setToken} />} />
     </Switch>
   );
 };

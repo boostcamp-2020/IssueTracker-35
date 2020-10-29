@@ -2,16 +2,20 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 
-function GitHubCallback({ cb, history, location }) {
+const GitHubCallback = ({ cb, history, location }) => {
   const getToken = async () => {
     const { code } = qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
 
     try {
-      const { token } = axios.post('http://localhost:3000/users/login/github', { code });
-      localStorage.setItem('token', token);
+      const url = 'http://localhost:3000/users/login/github';
+      const {
+        data: { token },
+      } = await axios.post(url, { code });
+
       cb(token);
+      localStorage.setItem('token', token);
       history.push('/');
     } catch (err) {
       history.push('/error');
