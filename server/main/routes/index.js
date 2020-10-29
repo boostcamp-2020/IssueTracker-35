@@ -1,9 +1,7 @@
-const express = require('express');
+const express = require("express");
+const usersRouter = require("./users");
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-	res.json({ title: 'Express' });
-});
+router.use("/users", usersRouter);
 
 module.exports = router;
