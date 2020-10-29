@@ -61,7 +61,7 @@ const githubVerify = async (req, done) => {
       user = await User.create({
         nickname,
         password: null,
-      });  
+      });
     }
 
     done(null, user);

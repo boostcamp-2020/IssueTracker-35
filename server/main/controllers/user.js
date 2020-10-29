@@ -1,4 +1,5 @@
 const { responseHandler } = require('../utils/handler');
+const { createJWT } = require('../utils/auth');
 
 class UserController {
   async getGithubLoginUrl(req, res, next) {
@@ -10,8 +11,10 @@ class UserController {
 
   async githubLogin(req, res, next) {
     const { user } = req;
+    const token = createJWT(user);
 
-    responseHandler(res, 200, { user });
+    const { id, nickname } = user;
+    responseHandler(res, 200, { token, id, nickname });
   }
 }
 
