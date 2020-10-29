@@ -1,16 +1,26 @@
-import React from "react";
-import ReactDom from "react-dom";
-import LoginContainer from "./LoginContainer";
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import { LoginContainer, GitHubCallback } from './auth';
+const IssueContainer = null; // import IssueContainer from './issue';
 
 const App = () => {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
   return (
-    <div>
-      <p>React here!</p>
-      <LoginContainer></LoginContainer>
-    </div>
+    <Switch>
+      <Route path="/" exact component={token === undefined ? IssueContainer : LoginContainer} />
+      <Route path="/users/github/callback" cb={setToken} component={GitHubCallback} />
+    </Switch>
   );
 };
 
 export default App;
 
-ReactDom.render(<App />, document.querySelector("#root"));
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
