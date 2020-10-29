@@ -8,9 +8,7 @@ exports.errorHandler = (res, code, message = '') => {
 exports.responseHandler = (res, code, result = { success: true }) => {
 	res.status(code).json({
 		code,
-		data: {
-			success: true,
-			...result,
-		},
+		success: true,
+		...result,
 	});
 };
