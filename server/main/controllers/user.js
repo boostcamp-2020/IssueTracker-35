@@ -29,7 +29,7 @@ class UserController {
         const {
           data: { access_token },
         } = await axios.post(tokenUrl, data, config);
-
+        
         if (!access_token) throw Error();
 
         return access_token;
@@ -38,6 +38,33 @@ class UserController {
       }
     };
 
+    const getUserData = async accessToken => {
+      const userDataUrl = 'https://api.github.com/user';
+
+      const config = {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          accept: 'application/json',
+        },
+      };
+
+      try {
+        const { data } = await axios.get(userDataUrl, config);
+
+        return data.login;
+      } catch (err) {
+        throw Error(err);
+      }
+    };
+
+    try {
+      const accessToken = await getAccessToken(code);
+      const nickname = await getUserData(accessToken);
+
+      responseHandler(res, 200, { nickname });
+    } catch (err) {
+      next(err);
+    }
   }
 }
 
