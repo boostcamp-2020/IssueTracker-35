@@ -1,4 +1,4 @@
-import LoginContainer from './login'
-import GitHubCallback from './github'
+import LoginContainer from './login';
+import GitHubCallback from './github';
 
-export default { LoginContainer, GitHubCallback }
+export { LoginContainer, GitHubCallback };
