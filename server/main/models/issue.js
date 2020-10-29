@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Issue = sequelize.define(
-    'Statement',
+    'Issue',
     {
       id: {
         primaryKey: true,
