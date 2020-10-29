@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Module dependencies.
  */
@@ -10,7 +12,7 @@ const http = require('http');
  * Normalize a port into a number, string, or false.
  */
 
-const normalizePort = (val) => {
+function normalizePort(val) {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -38,7 +40,7 @@ app.set('port', port);
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error) => {
+function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -66,7 +68,7 @@ const onError = (error) => {
  * Event listener for HTTP server "listening" event.
  */
 
-const onListening = () => {
+function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
