@@ -1,4 +1,4 @@
-const loader = require('@loaders');
+const loader = require('./loaders');
 const express = require('express');
 
 const startServer = () => {
