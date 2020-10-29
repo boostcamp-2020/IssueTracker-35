@@ -5,7 +5,8 @@ module.exports = {
     es2021: true,
     'jest/globals': true,
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:jest/recommended'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:jest/recommended', 'plugin:react/recommended'],
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',

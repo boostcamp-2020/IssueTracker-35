@@ -8,6 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve('./dist'),
+    publicPath: '/',
     filename: '[name].js',
   },
   module: {
