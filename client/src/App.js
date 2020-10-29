@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDom from "react-dom";
-import LoginContainer from "./LoginContainer";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import LoginContainer from './LoginContainer';
 
 const App = () => {
   return (
@@ -13,4 +13,4 @@ const App = () => {
 
 export default App;
 
-ReactDom.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector('#root'));
