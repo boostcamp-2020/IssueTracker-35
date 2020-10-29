@@ -1,8 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/user');
+const passport = require('passport');
 const router = express.Router();
 
 router.get('/login/github', userController.getGithubLoginUrl);
-router.post('/login/github', userController.githubLogin);
+router.post('/login/github', passport.authenticate('custom-github', { session: false }), userController.githubLogin);
 
 module.exports = router;
