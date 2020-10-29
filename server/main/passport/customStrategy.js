@@ -41,8 +41,9 @@ const getUserData = async accessToken => {
 
   try {
     const { data } = await axios.get(userDataUrl, config);
+    const { login, avatar_url } = data;
 
-    return data.login;
+    return [login, avatar_url];
   } catch (err) {
     throw Error(err);
   }
@@ -53,7 +54,7 @@ const githubVerify = async (req, done) => {
 
   try {
     const accessToken = await getAccessToken(code);
-    const nickname = await getUserData(accessToken);
+    const [nickname, avatar_url] = await getUserData(accessToken);
 
     let user = await User.findOne({ where: { nickname } });
 
@@ -61,6 +62,7 @@ const githubVerify = async (req, done) => {
       user = await User.create({
         nickname,
         password: null,
+        image: avatar_url,
       });
     }
 
