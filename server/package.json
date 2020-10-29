@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./main/bin/www",
+    "start": "nodemon ./main/bin/www",
     "test": "npx jest",
     "lint": "eslint . --fix"
   },
@@ -20,6 +20,7 @@
     "eslint-config-prettier": "^6.14.0",
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.6",
     "prettier": "^2.1.2"
   }
 }
