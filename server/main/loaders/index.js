@@ -4,6 +4,6 @@ const sequelizeLoader = require('./sequelize');
 
 exports.init = app => {
   expressLoader(app);
-	lastErrorHandler(app);
-	sequelizeLoader();
+  lastErrorHandler(app);
+  sequelizeLoader();
 };

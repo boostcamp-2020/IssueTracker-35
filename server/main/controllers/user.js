@@ -29,7 +29,7 @@ class UserController {
         const {
           data: { access_token },
         } = await axios.post(tokenUrl, data, config);
-        
+
         if (!access_token) throw Error();
 
         return access_token;
