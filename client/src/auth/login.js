@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import BASE_URL from '../const/url.js';
 
 const LoginContainer = () => {
   const githubLoginHandler = async () => {
     const {
       data: { url },
-    } = await axios.get('http://127.0.0.1:3000/users/login/github');
+    } = await axios.get(`${BASE_URL}/users/login/github`);
 
     location.href = url;
   };

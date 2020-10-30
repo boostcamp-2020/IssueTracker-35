@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import BASE_URL from '../const/url.js';
 import axios from 'axios';
 import qs from 'qs';
 
@@ -9,7 +10,7 @@ const GitHubCallback = ({ cb, history, location }) => {
     });
 
     try {
-      const url = 'http://localhost:3000/users/login/github';
+      const url = `${BASE_URL}/users/login/github`;
       const {
         data: { token },
       } = await axios.post(url, { code });
