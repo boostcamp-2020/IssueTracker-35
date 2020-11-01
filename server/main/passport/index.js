@@ -1,4 +1,4 @@
-const customGithub = require('./customStrategy');
+const customGithub = require('@/passport/customStrategy');
 
 module.exports = passport => {
   customGithub(passport);

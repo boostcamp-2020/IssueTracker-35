@@ -1,12 +1,13 @@
+require('module-alias/register');
+
 const TIMEOUT = 10000;
 
-const userService = require('../main/services/user');
-const { initUsers, expectedUser } = require('../seeds/user');
+const userService = require('@/services/user');
+const { initUsers, expectedUser } = require('@test/seeds/user');
 
 beforeAll(initUsers, TIMEOUT); // given for retrieve
 
 describe('retrieve', () => {
-
   test(
     'an user by id',
     async () => {
@@ -31,4 +32,3 @@ describe('retrieve', () => {
     TIMEOUT
   );
 });
-

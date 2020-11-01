@@ -1,4 +1,4 @@
-const { errorHandler } = require('../utils/handler');
+const { errorHandler } = require('@/utils/handler');
 
 const lastErrorHandler = app => {
   app.use((req, res, next) => {

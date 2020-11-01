@@ -1,6 +1,6 @@
-const expressLoader = require('./express');
-const lastErrorHandler = require('./errorHandler');
-const sequelizeLoader = require('./sequelize');
+const expressLoader = require('@/loaders/express');
+const lastErrorHandler = require('@/loaders/errorHandler');
+const sequelizeLoader = require('@/loaders/sequelize');
 
 exports.init = app => {
   expressLoader(app);

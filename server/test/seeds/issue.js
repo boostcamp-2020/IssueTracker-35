@@ -1,4 +1,5 @@
-const { Issue } = require('../server/models');
+require('module-alias/register');
+const { Issue } = require('@/server/models');
 
 const expectedIssue = {
   id: 4,
