@@ -46,6 +46,6 @@ export const requestDELETE = async (url, params = {}, headers = {}) => {
   try {
     return await instance.delete(url, { params, headers });
   } catch (err) {
-    console.log(err);
+    handleError(err);
   }
 };
