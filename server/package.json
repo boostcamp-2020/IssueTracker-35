@@ -1,9 +1,10 @@
 {
   "name": "server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon ./main/bin/www",
+    "start": "forever ./main/bin/www",
+    "dev": "nodemon ./main/bin/www",
     "test": "npx jest",
     "lint": "eslint . --fix"
   },
@@ -13,6 +14,7 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "forever": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
