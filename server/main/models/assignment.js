@@ -16,12 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     Assignment.belongsTo(db.User, {
       foreignKey: {
         name: 'assignee',
+        allowNull: false,
       },
     });
 
     Assignment.belongsTo(db.Issue, {
       foreignKey: {
         name: 'issue_id',
+        allowNull: false,
       },
     });
   };
