@@ -1,9 +1,8 @@
 const sequelize = require('../models').sequelize;
 
 const sequelizeLoader = () => {
-  let useInit = false;
+  const useInit = process.env.INIT_DB === 'use';
 
-  if (process.env.INIT_DB === 'use') useInit = true;
   sequelize.sync({ force: useInit });
 };
 module.exports = sequelizeLoader;
