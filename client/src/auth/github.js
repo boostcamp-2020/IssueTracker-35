@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import axios from 'axios';
+import { gitHubLoginAPI } from '@/api/user';
 import qs from 'qs';
 
 const GitHubCallback = ({ cb, history, location }) => {
@@ -8,22 +8,18 @@ const GitHubCallback = ({ cb, history, location }) => {
       ignoreQueryPrefix: true,
     });
 
-    try {
-      const url = 'http://localhost:3000/users/login/github';
-      const {
-        data: { token },
-      } = await axios.post(url, { code });
+    const {
+      data: { token },
+    } = await gitHubLoginAPI.getToken(code);
+    if (!token) history.push('/error');
 
-      cb(token);
-      localStorage.setItem('token', token);
-      history.push('/');
-    } catch (err) {
-      history.push('/error');
-    }
+    cb(token);
+    localStorage.setItem('token', token);
+    history.push('/');
   };
   useEffect(getToken, [history, location]);
 
   return null;
-}
+};
 
 export default GitHubCallback;

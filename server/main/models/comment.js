@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Issue = sequelize.define(
-    'Issue',
+  const Comment = sequelize.define(
+    'Comment',
     {
       id: {
         primaryKey: true,
@@ -8,31 +8,31 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         autoIncrement: true,
       },
-      title: {
-        allowNull: false,
-        type: DataTypes.STRING(50),
+      content: {
+        allowNull: true,
+        type: DataTypes.STRING(500),
       },
-      is_open: {
+      is_issue: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
     },
-    { tableName: 'issue' }
+    { tableName: 'comment' }
   );
-  Issue.associate = db => {
-    Issue.belongsTo(db.Milestone, {
+  Comment.associate = db => {
+    Comment.belongsTo(db.Issue, {
       foreignKey: {
-        name: 'milestone_id',
+        name: 'issue_id',
         allowNull: false,
       },
     });
 
-    Issue.belongsTo(db.User, {
+    Comment.belongsTo(db.User, {
       foreignKey: {
         name: 'user_id',
         allowNull: false,
       },
     });
   };
-  return Issue;
+  return Comment;
 };
