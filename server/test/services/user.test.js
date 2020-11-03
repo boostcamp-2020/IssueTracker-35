@@ -1,7 +1,7 @@
 const TIMEOUT = 10000;
 
 const userService = require('@/services/user');
-const { expectedUser } = require('@test/seeds/user');
+const { expectedUser, newUser } = require('@test/seeds/user');
 
 describe('retrieve', () => {
   test(
@@ -17,13 +17,25 @@ describe('retrieve', () => {
   );
 
   test(
-    'an user by nickname',
+    'check username is duplicate - available',
     async () => {
       // when
-      const user = await userService.retrieveByNickname(expectedUser.nickname);
+      const user = await userService.checkDuplicate(newUser.nickname);
 
       // then
-      expect(user).toBeTruthy();
+      expect(user).toBe(true);
+    },
+    TIMEOUT
+  );
+
+  test(
+    'check username is duplicate - unavailable',
+    async () => {
+      // when
+      const user = await userService.checkDuplicate(expectedUser.nickname);
+
+      // then
+      expect(user).toBe(false);
     },
     TIMEOUT
   );

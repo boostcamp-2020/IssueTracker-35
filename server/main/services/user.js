@@ -15,11 +15,12 @@ class UserService {
     }
   }
 
-  async retrieveByNickname(nickname) {
+  async checkDuplicate(nickname) {
     try {
       const user = await this.User.findOne({ where: { nickname } });
+      const isAvailableName = !user;
 
-      return user;
+      return isAvailableName;
     } catch (err) {
       throw Error(err);
     }

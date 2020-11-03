@@ -6,6 +6,12 @@ const expectedUser = {
   password: 'useruser',
 };
 
+const newUser = {
+  id: 4,
+  nickname: 'newUser',
+  password: 'useruser',
+};
+
 const initUsers = () => {
   const users = [
     {
@@ -29,4 +35,4 @@ const initUsers = () => {
   User.bulkCreate(users);
 };
 
-module.exports = { initUsers, expectedUser };
+module.exports = { initUsers, expectedUser, newUser };
