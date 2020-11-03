@@ -1,12 +1,8 @@
-require('module-alias/register');
-
 const TIMEOUT = 10000;
 const NONEXISTING_ID = 99999;
 
 const issueService = require('@/services/issue');
-const { initIssues, expectedIssue, issueIds } = require('@test/seeds/issue');
-
-beforeAll(initIssues, TIMEOUT); // given for retrieve
+const { expectedIssue, issueIds } = require('@test/seeds/issue');
 
 describe('retrieve', () => {
   test(

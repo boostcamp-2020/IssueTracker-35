@@ -1,9 +1,8 @@
-require('module-alias/register');
-const { User } = require('@/server/models');
+const { User } = require('@/models');
 
 const expectedUser = {
-  id: 4,
-  nickname: 'user123',
+  id: 1,
+  nickname: 'user11',
   password: 'useruser',
 };
 
@@ -26,7 +25,7 @@ const initUsers = () => {
     },
   ];
 
-  User.destory({ where: {} });
+  User.destroy({ where: {} });
   User.bulkCreate(users);
 };
 

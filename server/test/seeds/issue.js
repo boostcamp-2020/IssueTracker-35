@@ -1,5 +1,4 @@
-require('module-alias/register');
-const { Issue } = require('@/server/models');
+const { Issue } = require('@/models');
 
 const expectedIssue = {
   id: 4,
@@ -37,7 +36,7 @@ const initIssues = () => {
   ];
   issues.forEach(issue => issueIds.add(issue.id));
 
-  Issue.destory({ where: {} });
+  Issue.destroy({ where: {} });
   Issue.bulkCreate(issues);
 };
 
