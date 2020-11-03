@@ -1,4 +1,5 @@
 const { User } = require('@/models');
+const { hashingPw } = require('@/utils/auth');
 
 class UserService {
   constructor(User) {
@@ -21,6 +22,18 @@ class UserService {
       const isAvailableName = !user;
 
       return isAvailableName;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async createUser({ nickname, password }) {
+    password = await hashingPw(password);
+
+    try {
+      const { id } = await this.User.create({ nickname, password });
+
+      return id;
     } catch (err) {
       throw Error(err);
     }
