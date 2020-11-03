@@ -40,3 +40,16 @@ describe('retrieve', () => {
     TIMEOUT
   );
 });
+
+describe('create user', () => {
+  test('successfully', async () => {
+    // given
+    const { nickname, password } = newUser;
+
+    // when
+    const userId = await userService.createUser({ nickname, password });
+
+    // then
+    expect(userId).toBeTruthy();
+  });
+});
