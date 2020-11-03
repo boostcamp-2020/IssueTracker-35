@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING(50),
       },
-      content: {
-        allowNull: false,
-        type: DataTypes.STRING(500),
-      },
       is_open: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -27,11 +23,14 @@ module.exports = (sequelize, DataTypes) => {
     Issue.belongsTo(db.Milestone, {
       foreignKey: {
         name: 'milestone_id',
+        allowNull: false,
       },
     });
+
     Issue.belongsTo(db.User, {
       foreignKey: {
         name: 'user_id',
+        allowNull: false,
       },
     });
   };
