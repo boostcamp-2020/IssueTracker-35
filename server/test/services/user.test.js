@@ -42,14 +42,18 @@ describe('retrieve', () => {
 });
 
 describe('create user', () => {
-  test('successfully', async () => {
-    // given
-    const { nickname, password } = newUser;
+  test(
+    'successfully',
+    async () => {
+      // given
+      const { nickname, password } = newUser;
 
-    // when
-    const userId = await userService.createUser({ nickname, password });
+      // when
+      const userId = await userService.createUser({ nickname, password });
 
-    // then
-    expect(userId).toBeTruthy();
-  });
+      // then
+      expect(userId).toBeTruthy();
+    },
+    TIMEOUT
+  );
 });
