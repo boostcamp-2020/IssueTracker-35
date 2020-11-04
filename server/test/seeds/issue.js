@@ -1,4 +1,4 @@
-const { Issue } = require('../server/models');
+const { Issue } = require('@/models');
 
 const expectedIssue = {
   id: 4,
@@ -10,7 +10,7 @@ const expectedIssue = {
 
 const issueIds = new Set();
 
-const initIssues = () => {
+const initIssues = async () => {
   const issues = [
     {
       id: 1,
@@ -36,8 +36,11 @@ const initIssues = () => {
   ];
   issues.forEach(issue => issueIds.add(issue.id));
 
-  Issue.destory({ where: {} });
-  Issue.bulkCreate(issues);
+  await Issue.bulkCreate(issues);
 };
 
-module.exports = { initIssues, expectedIssue, issueIds };
+const finiIssues = async () => {
+  await Issue.destroy({ where: {} });
+};
+
+module.exports = { initIssues, finiIssues, expectedIssue, issueIds };

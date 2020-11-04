@@ -1,10 +1,8 @@
 const TIMEOUT = 10000;
 const NONEXISTING_ID = 99999;
 
-const issueService = require('../main/services/issue');
-const { initIssues, expectedIssue, issueIds } = require('../seeds/issue');
-
-beforeAll(initIssues, TIMEOUT); // given for retrieve
+const issueService = require('@/services/issue');
+const { expectedIssue, issueIds } = require('@test/seeds/issue');
 
 describe('retrieve', () => {
   test(

@@ -1,6 +1,6 @@
 const customStrategy = require('passport-custom').Strategy;
 const axios = require('axios');
-const { User } = require('../models');
+const { User } = require('@/models');
 
 const getAccessToken = async code => {
   const TOKEN_URL = 'https://github.com/login/oauth/access_token';

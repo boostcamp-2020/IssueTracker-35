@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
-const indexRouter = require('../routes');
+const indexRouter = require('@/routes');
 const passport = require('passport');
 const cors = require('cors');
 require('dotenv').config();
-const passportConfig = require('../passport');
+const passportConfig = require('@/passport');
 
 const expressLoader = app => {
   app.use(logger('dev'));

@@ -1,5 +1,5 @@
-const { responseHandler } = require('../utils/handler');
-const { createJWT } = require('../utils/auth');
+const { responseHandler } = require('@/utils/handler');
+const { createJWT } = require('@/utils/auth');
 
 class UserController {
   async getGithubLoginUrl(req, res, next) {

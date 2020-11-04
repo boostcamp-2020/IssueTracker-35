@@ -1,4 +1,5 @@
-const loader = require('./loaders');
+require('module-alias/register');
+const loader = require('@/loaders');
 const express = require('express');
 
 const startServer = () => {
