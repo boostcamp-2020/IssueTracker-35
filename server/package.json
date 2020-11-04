@@ -5,12 +5,11 @@
   "scripts": {
     "start": "forever ./main/bin/www",
     "dev": "nodemon ./main/bin/www",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --forceExit",
     "lint": "eslint . --fix"
   },
   "jest": {
     "globalSetup": "<rootDir>/test/initTest.js",
-    "globalTeardown": "<rootDir>/test/finiTest.js",
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/main/$1",
       "^@test/(.*)$": "<rootDir>/test/$1",

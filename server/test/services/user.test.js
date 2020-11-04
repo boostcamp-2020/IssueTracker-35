@@ -5,7 +5,7 @@ const { expectedUser, newUser } = require('@test/seeds/user');
 
 describe('retrieve', () => {
   test(
-    'an user by id',
+    'a user by id',
     async () => {
       // when
       const user = await userService.retrieveById(expectedUser.id);

@@ -1,8 +1,7 @@
 require('module-alias/register');
-const { initUsers } = require('@test/seeds/user');
-const { initIssues } = require('@test/seeds/issue');
+const { initTables, clearTables } = require('@test/seeds');
 
 module.exports = async () => {
-  await initUsers();
-  await initIssues();
+  await clearTables();
+  await initTables();
 };
