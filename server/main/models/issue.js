@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     Issue.belongsTo(db.Milestone, {
       foreignKey: {
         name: 'milestone_id',
-        allowNull: false,
+        allowNull: true,
       },
     });
 
