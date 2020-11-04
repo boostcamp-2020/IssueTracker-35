@@ -9,7 +9,8 @@
     "lint": "eslint . --fix"
   },
   "jest": {
-    "globalSetup": "./test/initTest.js",
+    "globalSetup": "<rootDir>/test/initTest.js",
+    "globalTeardown": "<rootDir>/test/finiTest.js",
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/main/$1",
       "^@test/(.*)$": "<rootDir>/test/$1",
@@ -39,7 +40,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.2",
     "nodemon": "^2.0.6",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "supertest": "^6.0.0"
   },
   "_moduleAliases": {
     "@": "./main",
