@@ -12,7 +12,7 @@ const newUser = {
   password: 'useruser',
 };
 
-const initUsers = () => {
+const initUsers = async () => {
   const users = [
     {
       id: 1,
@@ -31,8 +31,11 @@ const initUsers = () => {
     },
   ];
 
-  User.destroy({ where: {} });
-  User.bulkCreate(users);
+  await User.bulkCreate(users);
 };
 
-module.exports = { initUsers, expectedUser, newUser };
+const finiUsers = async () => {
+  await User.destroy({ where: {} });
+};
+
+module.exports = { initUsers, finiUsers, expectedUser, newUser };
