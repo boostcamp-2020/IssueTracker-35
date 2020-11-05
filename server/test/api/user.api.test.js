@@ -12,6 +12,9 @@ describe('login API test', () => {
       request(app)
         .get(GITHUB_LOGIN_URL)
         .end((err, res) => {
+          if (err) {
+            throw err;
+          }
           const { url } = res.body;
           expect(url).toMatch(gitHubUrlRegx);
           done();

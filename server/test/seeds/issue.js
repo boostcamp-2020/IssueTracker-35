@@ -1,12 +1,5 @@
 const { Issue } = require('@/models');
 
-const expectedIssue = {
-  id: 4,
-  title: '제목입니당 ㅎㅎ',
-  is_open: true,
-  user_id: 1,
-};
-
 const issues = [
   {
     id: 1,
@@ -33,6 +26,8 @@ const issues = [
     user_id: 1,
   },
 ];
+
+const expectedIssue = issues[3];
 
 const issueIds = new Set();
 issues.forEach(issue => issueIds.add(issue.id));
