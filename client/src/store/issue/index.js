@@ -4,7 +4,7 @@ import reducer from './reducer';
 
 const IssueListContext = createContext();
 
-const initState = {
+const initListState = {
   issues: [
     {
       id: 1,
@@ -38,8 +38,8 @@ const initState = {
   timestamp: new Date(),
 };
 
-const IssueProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initState);
+const IssueListProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initListState);
 
   return (
     <IssueListContext.Provider value={{ state, dispatch }}>
@@ -48,4 +48,4 @@ const IssueProvider = ({ children }) => {
   );
 };
 
-export { IssueListContext, IssueProvider };
+export { IssueListContext, IssueListProvider };

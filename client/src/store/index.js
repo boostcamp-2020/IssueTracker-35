@@ -1,4 +1,4 @@
-import { IssueProvider } from '@/store/issue';
+import { IssueListProvider } from '@/store/issue';
 import { UserProvider } from '@/store/user';
 
-export default [IssueProvider, UserProvider];
+export default [IssueListProvider, UserProvider];
