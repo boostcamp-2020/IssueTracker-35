@@ -64,6 +64,7 @@ const P = styled.p`
 
 const LoginContainer = () => {
   const githubLoginHandler = async () => {
+    console.log('?');
     const {
       data: { url },
     } = await gitHubLoginAPI.getUrl();
