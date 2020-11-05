@@ -30,6 +30,7 @@
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-custom": "^1.1.1",
+    "passport-jwt": "^4.0.0",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
