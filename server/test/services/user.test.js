@@ -58,27 +58,3 @@ describe('create user', () => {
     TIMEOUT
   );
 });
-
-describe('logged in user info', () => {
-  //현재 유저정보
-  test('successfully', () => {
-    //given
-    const token = expectedUserToken;
-
-    //when
-    const userInfo = decodeJWT(token);
-
-    //then
-    expect(userInfo.id).toBe(expectedUser.id);
-    expect(userInfo.nickname).toBe(expectedUser.nickname);
-    expect(userInfo.image).toBe(expectedUser.image);
-    async () => {
-      // when
-      const user = await userService.retrieveById(expectedUser.id);
-
-      // then
-      expect(user).toBeTruthy();
-    },
-      TIMEOUT;
-  });
-});
