@@ -10,7 +10,7 @@ class UserService {
     try {
       const user = await this.User.findOne({ where: { id } });
 
-      return user;
+      return user.dataValues;
     } catch (err) {
       throw Error(err);
     }
@@ -27,11 +27,11 @@ class UserService {
     }
   }
 
-  async createUser({ nickname, password }) {
+  async createUser({ nickname, password, image = '' }) {
     password = await hashingPw(password);
 
     try {
-      const { id } = await this.User.create({ nickname, password });
+      const { id } = await this.User.create({ nickname, password, image });
 
       return id;
     } catch (err) {

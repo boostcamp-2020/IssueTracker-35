@@ -1,9 +1,12 @@
 const { User } = require('@/models');
+const { createJWT } = require('@/utils/auth');
+require('dotenv').config();
 
 const expectedUser = {
   id: 1,
   nickname: 'user11',
   password: 'useruser',
+  image: 'hi',
 };
 
 const newUser = {
@@ -18,6 +21,7 @@ const initUsers = async () => {
       id: 1,
       nickname: 'user11',
       password: 'useruser',
+      image: 'hi',
     },
     {
       id: 2,
@@ -38,4 +42,6 @@ const finiUsers = async () => {
   await User.destroy({ where: {} });
 };
 
-module.exports = { initUsers, finiUsers, expectedUser, newUser };
+const expectedUserToken = createJWT(expectedUser);
+
+module.exports = { initUsers, finiUsers, expectedUser, newUser, expectedUserToken };

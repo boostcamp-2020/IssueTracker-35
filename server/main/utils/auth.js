@@ -7,6 +7,16 @@ exports.hashingPw = password => bcrypt.hash(password, saltRounds);
 exports.comparePw = (password, dbPassword) => bcrypt.compare(password, dbPassword);
 
 exports.createJWT = user => {
-  const { id, nickname } = user;
-  return jwt.sign({ id, nickname }, process.env.JWT_SECRET);
+  const { id, nickname, image } = user;
+  return jwt.sign({ id, nickname, image }, process.env.JWT_SECRET);
+};
+
+exports.decodeJWT = token => {
+  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    return err ? undefined : decoded; // err가 나면 undefined로 반환
+  });
+};
+
+exports.isValidToken = tokenString => {
+  return tokenString.startsWith('token');
 };

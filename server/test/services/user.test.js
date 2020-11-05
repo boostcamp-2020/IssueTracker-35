@@ -1,7 +1,8 @@
 const TIMEOUT = 10000;
 
 const userService = require('@/services/user');
-const { expectedUser, newUser } = require('@test/seeds/user');
+const { expectedUser, newUser, expectedUserToken } = require('@test/seeds/user');
+const { decodeJWT } = require('@/utils/auth');
 
 describe('retrieve', () => {
   test(
@@ -56,4 +57,28 @@ describe('create user', () => {
     },
     TIMEOUT
   );
+});
+
+describe('logged in user info', () => {
+  //현재 유저정보
+  test('successfully', () => {
+    //given
+    const token = expectedUserToken;
+
+    //when
+    const userInfo = decodeJWT(token);
+
+    //then
+    expect(userInfo.id).toBe(expectedUser.id);
+    expect(userInfo.nickname).toBe(expectedUser.nickname);
+    expect(userInfo.image).toBe(expectedUser.image);
+    async () => {
+      // when
+      const user = await userService.retrieveById(expectedUser.id);
+
+      // then
+      expect(user).toBeTruthy();
+    },
+      TIMEOUT;
+  });
 });
