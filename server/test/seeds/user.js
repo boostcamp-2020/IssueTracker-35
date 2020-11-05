@@ -2,12 +2,26 @@ const { User } = require('@/models');
 const { createJWT } = require('@/utils/auth');
 require('dotenv').config();
 
-const expectedUser = {
-  id: 1,
-  nickname: 'user11',
-  password: 'useruser',
-  image: 'hi',
-};
+const users = [
+  {
+    id: 1,
+    nickname: 'user11',
+    password: 'useruser',
+    image: 'hi',
+  },
+  {
+    id: 2,
+    nickname: 'user22',
+    password: 'useruser',
+  },
+  {
+    id: 3,
+    nickname: 'user33',
+    password: 'useruser',
+  },
+];
+
+const expectedUser = users[0];
 
 const newUser = {
   id: 4,
@@ -16,25 +30,6 @@ const newUser = {
 };
 
 const initUsers = async () => {
-  const users = [
-    {
-      id: 1,
-      nickname: 'user11',
-      password: 'useruser',
-      image: 'hi',
-    },
-    {
-      id: 2,
-      nickname: 'user22',
-      password: 'useruser',
-    },
-    {
-      id: 3,
-      nickname: 'user33',
-      password: 'useruser',
-    },
-  ];
-
   await User.bulkCreate(users);
 };
 

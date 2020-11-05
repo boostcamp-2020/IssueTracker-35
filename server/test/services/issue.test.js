@@ -10,9 +10,13 @@ describe('retrieve', () => {
     async () => {
       // when
       const issues = await issueService.retrieveAll();
-
+      console.log(issues);
+      // issues.forEach(issue => {
+      //   console.log(issue.id);
+      //   console.log(issue.User);
+      // });
       // then
-      const hasSameSize = issues.length === issueIds.size();
+      const hasSameSize = issues.length === issueIds.size;
       expect(hasSameSize).toBe(true);
       const containsAll = issues.every(issue => issueIds.has(issue.id));
       expect(containsAll).toBe(true);
