@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-
 import IssueIcon from '@/styles/svgs/issue';
-import Comment from '@/styles/svgs/comment';
 
 import getTimestamp from '@/utils/timestamp';
 
+// TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
 const IssueItem = ({ issue, toggleSelected, now }) => {
   const [checked, setChecked] = useState(false);
 

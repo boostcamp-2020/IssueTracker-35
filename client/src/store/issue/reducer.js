@@ -1,5 +1,6 @@
 import { TOGGLE, TOGGLE_ALL } from './actions';
 
+// TODO : selected 변경
 export default (state, action) => {
   switch (action.type) {
     case TOGGLE:

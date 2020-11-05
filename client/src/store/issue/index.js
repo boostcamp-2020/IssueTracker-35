@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 
 import reducer from './reducer';
 
-const IssueContext = createContext();
+const IssueListContext = createContext();
 
 const initState = {
   issues: [
@@ -42,10 +42,10 @@ const IssueProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   return (
-    <IssueContext.Provider value={{ state, dispatch }}>
+    <IssueListContext.Provider value={{ state, dispatch }}>
       {children}
-    </IssueContext.Provider>
+    </IssueListContext.Provider>
   );
 };
 
-export { IssueContext, IssueProvider };
+export { IssueListContext, IssueProvider };

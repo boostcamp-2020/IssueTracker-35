@@ -1,5 +1,5 @@
 const { User } = require('@/models');
-const { hashingPw } = require('@/utils/auth');
+const { hashingPw, DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 class UserService {
   constructor(User) {
@@ -8,7 +8,23 @@ class UserService {
 
   async retrieveById(id) {
     try {
-      const user = await this.User.findOne({ attributes: ['id', 'nickname', 'image'], where: { id } });
+      const user = await this.User.findOne({
+        attributes: ['id', 'nickname', 'image'],
+        where: { id },
+      });
+
+      return user;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async retrieveByNickname(nickname) {
+    try {
+      const user = await this.User.findOne({
+        attributes: ['id', 'nickname', 'image'],
+        where: { nickname },
+      });
 
       return user;
     } catch (err) {
@@ -18,7 +34,7 @@ class UserService {
 
   async checkDuplicate(nickname) {
     try {
-      const user = await this.User.findOne({ where: { nickname } });
+      const user = await this.retrieveByNickname(nickname);
       const isAvailableName = !user;
 
       return isAvailableName;
@@ -27,13 +43,17 @@ class UserService {
     }
   }
 
-  async createUser({ nickname, password, image = '' }) {
-    password = await hashingPw(password);
+  async createUser({ nickname, password, image = DEFAULT_PROFILE_IMAGE_URL }) {
+    if (password) password = await hashingPw(password);
 
     try {
-      const { id } = await this.User.create({ nickname, password, image });
+      const user = await this.User.create({
+        nickname,
+        password,
+        image,
+      });
 
-      return id;
+      return { id: user.id, nickname: user.nickname, image: user.image };
     } catch (err) {
       throw Error(err);
     }

@@ -43,7 +43,7 @@ const App = () => {
           exact
           component={isLoggedIn ? LoginContainer : IssueListContainer}
         />
-        <Route path="/issues/write" exact component={IssueWriteContainer} />
+        <Route path="/issues/new" exact component={IssueWriteContainer} />
         <Route path="/issues" exact component={IssueListContainer} />
         <Route
           path="/users/github/callback"

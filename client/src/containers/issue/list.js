@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 
-import { IssueContext } from '@/store/issue';
+import { IssueListContext } from '@/store/issue';
 import IssueItem from '@/components/issue/item';
 
+// TODO : comment
 const IssueListContainer = () => {
-  const { state, dispatch } = useContext(IssueContext);
+  const { state, dispatch } = useContext(IssueListContext);
 
   return (
     <div>
