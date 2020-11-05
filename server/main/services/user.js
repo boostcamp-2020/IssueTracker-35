@@ -8,7 +8,7 @@ class UserService {
 
   async retrieveById(id) {
     try {
-      const user = await this.User.findOne({ where: { id } });
+      const user = await this.User.findOne({ attributes: ['id', 'nickname', 'image'], where: { id } });
 
       return user;
     } catch (err) {
@@ -27,11 +27,11 @@ class UserService {
     }
   }
 
-  async createUser({ nickname, password }) {
+  async createUser({ nickname, password, image = '' }) {
     password = await hashingPw(password);
 
     try {
-      const { id } = await this.User.create({ nickname, password });
+      const { id } = await this.User.create({ nickname, password, image });
 
       return id;
     } catch (err) {
