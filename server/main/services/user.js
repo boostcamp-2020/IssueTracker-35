@@ -8,9 +8,9 @@ class UserService {
 
   async retrieveById(id) {
     try {
-      const user = await this.User.findOne({ where: { id } });
+      const user = await this.User.findOne({ attributes: ['id', 'nickname', 'image'], where: { id } });
 
-      return user.dataValues;
+      return user;
     } catch (err) {
       throw Error(err);
     }
