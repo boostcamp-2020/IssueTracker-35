@@ -16,6 +16,7 @@ const UserProvider = ({ children }) => {
 
   const getCurrentUserFromToken = async () => {
     const { token, user } = state;
+
     if (token && !user) {
       const { id, nickname, image } = await userAPI.getCurrentUser();
       dispatch({ type: LOGIN, token, user: { id, nickname, image } });
