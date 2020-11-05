@@ -11,13 +11,3 @@ exports.createJWT = user => {
   const { id, nickname, image } = user;
   return `${TOKEN_HEADER}${jwt.sign({ id, nickname, image }, process.env.JWT_SECRET)}`;
 };
-
-exports.decodeJWT = token => {
-  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    return err ? undefined : decoded; // err가 나면 undefined로 반환
-  });
-};
-
-exports.isValidToken = tokenString => {
-  return tokenString.startsWith(TOKEN_HEADER);
-};
