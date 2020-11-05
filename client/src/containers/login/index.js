@@ -87,7 +87,7 @@ const LoginContainer = () => {
           <SignButton>로그인</SignButton>
           <SignButton>회원가입</SignButton>
         </FormSignDiv>
-        <GitHubButton onClick={githubLoginHandler}>
+        <GitHubButton type="button" onClick={githubLoginHandler}>
           <P>Sign in with GitHub</P>
           <Logo />
         </GitHubButton>

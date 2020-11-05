@@ -2,6 +2,7 @@ const TIMEOUT = 10000;
 
 const userService = require('@/services/user');
 const { expectedUser, newUser } = require('@test/seeds/user');
+const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 describe('retrieve', () => {
   test(
@@ -49,10 +50,12 @@ describe('create user', () => {
       const { nickname, password } = newUser;
 
       // when
-      const userId = await userService.createUser({ nickname, password });
+      const user = await userService.createUser({ nickname, password });
 
       // then
-      expect(userId).toBeTruthy();
+      expect(user.id).toBeTruthy();
+      expect(user.nickname).toBe(nickname);
+      expect(user.image).toBe(DEFAULT_PROFILE_IMAGE_URL);
     },
     TIMEOUT
   );
