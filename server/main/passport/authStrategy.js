@@ -9,6 +9,11 @@ const jwtConfig = {
 
 const jwtVerify = async (payload, done) => {
   try {
+    if (!payload.id) {
+      const err = new Error('Bad Request');
+      err.status = 400;
+      throw err;
+    }
     const user = await userService.retrieveById(payload.id);
     if (user) done(null, user.dataValues);
     else done(null, false);
