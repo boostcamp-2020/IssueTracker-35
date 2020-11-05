@@ -27,7 +27,6 @@ const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       {children}
-      {console.log('I am rendered!')}
     </UserContext.Provider>
   );
 };
