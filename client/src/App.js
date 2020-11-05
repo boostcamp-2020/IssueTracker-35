@@ -2,21 +2,26 @@ import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import Header from '@/components/Header';
+import SideBar from '@/components/SideBar';
+import size from '@/styles/sizes';
 
 import { UserContext } from '@/store/user';
 
 import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
-const IssueContainer = null; // import IssueContainer from './issue';
+import IssueListContainer from '@/containers/issue/list'; // import IssueContainer from './issue';
 
 import GlobalStore from '@/store';
 
 const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');  
   body {
     position: relative;
-    margin: 0;
+    margin: ${size.HEADER_SIZE} 0 0 0;
     height: 100vh;
     background-color: #F6F6F6;
+    font-family: 'Yeon Sung';
   }
 `;
 
@@ -36,14 +41,15 @@ const App = () => {
         <Route
           path="/"
           exact
-          component={isLoggedIn ? LoginContainer : IssueContainer}
+          component={isLoggedIn ? LoginContainer : IssueListContainer}
         />
-        <Route path="/issues" exact component={IssueContainer} />
+        <Route path="/issues" exact component={IssueListContainer} />
         <Route
           path="/users/github/callback"
           render={props => <GitHubCallback {...props} dispatch={dispatch} />}
         />
       </Switch>
+      <SideBar />
     </>
   );
 };
@@ -53,6 +59,7 @@ export default App;
 ReactDOM.render(
   <Router>
     <AppProvider contexts={GlobalStore}>
+      <Header />
       <App />
     </AppProvider>
   </Router>,
