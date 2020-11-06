@@ -1,25 +1,25 @@
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import { createGlobalStyle } from 'styled-components';
-import Header from '@/components/Header';
 import size from '@/styles/sizes';
 
+import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
 
+import Header from '@/components/Header';
 import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
 import IssueWriteContainer from '@/containers/issue/write';
-
-import GlobalStore from '@/store';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');  
   body {
     position: relative;
     margin: ${size.HEADER_SIZE} 0 0 0;
-    height: 100vh;
+    height: calc(100vh - ${size.HEADER_SIZE});
     background-color: #F6F6F6;
     font-family: 'Yeon Sung';
   }
@@ -33,7 +33,8 @@ const AppProvider = ({ contexts, children }) =>
 
 const App = () => {
   const { state, dispatch } = useContext(UserContext);
-  const isLoggedIn = !state?.token;
+
+  const isLoggedIn = !state.token;
   return (
     <>
       <GlobalStyle />
@@ -43,7 +44,11 @@ const App = () => {
           exact
           component={isLoggedIn ? LoginContainer : IssueListContainer}
         />
-        <Route path="/issues/new" exact component={IssueWriteContainer} />
+        <Route
+          path="/issues/new"
+          exact
+          render={props => <IssueWriteContainer {...props} />}
+        />
         <Route path="/issues" exact component={IssueListContainer} />
         <Route
           path="/users/github/callback"

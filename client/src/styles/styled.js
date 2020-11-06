@@ -21,9 +21,19 @@ export const Button = styled.button`
   background-color: ${color.LIGHT_GREEN};
   color: white;
   cursor: pointer;
+  padding: 10px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const Input = styled.input`
+  border: 1px solid ${color.LIGHT_GRAY};
+  border-radius: 3px;
+  padding: 3px;
+`;
+
+export const Textarea = styled.textarea`
   border: 1px solid ${color.LIGHT_GRAY};
   border-radius: 3px;
   padding: 3px;
