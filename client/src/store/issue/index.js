@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 
-import reducer from './reducer';
+import { issueListReducer, issueWriteReducer } from './reducer';
 
 const IssueListContext = createContext();
 
@@ -39,7 +39,7 @@ const initListState = {
 };
 
 const IssueListProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initListState);
+  const [state, dispatch] = useReducer(issueListReducer, initListState);
 
   return (
     <IssueListContext.Provider value={{ state, dispatch }}>
@@ -48,4 +48,29 @@ const IssueListProvider = ({ children }) => {
   );
 };
 
-export { IssueListContext, IssueListProvider };
+const IssueWriteContext = createContext();
+
+const initWriteState = {
+  title: '',
+  content: '',
+  assignees: [],
+  labels: [],
+  milestone: [],
+};
+
+const IssueWriteProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(issueWriteReducer, initWriteState);
+
+  return (
+    <IssueWriteContext.Provider value={{ state, dispatch }}>
+      {children}
+    </IssueWriteContext.Provider>
+  );
+};
+
+export {
+  IssueListContext,
+  IssueWriteContext,
+  IssueListProvider,
+  IssueWriteProvider,
+};
