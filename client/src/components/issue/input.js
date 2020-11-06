@@ -1,47 +1,46 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import styled from 'styled-components';
+import color from '@/styles/colors';
+import { Textarea } from '@/styles/styled';
+
+import { initState, reducer } from '@/store/comment';
+import {
+  INPUT_CONTENT,
+  SHOW_COUNT,
+  CLEAR_COUNT,
+} from '@/store/comment/actions';
 
 const DELAY = 2000;
 
-// action types
-const INPUT_CONTENT = 'INPUT_CONTENT'; /* user input change */
-const SHOW_COUNT =
-  'SHOW_COUNT'; /* DELAY miliseconds have passed since last input */
-const CLEAR_COUNT =
-  'CLEAR_COUNT'; /* DELAY miliseconds have passed since showing count */
+const Container = styled.div`
+  position: relative;
+`;
 
-const initState = {
-  timerId: 0,
-  value: '',
-  visible: false,
-};
+const ContentInput = styled(Textarea)`
+  width: 99%;
+  resize: vertical;
+  height: 400px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+`;
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case INPUT_CONTENT:
-      return {
-        timerId: action.timerId,
-        value: action.value,
-        visible: false,
-      };
-    case SHOW_COUNT:
-      return {
-        timerId: action.timerId,
-        value: state.value,
-        visible: true,
-      };
-    case CLEAR_COUNT:
-      return {
-        timerId: 0,
-        value: state.value,
-        visible: false,
-      };
-    default:
-      throw new Error();
-  }
-};
+const Count = styled.p`
+  position: absolute;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${color.GRAY};
+  text-align: right;
+  bottom: 10px;
+  right: 10px;
+`;
 
-const DebouncedInput = () => {
+const DebouncedInput = ({ contentRef }) => {
   const [state, dispatch] = useReducer(reducer, initState);
+
+  useEffect(() => {
+    return () => state.timerId && clearTimeout(state.timerId);
+  }, []);
 
   const showCallback = () => {
     dispatch({
@@ -66,14 +65,15 @@ const DebouncedInput = () => {
   };
 
   return (
-    <div>
-      <input
-        type="textarea"
+    <Container>
+      <ContentInput
+        placeholder="Leave a comment"
         value={state.value}
         onChange={handleChange}
-      ></input>
-      {state.visible && <p>{state.value.length} characters</p>}
-    </div>
+        ref={contentRef}
+      ></ContentInput>
+      {state.visible && <Count>{state.value.length} characters</Count>}
+    </Container>
   );
 };
 
