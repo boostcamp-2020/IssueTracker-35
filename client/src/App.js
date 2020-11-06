@@ -8,7 +8,7 @@ import size from '@/styles/sizes';
 import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
 
-import Header from '@/components/Header';
+import Header from '@/components/header';
 import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
