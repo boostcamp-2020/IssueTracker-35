@@ -1,6 +1,6 @@
 const customStrategy = require('passport-custom').Strategy;
 const axios = require('axios');
-const { User } = require('../models');
+const userService = require('@/services/user');
 
 const getAccessToken = async code => {
   const TOKEN_URL = 'https://github.com/login/oauth/access_token';
@@ -56,10 +56,10 @@ const getGithubUserFromCode = async (req, done) => {
     const accessToken = await getAccessToken(code);
     const [nickname, avatar_url] = await getUserData(accessToken);
 
-    let user = await User.findOne({ where: { nickname } });
+    let user = await userService.retrieveByNickname(nickname);
 
     if (!user) {
-      user = await User.create({
+      user = await userService.createUser({
         nickname,
         password: null,
         image: avatar_url,

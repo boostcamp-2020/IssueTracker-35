@@ -1,5 +1,8 @@
-const sequelize = require('../models').sequelize;
+const sequelize = require('@/models').sequelize;
+
 const sequelizeLoader = () => {
-  sequelize.sync();
+  const useInit = process.env.INIT_DB === 'use';
+
+  sequelize.sync({ force: useInit });
 };
 module.exports = sequelizeLoader;

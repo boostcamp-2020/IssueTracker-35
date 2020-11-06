@@ -1,10 +1,8 @@
 const TIMEOUT = 10000;
 const NONEXISTING_ID = 99999;
 
-const issueService = require('../main/services/issue');
-const { initIssues, expectedIssue, issueIds } = require('../seeds/issue');
-
-beforeAll(initIssues, TIMEOUT); // given for retrieve
+const issueService = require('@/services/issue');
+const { expectedIssue, issueIds } = require('@test/seeds/issue');
 
 describe('retrieve', () => {
   test(
@@ -12,9 +10,13 @@ describe('retrieve', () => {
     async () => {
       // when
       const issues = await issueService.retrieveAll();
-
+      console.log(issues);
+      // issues.forEach(issue => {
+      //   console.log(issue.id);
+      //   console.log(issue.User);
+      // });
       // then
-      const hasSameSize = issues.length === issueIds.size();
+      const hasSameSize = issues.length === issueIds.size;
       expect(hasSameSize).toBe(true);
       const containsAll = issues.every(issue => issueIds.has(issue.id));
       expect(containsAll).toBe(true);
