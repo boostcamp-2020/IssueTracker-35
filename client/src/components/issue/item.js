@@ -6,23 +6,64 @@ import IssueIcon from '@/styles/svgs/issue';
 import CommentIcon from '@/styles/svgs/comment';
 import getTimestamp from '@/utils/timestamp';
 
-const Checkbox = styled.input``;
+const Container = styled.div`
+  border-top: 1px solid ${color.LIGHT_GRAY2};
+  display: flex;
+`;
+
+const Checkbox = styled.input`
+  margin-right: 1rem;
+`;
 const Title = styled.b``;
-const Description = styled.p``;
+
+const Description = styled.p`
+  margin: 0;
+`;
+
+const IssueCenter = styled.div`
+  display: flex;
+  align-item: center;
+  padding: 5px 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 70%;
+`;
+
 const IssueBody = styled.div`
   display: flex;
   align-item: center;
+  padding: 5px;
 `;
+
 const IssueHeader = styled.div`
   display: flex;
   align-item: center;
+  padding: 5px;
+  justify-content: space-between;
 `;
 
-const Container = styled.div`
-  border: 1px solid ${color.GRAY};
-  border-top: none;
+const IssueLeft = styled.div`
   display: flex;
-  flex-direction: column;
+  align-item: center;
+  justify-content: flex-start;
+  padding: 10px 0 0 5px;
+`;
+
+const IssueRight = styled.div`
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: start;
+  width: 30%;
+`;
+
+const Comment = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CommentCount = styled.p`
+  margin: 0 3px;
 `;
 
 // TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
@@ -36,7 +77,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
 
   return (
     <Container>
-      <IssueHeader>
+      <IssueLeft>
         <Checkbox
           type="checkbox"
           name="issues"
@@ -44,25 +85,33 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           checked={checked}
           onChange={handleChange}
         />
-        <IssueIcon is_open={issue.is_open} />
-        <Title>{issue.title}</Title>
-      </IssueHeader>
-      <IssueBody>
-        <Description>{`#${issue.id} ${issue.is_open
-            ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
-            }`
-            : `by ${issue.author.nickname} was closed ${getTimestamp(
-              now,
-              issue.createdAt
-            )}`
-          }`}</Description>
+        <IssueIcon isOpen={issue.is_open} />
+      </IssueLeft>
+
+      <IssueCenter>
+        <IssueHeader>
+          <Title>{issue.title}</Title>
+        </IssueHeader>
+        <IssueBody>
+          <Description>{`#${issue.id} ${issue.is_open
+              ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
+              }`
+              : `by ${issue.author.nickname} was closed ${getTimestamp(
+                now,
+                issue.createdAt
+              )}`
+            }`}</Description>
+        </IssueBody>
+      </IssueCenter>
+
+      <IssueRight>
         {!!issue.comment_count && (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Comment>
             <CommentIcon />
-            <p>{issue.comment_count}</p>
-          </div>
+            <CommentCount>{issue.comment_count}</CommentCount>
+          </Comment>
         )}
-      </IssueBody>
+      </IssueRight>
     </Container>
   );
 };

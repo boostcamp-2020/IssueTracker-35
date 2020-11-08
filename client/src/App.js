@@ -8,7 +8,7 @@ import size from '@/styles/sizes';
 import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
 
-import Header from '@/components/Header';
+import Header from '@/components/header';
 import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
@@ -20,8 +20,11 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     margin: ${size.HEADER_SIZE} 0 0 0;
     height: calc(100vh - ${size.HEADER_SIZE});
-    background-color: #F6F6F6;
+    background-color: #FFF;
     font-family: 'Yeon Sung';
+  }
+  * {
+    box-sizing: border-box;
   }
 `;
 
