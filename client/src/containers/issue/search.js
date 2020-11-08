@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import { Button, Input, Div } from '@/styles/styled';
+import Glasses from '@/styles/svgs/glasses';
+import LabelIcon from '@/styles/svgs/label';
+import MilestoneIcon from '@/styles/svgs/milestone';
 
 const Container = styled.div`
   width: 100%;
@@ -39,7 +42,10 @@ const SearchInput = styled(Input)`
   border-radius: 0 5px 5px 0;
   height: 30px;
   width: 100%;
+  padding-left: 2rem;
 `;
+
+const GlassesIcon = styled(Glasses)``;
 
 const ButtonContainer = styled(Div.row)`
   margin: 0px 1rem;
@@ -67,11 +73,18 @@ const SearchContainer = () => {
     <Container>
       <FilterContainer>
         <FilterButton>Filters &#9662;</FilterButton>
-        <SearchInput></SearchInput>
+        <SearchInput />
+        <GlassesIcon />
       </FilterContainer>
       <ButtonContainer>
-        <LabelButton>Labels</LabelButton>
-        <MileStoneButton>Milestones</MileStoneButton>
+        <LabelButton>
+          <LabelIcon />
+          Labels
+        </LabelButton>
+        <MileStoneButton>
+          <MilestoneIcon />
+          Milestones
+        </MileStoneButton>
       </ButtonContainer>
       <Link to="/issues/new">
         <NewIssueButton>New issue</NewIssueButton>
