@@ -21,8 +21,6 @@ const users = [
   },
 ];
 
-const expectedUser = users[0];
-
 const newUser = {
   id: 4,
   nickname: 'newUser',
@@ -37,6 +35,6 @@ const finiUsers = async () => {
   await User.destroy({ where: {} });
 };
 
-const expectedUserToken = createJWT(expectedUser);
+const expectedUserToken = createJWT(users[0]);
 
-module.exports = { initUsers, finiUsers, expectedUser, newUser, expectedUserToken };
+module.exports = { initUsers, finiUsers, users, newUser, expectedUserToken };
