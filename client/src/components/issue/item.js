@@ -9,15 +9,24 @@ import getTimestamp from '@/utils/timestamp';
 const Container = styled.div`
   border-top: 1px solid ${color.LIGHT_GRAY2};
   display: flex;
+  &:hover {
+    background-color: ${color.THIN_GRAY};
+  }
 `;
 
 const Checkbox = styled.input`
   margin-right: 1rem;
 `;
-const Title = styled.b``;
+const Title = styled.b`
+  cursor: pointer;
+  &:hover {
+    color: ${color.BLUE};
+  }
+`;
 
 const Description = styled.p`
   margin: 0;
+  font-size: 14px;
 `;
 
 const IssueCenter = styled.div`
@@ -38,7 +47,7 @@ const IssueBody = styled.div`
 const IssueHeader = styled.div`
   display: flex;
   align-item: center;
-  padding: 5px;
+  padding: 3px 5px;
   justify-content: space-between;
 `;
 

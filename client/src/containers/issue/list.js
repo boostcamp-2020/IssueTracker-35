@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { IssueListContext } from '@/store/issue';
 import IssueItem from '@/components/issue/item';
 import Filter from '@/containers/issue/filter';
-import { Button } from '@/styles/styled';
+import SearchContainer from '@/containers/issue/search';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 
 const Container = styled.div`
-  width: 100%;
+  max-width: 1280px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +20,8 @@ const Container = styled.div`
 const ListHeader = styled.div`
   width: 90%;
   display: flex;
+  height: 100px;
+  align-items: center;
 `;
 
 const ListBody = styled.div`
@@ -32,11 +36,6 @@ const ItemList = styled.div`
   border-radius: 0 0 5px 5px;
 `;
 
-const NewIssueButton = styled(Button)`
-  font-size: 1rem;
-  margin: 10px;
-`;
-
 // TODO : comment
 const IssueListContainer = () => {
   const { state, dispatch } = useContext(IssueListContext);
@@ -44,9 +43,7 @@ const IssueListContainer = () => {
   return (
     <Container>
       <ListHeader>
-        <Link to="/issues/new">
-          <NewIssueButton>New issue</NewIssueButton>
-        </Link>
+        <SearchContainer />
       </ListHeader>
       <ListBody>
         <Filter></Filter>
