@@ -1,4 +1,4 @@
-const { Issue, User, Assignment } = require('@/models');
+const { Issue, User, Milestone } = require('@/models');
 
 class IssueService {
   constructor(Issue) {
@@ -7,32 +7,17 @@ class IssueService {
 
   async retrieveAll() {
     const issues = await this.Issue.findAll({
-      as: 'issue',
-      where: { id: '$assignment.issue_id$' },
       include: [
         {
           model: User,
           attributes: ['nickname'],
         },
         {
-          model: Assignment,
-          attributes: ['assignee'],
-          as: 'assignment',
-
-          //   include: [
-          //     {
-          //       model: Issue,
-          //       attributes: ['user_id'],
-          //       as: 'issue',
-          //     },
-          //     {
-          //       model: User,
-          //       attributes: ['nickname', 'image'],
-          //       as: 'user',
-          //     },
-          //   ],
+          model: Milestone,
+          attributes: ['title'],
         },
       ],
+      required: false,
     });
     return issues;
   }
