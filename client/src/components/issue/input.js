@@ -17,11 +17,12 @@ const Container = styled.div`
 `;
 
 const ContentInput = styled(Textarea)`
-  width: 99%;
+  width: 100%;
   resize: vertical;
-  height: 400px;
+  height: 200px;
   margin-bottom: 10px;
-  font-size: 1rem;
+  font-size: 14px;
+  padding: 8px;
 `;
 
 const Count = styled.p`

@@ -21,7 +21,10 @@ export const Button = styled.button`
   background-color: ${color.LIGHT_GREEN};
   color: white;
   cursor: pointer;
-  padding: 10px;
+  font-size: 14px;
+  padding: 5px 16px;
+  white-space: nowrap;
+  height: 30px;
   &:focus {
     outline: none;
   }
