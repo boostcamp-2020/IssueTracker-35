@@ -1,8 +1,9 @@
 const TIMEOUT = 10000;
 
 const userService = require('@/services/user');
-const { expectedUser, newUser, expectedUserToken } = require('@test/seeds/user');
-const { decodeJWT } = require('@/utils/auth');
+const { users, newUser } = require('@test/seeds/user');
+
+const expectedUser = users[0];
 
 describe('retrieve', () => {
   test(

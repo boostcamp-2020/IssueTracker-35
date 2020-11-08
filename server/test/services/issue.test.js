@@ -9,13 +9,8 @@ describe('retrieve', () => {
     'all issues',
     async () => {
       // when
-      const issues = await issueService.retrieveAll();
-      console.log(issues);
-      // issues.forEach(issue => {
-      //   console.log(issue.id);
-      //   console.log(issue.User);
-      // });
-      // then
+      const issues = await issueService.retrieveAll(); // issue_id,issue_title,is_open,user_id ~> author로 바꿔야함
+
       const hasSameSize = issues.length === issueIds.size;
       expect(hasSameSize).toBe(true);
       const containsAll = issues.every(issue => issueIds.has(issue.id));
