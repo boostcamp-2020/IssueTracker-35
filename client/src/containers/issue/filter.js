@@ -1,5 +1,6 @@
 import React from 'react';
 import IssueIcon from '@/styles/svgs/issueState';
+import DropDown from '@/components/issue/dropdown';
 
 import styled from 'styled-components';
 import color from '@/styles/colors';
@@ -44,7 +45,10 @@ const FilterLeft = styled.div`
   padding: 0 0 0 5px;
 `;
 
-const FilterRight = styled.div``;
+const FilterRight = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const Filter = () => {
   const openCount = 2;
@@ -63,7 +67,12 @@ const Filter = () => {
           <State isSelected={false}>{closedCount} Closed</State>
         </OpenOrClosedDiv>
       </FilterLeft>
-      <FilterRight></FilterRight>
+      <FilterRight>
+        <DropDown name="Author" />
+        <DropDown name="Label" />
+        <DropDown name="Milestones" />
+        <DropDown name="Assignee" />
+      </FilterRight>
     </Container>
   );
 };
