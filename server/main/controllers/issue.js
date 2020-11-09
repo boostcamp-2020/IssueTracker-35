@@ -5,7 +5,10 @@ const issueLabelService = require('@/services/issue-label');
 const labelService = require('@/services/label');
 const commentService = require('@/services/comment');
 const milestoneService = require('@/services/milestone');
-const { initGetAllIssuesResponse, setResultValueByIssueID } = require('@/utils/util');
+const {
+  initGetAllIssuesResponse,
+  setResultValueByIssueID,
+} = require('@/utils/util');
 
 class IssueController {
   async getAllIssues(req, res) {
@@ -21,7 +24,10 @@ class IssueController {
       setResultValueByIssueID(basicIssues, issueLabels)('labels', 'Label');
       // Comment count 등록
       const commentCounts = await commentService.getCommentCount();
-      setResultValueByIssueID(basicIssues, commentCounts.rows)('commentCount', 'comment_count');
+      setResultValueByIssueID(basicIssues, commentCounts.rows)(
+        'commentCount',
+        'comment_count'
+      );
 
       // api response에 맞추어 issue들을 array로 변환
       const issues = { issues: Object.values(basicIssues) };

@@ -16,7 +16,11 @@ exports.initGetAllIssuesResponse = object => {
 
 exports.convertObjectKeys = object => {
   return (oldKey, newKey) => {
-    Object.defineProperty(object.dataValues, newKey, Object.getOwnPropertyDescriptor(object.dataValues, oldKey));
+    Object.defineProperty(
+      object.dataValues,
+      newKey,
+      Object.getOwnPropertyDescriptor(object.dataValues, oldKey)
+    );
     delete object.dataValues[oldKey];
   };
 };
@@ -26,7 +30,8 @@ exports.setResultValueByIssueID = (origin, target) => {
     target.forEach(targetObject => {
       const { issue_id } = targetObject;
       if (origin[issue_id]) {
-        origin[issue_id].dataValues[originKey] = targetObject.dataValues[targetKey];
+        origin[issue_id].dataValues[originKey] =
+          targetObject.dataValues[targetKey];
       }
     });
   };

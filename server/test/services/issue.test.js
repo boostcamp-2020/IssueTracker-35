@@ -27,7 +27,9 @@ describe('retrieve', () => {
 
       // then
       expect(issue).not.toBeUndefined();
-      Object.keys(expectedIssue).forEach(key => expect(expectedIssue[key]).toBe(issue[key]));
+      Object.keys(expectedIssue).forEach(key =>
+        expect(expectedIssue[key]).toBe(issue[key])
+      );
     },
     TIMEOUT
   );

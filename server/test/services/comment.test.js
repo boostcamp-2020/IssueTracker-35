@@ -9,10 +9,7 @@ describe('comments for all issue', () => {
     async () => {
       // when
       const comments = await commentService.getCommentCount();
-      // console.log(comments);
-      comments.rows.forEach(comment => {
-        // console.log(comment);
-      });
+      comments.rows.forEach(comment => {});
 
       expect(true).toBe(true);
     },
