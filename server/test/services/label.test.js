@@ -1,6 +1,6 @@
 const TIMEOUT = 10000;
 
-const labelService = require('@/services/label');
+const { labelService } = require('@/services/index');
 const { expectedLabels } = require('@test/seeds/label');
 
 describe('Total Labels', () => {

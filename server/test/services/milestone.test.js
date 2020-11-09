@@ -1,6 +1,6 @@
 const TIMEOUT = 10000;
 
-const milestoneService = require('@/services/milestone');
+const { milestoneService } = require('@/services/index');
 const { expectedMilestones } = require('@test/seeds/milestone');
 
 describe('Total Milestones', () => {

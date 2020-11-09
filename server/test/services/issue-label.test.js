@@ -1,6 +1,6 @@
 const TIMEOUT = 10000;
 
-const issueLabelService = require('@/services/issue-label');
+const { issueLabelService } = require('@/services/index');
 const { expectedIssueLabels } = require('@test/seeds/issue-label');
 
 describe('labels for all issue', () => {

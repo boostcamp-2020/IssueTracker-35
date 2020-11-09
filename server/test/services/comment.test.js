@@ -1,6 +1,6 @@
 const TIMEOUT = 10000;
 
-const commentService = require('@/services/comment');
+const { commentService } = require('@/services/index');
 const { expectedComments } = require('@test/seeds/comment');
 
 describe('comments for all issue', () => {

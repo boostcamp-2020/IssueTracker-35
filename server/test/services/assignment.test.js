@@ -1,6 +1,6 @@
 const TIMEOUT = 10000;
 
-const assignmentService = require('@/services/assignment');
+const { assignmentService } = require('@/services/index');
 const { users } = require('@test/seeds/user');
 const condition = ['nickname', 'image'];
 
