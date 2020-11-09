@@ -1,6 +1,6 @@
 import React from 'react';
 
-import colors from '../colors';
+import color from '../colors';
 
 const IssueState = ({ isOpen, isSelected }) => {
   return (
@@ -10,7 +10,7 @@ const IssueState = ({ isOpen, isSelected }) => {
       width="16"
       height="16"
       aria-hidden="true"
-      fill={isSelected ? colors.BLACK : colors.LIGHT_BLACK}
+      fill={isSelected ? color.BLACK : color.LIGHT_BLACK}
     >
       {isOpen ? (
         <path

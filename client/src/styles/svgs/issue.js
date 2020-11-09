@@ -1,6 +1,6 @@
 import React from 'react';
 
-import colors from '../colors';
+import color from '../colors';
 
 const IssueIcon = ({ isOpen }) => {
   return (
@@ -10,7 +10,7 @@ const IssueIcon = ({ isOpen }) => {
       width="16"
       height="16"
       aria-hidden="true"
-      fill={isOpen ? colors.LIGHT_GREEN : colors.DARK_RED}
+      fill={isOpen ? color.LIGHT_GREEN : color.DARK_RED}
     >
       {isOpen ? (
         <path
