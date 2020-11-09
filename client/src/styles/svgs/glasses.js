@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 const Svg = styled.svg`
   position: absolute;
-  left: 140px;
-  top: 42px;
-  text-align: center;
+  top: 7px;
+  left: 8px;
 `;
 
 const Glasses = () => {

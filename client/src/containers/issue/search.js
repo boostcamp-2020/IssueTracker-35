@@ -45,8 +45,6 @@ const SearchInput = styled(Input)`
   padding-left: 2rem;
 `;
 
-const GlassesIcon = styled(Glasses)``;
-
 const ButtonContainer = styled(Div.row)`
   margin: 0px 1rem;
 `;
@@ -68,13 +66,21 @@ const NewIssueButton = styled(Button)`
   height: 30px;
 `;
 
+const Label = styled.label`
+  display: flex;
+  position: relative;
+  width: 100%;
+`;
+
 const SearchContainer = () => {
   return (
     <Container>
       <FilterContainer>
         <FilterButton>Filters &#9662;</FilterButton>
-        <SearchInput />
-        <GlassesIcon />
+        <Label>
+          <SearchInput />
+          <Glasses />
+        </Label>
       </FilterContainer>
       <ButtonContainer>
         <LabelButton>
