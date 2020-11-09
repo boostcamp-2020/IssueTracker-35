@@ -36,7 +36,6 @@ const ItemList = styled.div`
   border-radius: 0 0 5px 5px;
 `;
 
-// TODO : comment
 const IssueListContainer = () => {
   const { state, dispatch } = useContext(IssueListContext);
 

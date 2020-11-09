@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 import { Button, Input, Div } from '@/styles/styled';
 import Glasses from '@/styles/svgs/glasses';
 import LabelIcon from '@/styles/svgs/label';
@@ -28,7 +29,7 @@ const FilterButton = styled.button`
   border-radius: 5px 0 0 5px;
   height: 30px;
   padding: 5px 16px;
-  font-size: 14px;
+  font-size: ${size.DEFAULT_FONT_SIZE};
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -60,7 +61,7 @@ const MileStoneButton = styled(FilterButton)`
 `;
 
 const NewIssueButton = styled(Button)`
-  font-size: 14px;
+  font-size: ${size.DEFAULT_FONT_SIZE};
   padding: 5px 16px;
   white-space: nowrap;
   height: 30px;

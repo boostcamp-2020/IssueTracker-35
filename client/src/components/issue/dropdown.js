@@ -10,6 +10,7 @@ const DropDownButton = styled(Button)`
   text-align: center;
 `;
 
+// TODO: 출력할 목록을 서버에서 조회하고 출력해야 함
 const DropDown = ({ name }) => {
   return <DropDownButton>{name} &#9662;</DropDownButton>;
 };

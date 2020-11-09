@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 import { Textarea } from '@/styles/styled';
 
 import { initState, reducer } from '@/store/comment';
@@ -21,7 +22,7 @@ const ContentInput = styled(Textarea)`
   resize: vertical;
   height: 200px;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: ${size.DEFAULT_FONT_SIZE};
   padding: 8px;
 `;
 

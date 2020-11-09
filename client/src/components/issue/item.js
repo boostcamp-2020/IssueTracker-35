@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 
 import IssueIcon from '@/styles/svgs/issue';
 import CommentIcon from '@/styles/svgs/comment';
@@ -26,7 +27,7 @@ const Title = styled.b`
 
 const Description = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: ${size.DEFAULT_FONT_SIZE};
 `;
 
 const IssueCenter = styled.div`
@@ -84,6 +85,16 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
     toggleSelected(issue.id);
   };
 
+  const describe = issue =>
+    `#${issue.id} ${issue.is_open
+      ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
+      }`
+      : `by ${issue.author.nickname} was closed ${getTimestamp(
+        now,
+        issue.createdAt
+      )}`
+    }`;
+
   return (
     <Container>
       <IssueLeft>
@@ -102,14 +113,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           <Title>{issue.title}</Title>
         </IssueHeader>
         <IssueBody>
-          <Description>{`#${issue.id} ${issue.is_open
-              ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
-              }`
-              : `by ${issue.author.nickname} was closed ${getTimestamp(
-                now,
-                issue.createdAt
-              )}`
-            }`}</Description>
+          <Description>{describe(issue)}</Description>
         </IssueBody>
       </IssueCenter>
 
