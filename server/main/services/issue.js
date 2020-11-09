@@ -7,6 +7,9 @@ class IssueService {
 
   async retrieveAll() {
     const issues = await this.Issue.findAll({
+      attributes: {
+        exclude: ['milestone_id', 'user_id'],
+      },
       include: [
         {
           model: User,
