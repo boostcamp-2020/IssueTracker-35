@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
 import { Div } from '@/styles/styled';
+import { Link } from 'react-router-dom';
 
 const StyledHeader = styled.header`
   background-color: ${color.LIGHT_BLACK};
@@ -20,12 +21,20 @@ const StyledHeader = styled.header`
   z-index: 2;
 `;
 
-const Logo = styled(Div.row)``;
+const Logo = styled.button`
+  background-color: transparent;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+`;
 
 const Header = () => {
   return (
     <StyledHeader>
-      <Logo>ISSUES</Logo>
+      <Link to="/">
+        <Logo>ISSUES</Logo>
+      </Link>
     </StyledHeader>
   );
 };
