@@ -14,6 +14,7 @@ import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
 import IssueWriteContainer from '@/containers/issue/write';
+import IssueDetailContainer from '@/containers/issue/detail';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');  
@@ -49,9 +50,14 @@ const App = () => {
           component={isLoggedIn ? LoginContainer : IssueListContainer}
         />
         <Route
-          path="/issues/new"
           exact
+          path="/issues/new"
           render={props => <IssueWriteContainer {...props} />}
+        />
+        <Route
+          exact
+          path="/issues/:issueId"
+          render={props => <IssueDetailContainer {...props} />}
         />
         <Route path="/issues" exact component={IssueListContainer} />
         <Route
