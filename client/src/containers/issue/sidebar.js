@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SidebarItem from '@/components/issue/sidebarItem';
 
 const Container = styled.div`
-  width: 20%;
+  width: 25%;
   display: flex;
   flex-direction: column;
 `;
