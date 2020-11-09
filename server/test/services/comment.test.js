@@ -9,9 +9,14 @@ describe('comments for all issue', () => {
     async () => {
       // when
       const comments = await commentService.getCommentCount();
-      comments.rows.forEach(comment => {});
+      const issueID = comments.rows[0].issue_id;
+      const resultCommentCount = comments.rows[0].dataValues.comment_count;
 
-      expect(true).toBe(true);
+      const expectedCount = expectedComments.filter(
+        data => data.issue_id === issueID && !data.is_issue
+      ).length;
+      //then
+      expect(resultCommentCount).toBe(expectedCount);
     },
     TIMEOUT
   );

@@ -2,21 +2,22 @@
 const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
-
+const { expectedLabels } = require('@test/seeds/label');
+const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 const expectedIssue = {
   id: 3,
   title: '세 번째 이슈입니다.',
   isOpen: true,
   author: { nickname: 'user11' },
   milestone: [],
-  assignees: { nickname: 'user22', image: null },
-  labels: { title: '개똥벌레', color: 'color' },
+  assignees: { nickname: 'user22', image: DEFAULT_PROFILE_IMAGE_URL },
+  labels: { title: expectedLabels[0].title, color: expectedLabels[0].color },
   commentCount: 1,
 };
 
 describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
-  // 정상 작동
+
   it('success retrieve all issues', done => {
     try {
       request(app)
@@ -55,7 +56,7 @@ describe('retrieve all issues', () => {
     }
   });
   it('400 bad request', () => {
-    // 400 받을 일이 뭐가 있지..?
+    // query parameter가 잘못 날라온 경우 (필터링을 back에서 할지 front에서 할지 아직 모름)
     expect(true).toBe(true);
   });
 });

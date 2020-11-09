@@ -5,13 +5,13 @@ const expectedLabels = [
     id: 1,
     title: '개똥벌레',
     content: '나는 개똥벌레',
-    color: 'color',
+    color: 'CDAA7D',
   },
   {
     id: 2,
     title: '배고픔',
     content: '졸리기도 하고',
-    color: 'color2',
+    color: 'FFFFFF',
   },
 ];
 
