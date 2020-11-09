@@ -4,6 +4,8 @@ const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
+const { issueIds } = require('@test/seeds/issue');
+
 const expectedIssue = {
   id: 3,
   title: '세 번째 이슈입니다.',
@@ -32,6 +34,7 @@ describe('retrieve all issues', () => {
           delete recievedIssue.createdAt;
           delete recievedIssue.updatedAt;
           expect(recievedIssue).toEqual(expectedIssue);
+          expect(issueIds.size).toBe(issues.length);
           done();
         });
     } catch (err) {
