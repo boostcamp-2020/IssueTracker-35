@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
+import { Link } from 'react-router-dom';
 
 import IssueIcon from '@/styles/svgs/issue';
 import CommentIcon from '@/styles/svgs/comment';
@@ -20,6 +21,7 @@ const Checkbox = styled.input`
 `;
 const Title = styled.b`
   cursor: pointer;
+  text-decoration: none;
   &:hover {
     color: ${color.BLUE};
   }
@@ -76,6 +78,11 @@ const CommentCount = styled.p`
   margin: 0 3px;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${color.BLACK};
+`;
+
 // TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
 const IssueItem = ({ issue, toggleSelected, now }) => {
   const [checked, setChecked] = useState(false);
@@ -110,7 +117,9 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
 
       <IssueCenter>
         <IssueHeader>
-          <Title>{issue.title}</Title>
+          <StyledLink to={`/issues/${issue.id}`}>
+            <Title>{issue.title}</Title>
+          </StyledLink>
         </IssueHeader>
         <IssueBody>
           <Description>{describe(issue)}</Description>
