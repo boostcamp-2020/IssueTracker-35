@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from 'react';
 
-import reducer from './reducer';
+import { issueListReducer, issueWriteReducer } from './reducer';
 
-const IssueContext = createContext();
+const IssueListContext = createContext();
 
-const initState = {
+const initListState = {
   issues: [
     {
       id: 1,
@@ -38,14 +38,39 @@ const initState = {
   timestamp: new Date(),
 };
 
-const IssueProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initState);
+const IssueListProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(issueListReducer, initListState);
 
   return (
-    <IssueContext.Provider value={{ state, dispatch }}>
+    <IssueListContext.Provider value={{ state, dispatch }}>
       {children}
-    </IssueContext.Provider>
+    </IssueListContext.Provider>
   );
 };
 
-export { IssueContext, IssueProvider };
+const IssueWriteContext = createContext();
+
+const initWriteState = {
+  title: '',
+  content: '',
+  assignees: [],
+  labels: [],
+  milestone: [],
+};
+
+const IssueWriteProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(issueWriteReducer, initWriteState);
+
+  return (
+    <IssueWriteContext.Provider value={{ state, dispatch }}>
+      {children}
+    </IssueWriteContext.Provider>
+  );
+};
+
+export {
+  IssueListContext,
+  IssueWriteContext,
+  IssueListProvider,
+  IssueWriteProvider,
+};

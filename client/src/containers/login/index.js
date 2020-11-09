@@ -4,8 +4,15 @@ import { gitHubLoginAPI } from '@/api/user';
 import { Div, Button, Input } from '@/styles/styled';
 import Logo from '@/styles/svgs/logo';
 import colors from '@/styles/colors';
+import size from '@/styles/sizes';
 
 const Container = styled(Div.column)`
+  width: 100vw;
+  height: calc(100vh - ${size.HEADER_SIZE});
+  background-color: #f6f6f6;
+`;
+
+const Login = styled(Div.column)`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -58,7 +65,7 @@ const GitHubButton = styled.button`
   min-width: 200px;
 `;
 const P = styled.p`
-  color: white;
+  color: ${colors.WHITE};
   margin: 2px 5px;
 `;
 
@@ -73,25 +80,27 @@ const LoginContainer = () => {
 
   return (
     <Container>
-      <Title>이슈 트래커</Title>
-      <LoginForm>
-        <FormContent>
-          <Label>아이디</Label>
-          <Input type="text"></Input>
-        </FormContent>
-        <FormContent>
-          <Label>비밀번호</Label>
-          <Input type="password"></Input>
-        </FormContent>
-        <FormSignDiv>
-          <SignButton>로그인</SignButton>
-          <SignButton>회원가입</SignButton>
-        </FormSignDiv>
-        <GitHubButton onClick={githubLoginHandler}>
-          <P>Sign in with GitHub</P>
-          <Logo />
-        </GitHubButton>
-      </LoginForm>
+      <Login>
+        <Title>이슈 트래커</Title>
+        <LoginForm>
+          <FormContent>
+            <Label>아이디</Label>
+            <Input type="text"></Input>
+          </FormContent>
+          <FormContent>
+            <Label>비밀번호</Label>
+            <Input type="password"></Input>
+          </FormContent>
+          <FormSignDiv>
+            <SignButton>로그인</SignButton>
+            <SignButton>회원가입</SignButton>
+          </FormSignDiv>
+          <GitHubButton type="button" onClick={githubLoginHandler}>
+            <P>Sign in with GitHub</P>
+            <Logo />
+          </GitHubButton>
+        </LoginForm>
+      </Login>
     </Container>
   );
 };

@@ -1,6 +1,10 @@
 import axios from 'axios';
-import BASE_URL from '@/const/url';
 import { handleError } from '@/utils/error';
+
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://118.67.132.70:3000'
+    : 'http://127.0.0.1:3000';
 
 const instance = axios.create({
   baseURL: BASE_URL,
