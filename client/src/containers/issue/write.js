@@ -14,6 +14,9 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   padding: 40px;
+  max-width: 1280px;
+  margin-right: auto;
+  margin-left: auto;
 `;
 
 const InputContainer = styled.div`
@@ -21,30 +24,28 @@ const InputContainer = styled.div`
   flex: 1 1;
   border: 1px solid ${color.LIGHT_GRAY};
   border-radius: 7px;
-  padding: 1rem;
+  padding: 10px;
 `;
 
 const ProfileImage = styled.img`
   object-fit: cover; /* Do not scale the image */
   object-position: center; /* Center the image within the element */
   margin: 10px;
-  height: 100px;
-  width: 100px;
+  height: 40px;
+  width: 40px;
 `;
 
 const TitleInput = styled(Input)`
-  width: 99%;
+  width: 100%;
   height: 2rem;
   margin-bottom: 1rem;
   font-size: 1rem;
+  padding: 5px 12px;
 `;
 
-const SubmitButton = styled(Button)`
-  font-size: 1rem;
-`;
+const SubmitButton = styled(Button)``;
 
 const CancelButton = styled(Button)`
-  font-size: 1rem;
   background-color: transparent;
   color: ${color.DARK_GRAY};
 `;
@@ -52,6 +53,20 @@ const CancelButton = styled(Button)`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const TabContainer = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${color.LIGHT_GRAY};
+  margin: 10px 0;
+`;
+
+const TabButton = styled(Button)`
+  background-color: transparent;
+  color: ${color.DARK_GRAY};
+  border: 1px solid ${color.LIGHT_GRAY};
+  border-bottom: 1px solid ${color.WHITE};
+  border-radius: 3px 3px 0 0;
 `;
 
 const IssueWriteContainer = ({ history }) => {
@@ -87,6 +102,9 @@ const IssueWriteContainer = ({ history }) => {
       <ProfileImage src={user?.image} alt="" />
       <InputContainer>
         <TitleInput placeholder="Title" type="text" ref={titleRef} />
+        <TabContainer>
+          <TabButton>Write</TabButton>
+        </TabContainer>
         <ContentInput contentRef={contentRef} />
         <ButtonContainer>
           <Link to="/issues">

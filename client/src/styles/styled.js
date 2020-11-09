@@ -19,9 +19,12 @@ export const Button = styled.button`
   border: none;
   border-radius: 5px;
   background-color: ${color.LIGHT_GREEN};
-  color: white;
+  color: ${color.WHITE};
   cursor: pointer;
-  padding: 10px;
+  font-size: 14px;
+  padding: 5px 16px;
+  white-space: nowrap;
+  height: 30px;
   &:focus {
     outline: none;
   }
