@@ -65,7 +65,7 @@ const TabButton = styled(Button)`
   background-color: transparent;
   color: ${color.DARK_GRAY};
   border: 1px solid ${color.LIGHT_GRAY};
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid ${color.WHITE};
   border-radius: 3px 3px 0 0;
 `;
 

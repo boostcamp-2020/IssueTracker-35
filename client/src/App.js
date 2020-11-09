@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { createGlobalStyle } from 'styled-components';
 import size from '@/styles/sizes';
+import color from '@/styles/colors';
 
 import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
@@ -20,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     margin: ${size.HEADER_SIZE} 0 0 0;
     height: calc(100vh - ${size.HEADER_SIZE});
-    background-color: #FFF;
+    background-color: ${color.WHITE};
     font-family: 'Yeon Sung';
   }
   * {

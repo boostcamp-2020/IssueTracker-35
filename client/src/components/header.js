@@ -16,14 +16,14 @@ const StyledHeader = styled.header`
   justify-content: center;
   margin: 0;
   top: 0;
-  color: #fff;
+  color: ${color.WHITE};
   font-size: 1em;
   z-index: 2;
 `;
 
 const Logo = styled.button`
   background-color: transparent;
-  color: white;
+  color: ${color.WHITE};
   border: none;
   outline: none;
   cursor: pointer;

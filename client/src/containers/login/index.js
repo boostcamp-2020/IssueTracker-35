@@ -65,7 +65,7 @@ const GitHubButton = styled.button`
   min-width: 200px;
 `;
 const P = styled.p`
-  color: white;
+  color: ${colors.WHITE};
   margin: 2px 5px;
 `;
 

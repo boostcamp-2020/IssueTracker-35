@@ -19,7 +19,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 5px;
   background-color: ${color.LIGHT_GREEN};
-  color: white;
+  color: ${color.WHITE};
   cursor: pointer;
   font-size: 14px;
   padding: 5px 16px;

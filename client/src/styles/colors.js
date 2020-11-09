@@ -14,6 +14,7 @@ const colors = {
   LIGHT_BLACK: '#25292E', // navi bar
   BLUE: '#2B67CF', // picked label
   BLACK: '#000',
+  WHITE: '#FFF',
 };
 
 export default colors;
