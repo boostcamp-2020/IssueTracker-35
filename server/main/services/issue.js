@@ -6,23 +6,27 @@ class IssueService {
   }
 
   async retrieveAll() {
-    const issues = await this.Issue.findAll({
-      attributes: {
-        exclude: ['milestone_id', 'user_id'],
-      },
-      include: [
-        {
-          model: User,
-          attributes: ['nickname'],
+    try {
+      const issues = await this.Issue.findAll({
+        attributes: {
+          exclude: ['milestone_id', 'user_id'],
         },
-        {
-          model: Milestone,
-          attributes: ['title'],
-        },
-      ],
-      required: false,
-    });
-    return issues;
+        include: [
+          {
+            model: User,
+            attributes: ['nickname'],
+          },
+          {
+            model: Milestone,
+            attributes: ['title'],
+          },
+        ],
+        required: false,
+      });
+      return issues;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 }
 

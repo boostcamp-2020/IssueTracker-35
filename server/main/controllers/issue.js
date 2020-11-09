@@ -1,4 +1,4 @@
-const { responseHandler, errorHandler } = require('@/utils/handler');
+const { responseHandler } = require('@/utils/handler');
 const {
   issueService,
   assignmentService,
@@ -11,7 +11,7 @@ const {
 const { convertObjectKeys } = require('@/utils/api');
 
 class IssueController {
-  async getAllIssues(req, res) {
+  async getAllIssues(req, res, next) {
     try {
       const issues = await issueService.retrieveAll();
 
@@ -43,8 +43,7 @@ class IssueController {
 
       responseHandler(res, 200, data);
     } catch (err) {
-      console.log(err);
-      errorHandler(res, 500, 'internal server error');
+      next(err);
     }
   }
 

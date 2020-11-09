@@ -6,8 +6,12 @@ class LabelService {
   }
 
   async getTotalCount() {
-    const labelCount = await this.Label.count({});
-    return labelCount;
+    try {
+      const labelCount = await this.Label.count({});
+      return labelCount;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 }
 

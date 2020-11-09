@@ -6,17 +6,21 @@ class AssignmentService {
   }
 
   async getAssignees() {
-    const Assignees = await this.Assignment.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['nickname', 'image'],
-        },
-      ],
-      group: 'issue_id',
-      required: false,
-    });
-    return Assignees;
+    try {
+      const Assignees = await this.Assignment.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['nickname', 'image'],
+          },
+        ],
+        group: 'issue_id',
+        required: false,
+      });
+      return Assignees;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 }
 

@@ -6,12 +6,16 @@ class CommentService {
   }
 
   async getCommentCount() {
-    const comments = await this.Comment.findAndCountAll({
-      attributes: ['issue_id', [fn('COUNT', col('id')), 'comment_count']],
-      where: { is_issue: false },
-      group: 'issue_id',
-    });
-    return comments;
+    try {
+      const comments = await this.Comment.findAndCountAll({
+        attributes: ['issue_id', [fn('COUNT', col('id')), 'comment_count']],
+        where: { is_issue: false },
+        group: 'issue_id',
+      });
+      return comments;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 }
 

@@ -6,8 +6,12 @@ class MilestoneService {
   }
 
   async getTotalCount() {
-    const milestoneCount = await this.Milestone.count({});
-    return milestoneCount;
+    try {
+      const milestoneCount = await this.Milestone.count({});
+      return milestoneCount;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 }
 
