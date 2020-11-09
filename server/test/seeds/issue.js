@@ -11,6 +11,7 @@ const issues = [
     id: 2,
     title: '두 번째 이슈입니다.',
     is_open: true,
+    milestone_id: 1,
     user_id: 1,
   },
   {

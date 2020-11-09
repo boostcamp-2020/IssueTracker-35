@@ -1,7 +1,9 @@
 /* eslint-disable jest/no-done-callback */
 const request = require('supertest');
 const app = require('@/app');
-const { expectedUser, expectedUserToken } = require('@test/seeds/user');
+const { users, expectedUserToken } = require('@test/seeds/user');
+
+const expectedUser = users[0];
 
 describe('login API test', () => {
   const GITHUB_LOGIN_URL = '/users/login/github';

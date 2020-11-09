@@ -1,8 +1,10 @@
 const TIMEOUT = 10000;
 
-const userService = require('@/services/user');
-const { expectedUser, newUser } = require('@test/seeds/user');
+const { userService } = require('@/services/index');
+const { users, newUser } = require('@test/seeds/user');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
+
+const expectedUser = users[0];
 
 describe('retrieve', () => {
   test(

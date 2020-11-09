@@ -1,7 +1,7 @@
 const TIMEOUT = 10000;
 const NONEXISTING_ID = 99999;
 
-const issueService = require('@/services/issue');
+const { issueService } = require('@/services/index');
 const { expectedIssue, issueIds } = require('@test/seeds/issue');
 
 describe('retrieve', () => {
@@ -9,13 +9,8 @@ describe('retrieve', () => {
     'all issues',
     async () => {
       // when
-      const issues = await issueService.retrieveAll();
-      console.log(issues);
-      // issues.forEach(issue => {
-      //   console.log(issue.id);
-      //   console.log(issue.User);
-      // });
-      // then
+      const issues = await issueService.retrieveAll(); // issue_id,issue_title,is_open,user_id ~> author로 바꿔야함
+
       const hasSameSize = issues.length === issueIds.size;
       expect(hasSameSize).toBe(true);
       const containsAll = issues.every(issue => issueIds.has(issue.id));
@@ -32,7 +27,9 @@ describe('retrieve', () => {
 
       // then
       expect(issue).not.toBeUndefined();
-      Object.keys(expectedIssue).forEach(key => expect(expectedIssue[key]).toBe(issue[key]));
+      Object.keys(expectedIssue).forEach(key =>
+        expect(expectedIssue[key]).toBe(issue[key])
+      );
     },
     TIMEOUT
   );
