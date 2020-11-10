@@ -8,6 +8,12 @@ import {
   CLOSE_ISSUES,
 } from './actions';
 
+const getDeletedSet = (selected, id) => {
+  const deletedSet = new Set(selected);
+  deletedSet.delete(id);
+  return deletedSet;
+};
+
 const issueListReducer = (state, action) => {
   switch (action.type) {
     case FETCH:
@@ -19,21 +25,21 @@ const issueListReducer = (state, action) => {
     case CHECK:
       return {
         issues: state.issues,
-        selected: [...state.selected, action.issueId],
+        selected: new Set([...state.selected, action.issueId]),
         timestamp: state.timestamp,
       };
     case UNCHECK:
       return {
         issues: state.issues,
-        selected: state.selected.filter(issue => issue.id !== action.issueId),
+        selected: getDeletedSet(state.selected, action.issueId),
         timestamp: state.timestamp,
       };
     case TOGGLE_ALL:
       return {
         issues: state.issues,
-        selected: state.selected.length
-          ? []
-          : state.issues.map(issue => issue.id),
+        selected: new Set(
+          state.selected.size ? [] : state.issues.map(issue => issue.id)
+        ),
         timestamp: state.timestamp,
       };
     case NEW_ISSUE:
@@ -57,7 +63,7 @@ const issueListReducer = (state, action) => {
             ? { ...issue, isOpen: true }
             : issue
         ),
-        selected: [],
+        selected: new Set(),
         timestamp: new Date(),
       };
     case CLOSE_ISSUES:
@@ -75,7 +81,7 @@ const issueListReducer = (state, action) => {
             ? { ...issue, isOpen: false }
             : issue
         ),
-        selected: [],
+        selected: new Set(),
         timestamp: new Date(),
       };
     default:

@@ -30,11 +30,11 @@ const IssueDetailContainer = ({ match }) => {
     state: { issues },
   } = useContext(IssueListContext);
 
-  const issue = issues[match.params.issueId - 1];
+  const issue = issues.find(issue => +match.params.issueId === issue.id);
 
   return (
     <Container>
-      <IssueDetailHeader issue={issue} />
+      {issue && <IssueDetailHeader issue={issue} />}
       <ContentContainer>
         <Comment />
         <Sidebar />

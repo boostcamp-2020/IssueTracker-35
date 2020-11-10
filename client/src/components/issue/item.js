@@ -38,7 +38,7 @@ const IssueCenter = styled.div`
   padding: 5px 0;
   flex-direction: column;
   justify-content: flex-start;
-  width: 70%;
+  width: 75%;
 `;
 
 const IssueBody = styled.div`
@@ -66,11 +66,22 @@ const IssueRight = styled.div`
   padding: 10px;
   justify-content: space-between;
   align-items: start;
-  width: 30%;
+  width: 25%;
+`;
+
+const AssigneeImages = styled.div``;
+
+const ProfileImage = styled.img`
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  margin: 5px;
+  height: 30px;
+  width: 30px;
 `;
 
 const Comment = styled.div`
   display: flex;
+  width: 30px;
   align-items: center;
 `;
 
@@ -84,14 +95,7 @@ const StyledLink = styled(Link)`
 `;
 
 // TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
-const IssueItem = ({ issue, toggleSelected, now }) => {
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = () => {
-    setChecked(!checked);
-    toggleSelected(issue.id, checked);
-  };
-
+const IssueItem = ({ issue, checked, toggleSelected, now }) => {
   const describe = () =>
     `#${issue.id} ${issue.isOpen
       ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
@@ -110,7 +114,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           name="issues"
           value={issue.id}
           checked={checked}
-          onChange={handleChange}
+          onChange={() => toggleSelected(issue.id, checked)}
         />
         <IssueIcon isOpen={issue.isOpen} />
       </IssueLeft>
@@ -127,12 +131,15 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
       </IssueCenter>
 
       <IssueRight>
-        {!!issue.commentCount && (
-          <Comment>
-            <CommentIcon />
-            <CommentCount>{issue.commentCount}</CommentCount>
-          </Comment>
-        )}
+        <AssigneeImages></AssigneeImages>
+        <Comment>
+          {!!issue.commentCount && (
+            <>
+              <CommentIcon />
+              <CommentCount>{issue.commentCount}</CommentCount>
+            </>
+          )}
+        </Comment>
       </IssueRight>
     </Container>
   );

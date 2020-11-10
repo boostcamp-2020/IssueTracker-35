@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import { IssueListContext } from '@/store/issue';
+import { UNCHECK, CHECK } from '@/store/issue/actions';
+
 import IssueItem from '@/components/issue/item';
 import Filter from '@/containers/issue/filter';
 import SearchContainer from '@/containers/issue/search';
@@ -40,7 +43,7 @@ const IssueListContainer = () => {
 
   const toggleSelected = (issueId, checked) =>
     dispatch({
-      type: checked ? 'UNCHECK' : 'CHECK',
+      type: checked ? UNCHECK : CHECK,
       issueId,
     });
 
@@ -56,9 +59,8 @@ const IssueListContainer = () => {
             <IssueItem
               key={issue.id}
               issue={issue}
-              d
               checked={state.selected.has(issue.id)}
-              toggleSelected
+              toggleSelected={toggleSelected}
               now={state.timestamp}
             ></IssueItem>
           ))}
