@@ -7,6 +7,7 @@ const {
 } = require('@/services/index');
 
 const { convertObjectKeys } = require('@/utils/api');
+const { sequelize } = require('@/models');
 
 class IssueController {
   async getAllIssues(req, res, next) {
@@ -43,28 +44,32 @@ class IssueController {
   }
 
   async createIssue(req, res, next) {
+    const transaction = await sequelize.transaction();
     try {
       const { title, assignees, content, labels, milestone } = req.body;
       const { user } = req;
 
       const userID = user.id;
 
-      // issue 생성
       const issueID = await issueService.createIssue(
         title,
         userID,
-        milestone[0]
+        milestone[0],
+        transaction
       );
+      await commentService.createIssue(
+        content,
+        userID,
+        milestone[0],
+        transaction
+      );
+      await assignmentService.create(issueID, assignees, transaction);
+      await issueLabelService.create(issueID, labels, transaction);
 
-      // comment 생성 (issue), assignment, issue-label
-      await Promise.all([
-        commentService.createIssue(content, userID, milestone[0]),
-        assignmentService.create(issueID, assignees),
-        issueLabelService.create(issueID, labels),
-      ]);
-
+      await transaction.commit();
       responseHandler(res, 200, { id: issueID });
     } catch (err) {
+      await transaction.rollback();
       next(err);
     }
   }
@@ -100,8 +105,8 @@ class IssueController {
     // 내부 type 체크
     if (array.length !== 0) {
       array.forEach(value => {
-        if (typeof value !== 'string') {
-          result = false;
+        if (!parseInt(value)) {
+          result = false; // issue 생성시 array로 받는 내부 값들은 id값(int형)
         }
       });
     }
