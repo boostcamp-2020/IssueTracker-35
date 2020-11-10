@@ -89,10 +89,10 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
 
   const handleChange = () => {
     setChecked(!checked);
-    toggleSelected(issue.id);
+    toggleSelected(issue.id, checked);
   };
 
-  const describe = issue =>
+  const describe = () =>
     `#${issue.id} ${issue.isOpen
       ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
       }`
@@ -122,7 +122,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           </StyledLink>
         </IssueHeader>
         <IssueBody>
-          <Description>{describe(issue)}</Description>
+          <Description>{describe()}</Description>
         </IssueBody>
       </IssueCenter>
 
@@ -138,4 +138,4 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
   );
 };
 
-export default IssueItem;
+export default React.memo(IssueItem);
