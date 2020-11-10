@@ -38,8 +38,8 @@ class IssueController {
       // api response에 맞추어 issue들을 array로 변환
       const data = { issues: Object.values(issues) };
       // milestone, label count 등록
-      data.label_count = await labelService.getTotalCount();
-      data.milestone_count = await milestoneService.getTotalCount();
+      data.labelCount = await labelService.getTotalCount();
+      data.milestoneCount = await milestoneService.getTotalCount();
 
       responseHandler(res, 200, data);
     } catch (err) {
