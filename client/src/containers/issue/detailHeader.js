@@ -97,8 +97,8 @@ const IssueDetailHeader = ({ issue }) => {
         </ButtonContainer>
       </TitleContainer>
       <DescriptionContainer>
-        <IssueState isOpen={issue.is_open}>
-          {issue.is_open ? 'Open' : 'Closed'}
+        <IssueState isOpen={issue.isOpen}>
+          {issue.isOpen ? 'Open' : 'Closed'}
         </IssueState>
         <Author>{issue.author.nickname}</Author>
         <Description>{describe(issue)}</Description>
