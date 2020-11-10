@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CogWheel from '@/styles/svgs/cogwheel';
 import color from '@/styles/colors';
+import Modal from '@/components/issue/modal';
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -37,14 +39,22 @@ const Title = styled.p`
   margin: 10px 0;
 `;
 
-const SideBarItem = ({ title, content }) => {
+const SideBarItem = ({ headerText, title, content, children }) => {
+  const [isVisible, setVisible] = useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   return (
     <Container>
-      <Header>
+      <Header onClick={showModal}>
         <Title>{title}</Title>
         <CogWheel />
       </Header>
       <Body>{content}</Body>
+      <Modal title={headerText} visible={isVisible} hideModal={hideModal}>
+        {children}
+      </Modal>
     </Container>
   );
 };
