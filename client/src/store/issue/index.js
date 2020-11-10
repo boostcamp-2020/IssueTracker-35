@@ -1,39 +1,11 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer } from 'react';
 
 import { issueListReducer, issueWriteReducer } from './reducer';
 
 const IssueListContext = createContext();
 
 const initListState = {
-  issues: [
-    {
-      id: 1,
-      title: '첫 번째 이슈입니다.',
-      content: '첫 번째 내용~~',
-      isOpen: true,
-      createdAt: new Date('2020-09-02 17:00'),
-      author: { nickname: '망했어요' },
-      commentCount: 0,
-    },
-    {
-      id: 2,
-      title: '두 번째 이슈입니다.',
-      content: '두 번째 내용~~',
-      isOpen: false,
-      author: { nickname: '엉엉' },
-      createdAt: new Date('2020-11-05 18:20'),
-      commentCount: 2,
-    },
-    {
-      id: 3,
-      title: '세 번째 이슈입니다.',
-      content: '세 번째 내용~~',
-      isOpen: true,
-      author: { nickname: '퇴근 마렵다' },
-      createdAt: new Date('2020-11-05 18:57'),
-      commentCount: 3,
-    },
-  ],
+  issues: [],
   selected: [],
   timestamp: new Date(),
 };
