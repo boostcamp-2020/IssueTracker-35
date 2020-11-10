@@ -21,3 +21,18 @@ describe('labels for all issue', () => {
     TIMEOUT
   );
 });
+
+describe('create issue label', () => {
+  test('valid data', async () => {
+    //given
+    const issueID = 3;
+    const labelID = 1;
+
+    //when
+    const issueLabelID = await issueLabelService.create(issueID, labelID);
+
+    //then
+    expect(typeof issueLabelID).toBe('number');
+    expect(issueLabelID).toBeGreaterThanOrEqual(expectedLabels.length);
+  });
+});

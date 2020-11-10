@@ -2,7 +2,7 @@ const TIMEOUT = 10000;
 
 const { assignmentService } = require('@/services/index');
 const { users } = require('@test/seeds/user');
-
+const { assignments } = require('@test/seeds/assignment');
 describe('assignees for all issue', () => {
   test(
     'assignees',
@@ -20,4 +20,19 @@ describe('assignees for all issue', () => {
     },
     TIMEOUT
   );
+});
+
+describe('create assignment', () => {
+  test('valid datas', async () => {
+    // given
+    const issueID = 1;
+    const assignee = 2;
+
+    //when
+    const assignmentID = await assignmentService.create(issueID, assignee);
+
+    //then
+    expect(typeof assignmentID).toBe('number');
+    expect(assignmentID).toBeGreaterThanOrEqual(assignments.length);
+  });
 });

@@ -47,32 +47,21 @@ describe('create issue', () => {
   test('successfully', async () => {
     // given
     const data = {
-      title: '첫 번째 이슈',
-      content: '내용입니다.',
-      is_open: true,
-      user_id: 5,
+      title: '이슈 생성하기',
+      userID: 1,
+      milestone: ['1'],
     };
 
     // when
-    const issueId = await issueService.createIssue(data);
+    const issueID = await issueService.createIssue(
+      data.title,
+      data.userID,
+      data.milestone
+    );
 
     // then
-    expect(issueId).toBe(5);
-  });
-  test('with invalid data', async () => {
-    //given
-    const data = {
-      title: '',
-      content: '두번째 이슈입니다.',
-      is_open: true,
-      user_id: 1,
-    };
-
-    //when
-    const issueId = await issueService.createIssue(data);
-
-    // then
-    expect(issueId).toBeFalsy(); // 잘못된 요청에서 넘겨줄 데이터 값 (undefined or 0 예상)
+    expect(typeof issueID).toBe('number');
+    expect(issueID).toBeGreaterThanOrEqual(issueIds.size);
   });
 });
 

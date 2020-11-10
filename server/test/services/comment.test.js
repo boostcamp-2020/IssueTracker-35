@@ -21,3 +21,23 @@ describe('comments for all issue', () => {
     TIMEOUT
   );
 });
+
+describe('create comment', () => {
+  test('create for issue with valid data', async () => {
+    //given
+    const issueID = 4;
+    const content = '4번째 이슈에 대한 내용을 생성합니다!!';
+    const userID = 1;
+
+    //when
+    const commentID = await commentService.createIssue(
+      content,
+      issueID,
+      userID
+    );
+
+    //then
+    expect(typeof commentID).toBe('number');
+    expect(commentID).toBeGreaterThanOrEqual(expectedComments.length);
+  });
+});

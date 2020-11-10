@@ -13,8 +13,6 @@ const assignments = [
   },
 ];
 
-const expectedAssignment = assignments[0];
-
 const initAssignment = async () => {
   await Assignment.bulkCreate(assignments);
 };
@@ -23,4 +21,8 @@ const finiAssignment = async () => {
   await Assignment.destroy({ where: {} });
 };
 
-module.exports = { initAssignment, finiAssignment, expectedAssignment };
+module.exports = {
+  initAssignment,
+  finiAssignment,
+  assignments,
+};

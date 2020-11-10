@@ -17,6 +17,12 @@ const expectedIssue = {
   commentCount: 1,
 };
 
+const successCode = 200;
+const badRequestCode = 400;
+const badRequestMsg = 'Bad Request';
+const unAuthorizedCode = 401;
+const unAuthorizedMsg = 'Unauthorized';
+
 describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
 
@@ -34,7 +40,7 @@ describe('retrieve all issues', () => {
           delete recievedIssue.createdAt;
           delete recievedIssue.updatedAt;
           expect(recievedIssue).toEqual(expectedIssue);
-          expect(issueIds.size).toBe(issues.length);
+          expect(issueIds.size + 1).toBe(issues.length); // issue create test에서 하나 증가했음 (나중에 delete test도 되면, size 그대로 설정)
           done();
         });
     } catch (err) {
@@ -50,8 +56,8 @@ describe('retrieve all issues', () => {
             throw err;
           }
           const { code, message } = res.body;
-          expect(code).toBe(401);
-          expect(message).toBe('Unauthorized');
+          expect(code).toBe(unAuthorizedCode);
+          expect(message).toBe(unAuthorizedMsg);
           done();
         });
     } catch (err) {
@@ -61,5 +67,271 @@ describe('retrieve all issues', () => {
   it('400 bad request', () => {
     // query parameter가 잘못 날라온 경우 (필터링을 back에서 할지 front에서 할지 아직 모름)
     expect(true).toBe(true);
+  });
+});
+
+describe('create issue', () => {
+  const CREATE_ISSUE_URL = '/issues';
+
+  it('valid datas', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    }; // userID는 아래 토큰 생성 과정에서 담긴다
+
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+
+          //then
+          const { id, success, code } = res.body;
+          expect(code).toBe(successCode);
+          expect(typeof id).toBe('number');
+          expect(success).toBeTruthy();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('Unauthorized', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(unAuthorizedCode);
+          expect(message).toBe(unAuthorizedMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - wrong type title', done => {
+    // given
+    const data = {
+      title: 1,
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - wrong type content', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 1,
+      milestone: ['1'],
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - without assignees', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - wrong type assignees', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: [true, 2],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - without labels', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: ['2', '3'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - wrong type labels', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: ['1'],
+      assignees: ['2', '3'],
+      labels: [true, 2],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - without milestone', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('invalid data - wrong type milestone', done => {
+    // given
+    const data = {
+      title: 'api로 이슈 생성하기',
+      content: 'api 이슈 생성 내용입니당~',
+      milestone: [1],
+      assignees: ['2', '3'],
+      labels: ['1', '2'],
+    };
+    try {
+      request(app)
+        .post(CREATE_ISSUE_URL) //when
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            throw Error(err);
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(badRequestCode);
+          expect(message).toBe(badRequestMsg);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
   });
 });
