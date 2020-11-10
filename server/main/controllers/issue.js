@@ -76,13 +76,17 @@ class IssueController {
 
     if (typeof title !== 'string' || title === '') {
       return next(err);
-    } else if (content && typeof content !== 'string') {
+    }
+    if (content && typeof content !== 'string') {
       return next(err);
-    } else if (!IssueController._isValidArrayCondition(assignees)) {
+    }
+    if (!IssueController._isValidArrayCondition(assignees)) {
       return next(err);
-    } else if (!IssueController._isValidArrayCondition(labels)) {
+    }
+    if (!IssueController._isValidArrayCondition(labels)) {
       return next(err);
-    } else if (!IssueController._isValidArrayCondition(milestone)) {
+    }
+    if (!IssueController._isValidArrayCondition(milestone)) {
       return next(err);
     }
     return next();
