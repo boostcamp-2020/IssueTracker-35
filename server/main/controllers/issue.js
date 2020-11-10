@@ -44,32 +44,23 @@ class IssueController {
 
   async createIssue(req, res, next) {
     try {
-      const { title, assignees, labels, milestone } = req.body;
+      const { title, assignees, content, labels, milestone } = req.body;
       const { user } = req;
 
       const userID = user.id;
-      let { content } = req.body;
-      let milestoneID = null;
-      if (milestone.length !== 0) {
-        milestoneID = milestone[0];
-      }
-      if (!content) {
-        content = null;
-      }
+
       // issue 생성
       const issueID = await issueService.createIssue(
         title,
         userID,
-        parseInt(milestoneID)
+        milestone[0]
       );
 
       // comment 생성 (issue), assignment, issue-label
       await Promise.all([
-        commentService.createIssue(content, userID, milestoneID),
-        assignees.forEach(assignee =>
-          assignmentService.create(issueID, assignee)
-        ),
-        labels.forEach(labelID => issueLabelService.create(issueID, labelID)),
+        commentService.createIssue(content, userID, milestone[0]),
+        assignmentService.create(issueID, assignees),
+        issueLabelService.create(issueID, labels),
       ]);
 
       responseHandler(res, 200, { id: issueID });

@@ -22,14 +22,15 @@ class AssignmentService {
       throw Error(err);
     }
   }
-  async create(issueID, assignee) {
+  async create(issueID, assignees) {
     try {
-      const result = await this.Assignment.create({
-        issue_id: issueID,
-        assignee: assignee,
+      const bulkData = [];
+      assignees.forEach(assignee => {
+        bulkData.push({ issue_id: issueID, assignee: assignee });
       });
 
-      return result.id;
+      const result = await this.Assignment.bulkCreate(bulkData);
+      return result ? true : false;
     } catch (err) {
       throw Error(err);
     }

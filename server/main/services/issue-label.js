@@ -22,13 +22,15 @@ class IssueLabelService {
       throw Error(err);
     }
   }
-  async create(issueID, labelID) {
+  async create(issueID, labels) {
     try {
-      const result = await this.IssueLabel.create({
-        issue_id: issueID,
-        label_id: labelID,
-      });
-      return result.id;
+      const bulkData = [];
+      labels.forEach(labelID =>
+        bulkData.push({ issue_id: issueID, label_id: labelID })
+      );
+
+      const result = await this.IssueLabel.bulkCreate(bulkData);
+      return result ? true : false;
     } catch (err) {
       throw Error(err);
     }

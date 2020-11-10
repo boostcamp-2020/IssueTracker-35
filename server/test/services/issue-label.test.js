@@ -26,13 +26,12 @@ describe('create issue label', () => {
   test('valid data', async () => {
     //given
     const issueID = 3;
-    const labelID = 1;
+    const labels = ['1'];
 
     //when
-    const issueLabelID = await issueLabelService.create(issueID, labelID);
+    const result = await issueLabelService.create(issueID, labels);
 
     //then
-    expect(typeof issueLabelID).toBe('number');
-    expect(issueLabelID).toBeGreaterThanOrEqual(expectedLabels.length);
+    expect(result).toBeTruthy();
   });
 });
