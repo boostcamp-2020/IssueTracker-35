@@ -22,6 +22,17 @@ class IssueLabelService {
       throw Error(err);
     }
   }
+  async create(issueID, labelID) {
+    try {
+      const result = await this.IssueLabel.create({
+        issue_id: issueID,
+        label_id: labelID,
+      });
+      return result.id;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new IssueLabelService(IssueLabel);

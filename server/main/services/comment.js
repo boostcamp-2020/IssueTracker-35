@@ -17,6 +17,20 @@ class CommentService {
       throw Error(err);
     }
   }
+  async createIssue(content, issueID, userID) {
+    try {
+      const result = await this.Comment.create({
+        is_issue: true,
+        content: content,
+        issue_id: issueID,
+        user_id: userID,
+      });
+
+      return result.id;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new CommentService(Comment);
