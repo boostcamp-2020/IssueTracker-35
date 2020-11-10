@@ -73,8 +73,8 @@ const Label = styled.label`
   width: 100%;
 `;
 
-// TODO count style 적용
-const SearchContainer = ({ count: { labelCount, milestoneCount } }) => {
+// TODO count style 적용, label, milestone context를 useContext로 받아서 count 출력
+const SearchContainer = () => {
   return (
     <Container>
       <FilterContainer>
@@ -87,11 +87,11 @@ const SearchContainer = ({ count: { labelCount, milestoneCount } }) => {
       <ButtonContainer>
         <LabelButton>
           <LabelIcon />
-          Labels {labelCount}
+          Labels
         </LabelButton>
         <MileStoneButton>
           <MilestoneIcon />
-          Milestones {milestoneCount}
+          Milestones
         </MileStoneButton>
       </ButtonContainer>
       <Link to="/issues/new">

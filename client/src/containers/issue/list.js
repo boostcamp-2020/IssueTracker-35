@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { issueAPI } from '@/api/issue';
 import { IssueListContext } from '@/store/issue';
-import { FETCH } from '@/store/issue/actions';
 import IssueItem from '@/components/issue/item';
 import Filter from '@/containers/issue/filter';
 import SearchContainer from '@/containers/issue/search';
@@ -39,25 +37,17 @@ const ItemList = styled.div`
 
 const IssueListContainer = () => {
   const { state, dispatch } = useContext(IssueListContext);
-  const [count, setCount] = useState({ labelCount: 0, milestoneCount: 0 });
 
-  const getAllIssues = async () => {
-    const {
-      data: { issues, labelCount, milestoneCount },
-    } = await issueAPI.getAllIssues();
-
-    console.log(labelCount, milestoneCount);
-
-    dispatch({ type: FETCH, issues }, []);
-    setCount({ labelCount, milestoneCount });
-  };
-
-  useEffect(getAllIssues, []);
+  const toggleSelected = (issueId, checked) =>
+    dispatch({
+      type: checked ? 'UNCHECK' : 'CHECK',
+      issueId,
+    });
 
   return (
     <Container>
       <ListHeader>
-        <SearchContainer count={count} />
+        <SearchContainer />
       </ListHeader>
       <ListBody>
         <Filter></Filter>
@@ -66,7 +56,9 @@ const IssueListContainer = () => {
             <IssueItem
               key={issue.id}
               issue={issue}
-              toggleSelected={console.log}
+              d
+              checked={state.selected.has(issue.id)}
+              toggleSelected
               now={state.timestamp}
             ></IssueItem>
           ))}
