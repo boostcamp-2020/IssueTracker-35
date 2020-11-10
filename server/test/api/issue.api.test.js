@@ -6,17 +6,6 @@ const { expectedLabels } = require('@test/seeds/label');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 const { issueIds } = require('@test/seeds/issue');
 
-const expectedIssue = {
-  id: 3,
-  title: '세 번째 이슈입니다.',
-  isOpen: true,
-  author: { nickname: 'user11' },
-  milestone: [],
-  assignees: { nickname: 'user22', image: DEFAULT_PROFILE_IMAGE_URL },
-  labels: { title: expectedLabels[0].title, color: expectedLabels[0].color },
-  commentCount: 1,
-};
-
 const successCode = 200;
 const badRequestCode = 400;
 const badRequestMsg = 'Bad Request';
@@ -27,7 +16,22 @@ describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
 
   it('success retrieve all issues', done => {
+    //given
+    const expectedIssue = {
+      id: 3,
+      title: '세 번째 이슈입니다.',
+      isOpen: true,
+      author: { nickname: 'user11' },
+      milestone: [],
+      assignees: { nickname: 'user22', image: DEFAULT_PROFILE_IMAGE_URL },
+      labels: {
+        title: expectedLabels[0].title,
+        color: expectedLabels[0].color,
+      },
+      commentCount: 1,
+    };
     try {
+      //when
       request(app)
         .get(ALL_ISSUE_URL)
         .set('Authorization', expectedUserToken)
@@ -39,6 +43,8 @@ describe('retrieve all issues', () => {
           const recievedIssue = issues[2];
           delete recievedIssue.createdAt;
           delete recievedIssue.updatedAt;
+
+          //then
           expect(recievedIssue).toEqual(expectedIssue);
           expect(issueIds.size + 1).toBe(issues.length); // issue create test에서 하나 증가했음 (나중에 delete test도 되면, size 그대로 설정)
           done();
@@ -141,6 +147,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -167,6 +174,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -192,6 +200,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -218,6 +227,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -243,6 +253,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -269,6 +280,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -294,6 +306,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
@@ -320,6 +333,7 @@ describe('create issue', () => {
     try {
       request(app)
         .post(CREATE_ISSUE_URL) //when
+        .set('Authorization', expectedUserToken)
         .send(data)
         .end((err, res) => {
           if (err) {
