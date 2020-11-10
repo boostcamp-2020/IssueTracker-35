@@ -49,17 +49,9 @@ const App = () => {
           exact
           component={isLoggedIn ? LoginContainer : IssueListContainer}
         />
-        <Route
-          exact
-          path="/issues/new"
-          render={props => <IssueWriteContainer {...props} />}
-        />
-        <Route
-          exact
-          path="/issues/:issueId"
-          render={props => <IssueDetailContainer {...props} />}
-        />
-        <Route path="/issues" exact component={IssueListContainer} />
+        <Route exact path="/issues/new" component={IssueWriteContainer} />
+        <Route exact path="/issues/:issueId" component={IssueDetailContainer} />
+        <Route exact path="/issues" component={IssueListContainer} />
         <Route
           path="/users/github/callback"
           render={props => <GitHubCallback {...props} dispatch={dispatch} />}
