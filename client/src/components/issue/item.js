@@ -93,7 +93,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
   };
 
   const describe = issue =>
-    `#${issue.id} ${issue.is_open
+    `#${issue.id} ${issue.isOpen
       ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
       }`
       : `by ${issue.author.nickname} was closed ${getTimestamp(
@@ -112,7 +112,7 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           checked={checked}
           onChange={handleChange}
         />
-        <IssueIcon isOpen={issue.is_open} />
+        <IssueIcon isOpen={issue.isOpen} />
       </IssueLeft>
 
       <IssueCenter>
@@ -127,10 +127,10 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
       </IssueCenter>
 
       <IssueRight>
-        {!!issue.comment_count && (
+        {!!issue.commentCount && (
           <Comment>
             <CommentIcon />
-            <CommentCount>{issue.comment_count}</CommentCount>
+            <CommentCount>{issue.commentCount}</CommentCount>
           </Comment>
         )}
       </IssueRight>

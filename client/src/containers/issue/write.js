@@ -86,10 +86,10 @@ const IssueWriteContainer = ({ history }) => {
       id: Math.floor(Math.random() * 100000 + 5),
       title,
       content,
-      is_open: true,
+      isOpen: true,
       author: { nickname: user.nickname },
       createdAt: new Date(),
-      comment_count: 1,
+      commentCount: 1,
     };
 
     // await issueAPI.submitIssue();

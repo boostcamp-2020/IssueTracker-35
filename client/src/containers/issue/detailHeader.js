@@ -81,7 +81,7 @@ const IssueState = styled.div`
 
 const IssueDetailHeader = ({ issue }) => {
   const describe = issue =>
-    `opened this issue ${getTimestamp(new Date(), issue.createdAt)} · ${issue.comment_count || 0
+    `opened this issue ${getTimestamp(new Date(), issue.createdAt)} · ${issue.commentCount || 0
     } comments`;
 
   return (
