@@ -1,7 +1,9 @@
 const passport = require('passport');
 const { errorHandler } = require('@/utils/handler');
 
-exports.passportAuthenticate = passport.authenticate('custom-github', { session: false });
+exports.passportAuthenticate = passport.authenticate('custom-github', {
+  session: false,
+});
 
 exports.authenticateUser = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
