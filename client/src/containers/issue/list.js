@@ -41,16 +41,18 @@ const IssueListContainer = () => {
   const { state, dispatch } = useContext(IssueListContext);
   const [count, setCount] = useState({ labelCount: 0, milestoneCount: 0 });
 
-  const getAllIsseus = async () => {
+  const getAllIssues = async () => {
     const {
       data: { issues, labelCount, milestoneCount },
-    } = await issueAPI.getAllIsseus();
+    } = await issueAPI.getAllIssues();
+
+    console.log(labelCount, milestoneCount);
 
     dispatch({ type: FETCH, issues }, []);
     setCount({ labelCount, milestoneCount });
   };
 
-  useEffect(getAllIsseus, []);
+  useEffect(getAllIssues, []);
 
   return (
     <Container>

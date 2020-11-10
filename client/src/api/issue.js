@@ -1,7 +1,7 @@
 import { requestGET, requestPOST } from '@/api';
 
-const GET_ALL_IESSUES_PATH = '/issues';
+const GET_ALL_ISSUES_PATH = '/issues';
 
 export const issueAPI = {
-  getAllIsseus: () => requestGET(GET_ALL_IESSUES_PATH),
+  getAllIssues: () => requestGET(GET_ALL_ISSUES_PATH),
 };
