@@ -3,9 +3,7 @@ const {
   issueService,
   assignmentService,
   issueLabelService,
-  labelService,
   commentService,
-  milestoneService,
 } = require('@/services/index');
 
 const { convertObjectKeys } = require('@/utils/api');
@@ -37,14 +35,82 @@ class IssueController {
 
       // api response에 맞추어 issue들을 array로 변환
       const data = { issues: Object.values(issues) };
-      // milestone, label count 등록
-      data.labelCount = await labelService.getTotalCount();
-      data.milestoneCount = await milestoneService.getTotalCount();
 
       responseHandler(res, 200, data);
     } catch (err) {
       next(err);
     }
+  }
+
+  async createIssue(req, res, next) {
+    try {
+      const { title, assignees, labels, milestone } = req.body;
+      const { user } = req;
+
+      const userID = user.id;
+      let { content } = req.body;
+      let milestoneID = null;
+      if (milestone.length !== 0) {
+        milestoneID = milestone[0];
+      }
+      if (!content) {
+        content = null;
+      }
+      // issue 생성
+      const issueID = await issueService.createIssue(
+        title,
+        userID,
+        parseInt(milestoneID)
+      );
+
+      // comment 생성 (issue), assignment, issue-label
+      await Promise.all([
+        commentService.createIssue(content, userID, milestoneID),
+        assignees.forEach(assignee =>
+          assignmentService.create(issueID, assignee)
+        ),
+        labels.forEach(labelID => issueLabelService.create(issueID, labelID)),
+      ]);
+
+      responseHandler(res, 200, { id: issueID });
+    } catch (err) {
+      next(err);
+    }
+  }
+  isValidParams(req, res, next) {
+    const err = new Error('Bad Request');
+    err.status = 400;
+
+    const { title, content, assignees, labels, milestone } = req.body;
+
+    if (typeof title !== 'string' || title === '') {
+      return next(err);
+    } else if (content && typeof content !== 'string') {
+      return next(err);
+    } else if (!IssueController._isValidArrayCondition(assignees)) {
+      return next(err);
+    } else if (!IssueController._isValidArrayCondition(labels)) {
+      return next(err);
+    } else if (!IssueController._isValidArrayCondition(milestone)) {
+      return next(err);
+    }
+    return next();
+  }
+  static _isValidArrayCondition(array) {
+    // array 타입 체크
+    if (!Array.isArray(array)) {
+      return false;
+    }
+    let result = true;
+    // 내부 type 체크
+    if (array.length !== 0) {
+      array.forEach(value => {
+        if (typeof value !== 'string') {
+          result = false;
+        }
+      });
+    }
+    return result;
   }
 
   static _initAllIssuesResponseResults(objectArray) {
