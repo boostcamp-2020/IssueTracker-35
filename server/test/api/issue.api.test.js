@@ -87,7 +87,7 @@ describe('create issue', () => {
       milestone: ['1'],
       assignees: ['2', '3'],
       labels: ['1', '2'],
-    }; // userID는 아래 토큰 생성 과정에서 담긴다
+    };
 
     try {
       request(app)
