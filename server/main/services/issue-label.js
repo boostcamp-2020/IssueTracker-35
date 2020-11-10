@@ -14,7 +14,7 @@ class IssueLabelService {
             attributes: ['title', 'color'],
           },
         ],
-        group: 'issue_id',
+        group: ['id', 'issue_id'],
         required: false,
       });
       return labels;

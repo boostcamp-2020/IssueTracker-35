@@ -14,7 +14,7 @@ class AssignmentService {
             attributes: ['nickname', 'image'],
           },
         ],
-        group: 'issue_id',
+        group: ['id', 'issue_id'],
         required: false,
       });
       return Assignees;
