@@ -46,7 +46,7 @@ describe('retrieve all issues', () => {
 
           //then
           expect(recievedIssue).toEqual(expectedIssue);
-          expect(issueIds.size + 1).toBe(issues.length); // issue create test에서 하나 증가했음 (나중에 delete test도 되면, size 그대로 설정)
+          expect(issues.length).toBeGreaterThanOrEqual(issueIds.size); // issue create test에서 하나 증가했음 (나중에 delete test도 되면, size 그대로 설정)
           done();
         });
     } catch (err) {
@@ -98,12 +98,12 @@ describe('create issue', () => {
           if (err) {
             throw Error(err);
           }
-
           //then
           const { id, success, code } = res.body;
           expect(code).toBe(successCode);
           expect(typeof id).toBe('number');
           expect(success).toBeTruthy();
+          done();
         });
     } catch (err) {
       done(err);
