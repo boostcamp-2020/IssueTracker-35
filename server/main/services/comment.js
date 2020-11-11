@@ -21,8 +21,14 @@ class CommentService {
     try {
       const comments = await this.Comment.findAll({
         attributes: ['id', 'content', 'createdAt'],
-        include: [{ model: User, attributes: ['id', 'nickname', 'image'] }],
-        where: { issue_id: issueID, is_issue: false },
+        include: [
+          {
+            model: User,
+            attributes: ['id', 'nickname', 'image'],
+            order: [['createdAt', 'DESC']],
+          },
+        ],
+        where: { issue_id: issueID },
         required: false,
       });
       return comments;
