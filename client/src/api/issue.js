@@ -1,7 +1,8 @@
 import { requestGET, requestPOST } from '@/api';
 
-const GET_ALL_ISSUES_PATH = '/issues';
+const BASE_ISSUES_PATH = '/issues';
 
 export const issueAPI = {
-  getAllIssues: () => requestGET(GET_ALL_ISSUES_PATH),
+  getAllIssues: () => requestGET(BASE_ISSUES_PATH),
+  submitIssue: issue => requestPOST(BASE_ISSUES_PATH, { issue }),
 };
