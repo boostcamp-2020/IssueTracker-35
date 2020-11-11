@@ -5,7 +5,17 @@ class UserService {
   constructor(User) {
     this.User = User;
   }
+  async retrieveAllUsers() {
+    try {
+      const users = await this.User.findAll({
+        attributes: ['id', 'nickname', 'image'],
+      });
 
+      return users;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
   async retrieveById(id) {
     try {
       const user = await this.User.findOne({

@@ -3,8 +3,6 @@ const request = require('supertest');
 const app = require('@/app');
 const { users, expectedUserToken } = require('@test/seeds/user');
 
-const expectedUser = users[0];
-
 describe('login API test', () => {
   const GITHUB_LOGIN_URL = '/users/login/github';
 
@@ -34,12 +32,17 @@ describe('user/me API test', () => {
   const invalidToken = 'token 2';
 
   //when
-  test('valid token', done => {
+  it('valid token', done => {
+    //given
+    const expectedUser = users[0];
     try {
       request(app)
         .get(VERIFY_Identity_URL)
         .set('Authorization', validToken)
         .end((err, res) => {
+          if (err) {
+            throw err;
+          }
           const { id, nickname, image } = res.body;
           //then
           expect(id).toBe(expectedUser.id);
@@ -52,12 +55,72 @@ describe('user/me API test', () => {
     }
   });
 
-  test('invalid token', done => {
+  it('invalid token', done => {
     try {
       request(app)
         .get(VERIFY_Identity_URL)
         .set('Authorization', invalidToken)
         .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(401);
+          expect(message).toBe('Unauthorized');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('get All users API', () => {
+  const GET_ALL_USERS_URL = '/users';
+  it('Authenticated', done => {
+    // given
+    const expectedUsers = [...users].reduce((acc, user, idx) => {
+      acc[idx] = Object.assign({}, user);
+      delete acc[idx].password;
+      return acc;
+    }, []);
+    try {
+      request(app)
+        .get(GET_ALL_USERS_URL) // when
+        .set('Authorization', expectedUserToken)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          const { code, success } = res.body;
+
+          //then
+          expect(code).toBe(200);
+          expect(success).toBeTruthy();
+
+          expectedUsers.forEach(expectedUser => {
+            expect(
+              res.body.users.some(user => {
+                if (JSON.stringify(user) === JSON.stringify(expectedUser)) {
+                  return true;
+                }
+              })
+            ).toBeTruthy();
+          });
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('unAuthenticated', done => {
+    try {
+      request(app)
+        .get(GET_ALL_USERS_URL)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
           const { code, message } = res.body;
           expect(code).toBe(401);
           expect(message).toBe('Unauthorized');
