@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CogWheel from '@/styles/svgs/cogwheel';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 import Modal from '@/components/issue/modal';
 
 const Container = styled.div`
@@ -26,8 +27,8 @@ const Header = styled.div`
 
 const Body = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
   margin-bottom: 1rem;
   font-size: 14px;
   margin: 0 0 10px 0;
@@ -37,6 +38,31 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 14px;
   margin: 10px 0;
+`;
+
+const ProfileImage = styled.img`
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+`;
+
+const Nickname = styled.span`
+  font-size: ${size.DEFAULT_FONT_SIZE};
+`;
+
+const AssigneeProfile = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AssigneeContainer = styled.div`
+  display: flex;
+  flex: 1 1;
+  justify-content: flex-start;
+  margin-bottom: 9px;
 `;
 
 const SideBarItem = ({
@@ -61,7 +87,18 @@ const SideBarItem = ({
         <Title>{title}</Title>
         <CogWheel />
       </Header>
-      <Body>{content}</Body>
+      <Body>
+        {selected?.size
+          ? [...selected.values()].map(user => (
+            <AssigneeContainer key={user.nickname}>
+              <AssigneeProfile>
+                <ProfileImage src={user.image} />
+                <Nickname>{user.nickname}</Nickname>
+              </AssigneeProfile>
+            </AssigneeContainer>
+          ))
+          : content}
+      </Body>
       {isVisible && (
         <Modal
           title={headerText}

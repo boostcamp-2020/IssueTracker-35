@@ -1,16 +1,17 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import styled from 'styled-components';
-
+import color from '@/styles/colors';
 // import { issueAPI } from '@/api/issue';
 
 import Assignee from '@/components/issue/assignee';
 import SidebarItem from '@/components/issue/sidebarItem';
-import { reducer, initState } from '@/store/sidebar';
+import { UserContext } from '@/store/user';
 import {
   UPDATE_ASSIGNEE,
   UPDATE_LABEL,
   UPDATE_MILESTONE,
 } from '@/store/sidebar/actions';
+import { reducer } from '@/store/sidebar';
 
 const Container = styled.div`
   width: 25%;
@@ -20,9 +21,18 @@ const Container = styled.div`
 
 const Div = styled.div``;
 
-const WriteSidebar = () => {
-  const [state, dispatch] = useReducer(reducer, initState);
+const Span = styled.span`
+  &:hover {
+    color: ${color.BLUE};
+    cursor: pointer;
+  }
+`;
 
+const Content = styled.div`
+  display: flex;
+`;
+
+const WriteSidebar = ({ state, dispatch }) => {
   const handleAssigneesChange = checked => {
     dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
   };
@@ -66,13 +76,16 @@ const WriteSidebar = () => {
 };
 
 const init = issue => ({
-  assignees: new Set(issue?.assignees.map(assignee => assignee.id)),
-  labels: new Set(issue?.labels.map(label => label.id)),
+  assignees: new Map(issue?.assignees.map(assignee => [assignee.id, assignee])),
+  labels: new Map(issue?.labels.map(label => [label.id, label])),
   milestone: issue?.milestone?.id,
 });
 
 const DetailSidebar = ({ issue }) => {
   const [state, dispatch] = useReducer(reducer, issue, init);
+  const {
+    state: { user },
+  } = useContext(UserContext);
 
   const handleAssigneesChange = async checked => {
     try {
@@ -101,18 +114,26 @@ const DetailSidebar = ({ issue }) => {
     }
   };
 
+  const assignMyself = () =>
+    dispatch({
+      type: UPDATE_ASSIGNEE,
+      assignees: new Map([[user.id, user]]),
+    });
+
   return (
     <Container>
       <SidebarItem
         headerText="Assign up to 10 People to this issue"
         title="Assignees"
-        content="No one-assign yourself"
+        content={
+          <Content>
+            No one--<Span onClick={assignMyself}>assign yourself</Span>
+          </Content>
+        }
         handleChange={handleAssigneesChange}
         selected={state.assignees}
         component={Assignee}
-      >
-        {/* <Assignee assignees={assignees} /> */}
-      </SidebarItem>
+      ></SidebarItem>
       <SidebarItem
         headerText="Apply labels to this issue"
         title="Labels"
