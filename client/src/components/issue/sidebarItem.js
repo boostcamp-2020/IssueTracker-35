@@ -39,11 +39,21 @@ const Title = styled.p`
   margin: 10px 0;
 `;
 
-const SideBarItem = ({ headerText, title, content, children }) => {
+const SideBarItem = ({
+  headerText,
+  title,
+  content,
+  handleChange,
+  selected,
+  component,
+}) => {
   const [isVisible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const hideModal = checked => {
+    setVisible(false);
+    handleChange(checked);
+  };
 
   return (
     <Container>
@@ -52,9 +62,14 @@ const SideBarItem = ({ headerText, title, content, children }) => {
         <CogWheel />
       </Header>
       <Body>{content}</Body>
-      <Modal title={headerText} isVisible={isVisible} hideModal={hideModal}>
-        {children}
-      </Modal>
+      {isVisible && (
+        <Modal
+          title={headerText}
+          selected={selected}
+          hideModal={hideModal}
+          component={component}
+        ></Modal>
+      )}
     </Container>
   );
 };

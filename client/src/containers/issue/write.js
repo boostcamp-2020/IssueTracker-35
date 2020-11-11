@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Sidebar from '@/containers/issue/sidebar';
+import { WriteSidebar } from '@/containers/issue/sidebar';
 
 import styled from 'styled-components';
 import { Input, Button } from '@/styles/styled';
@@ -145,7 +145,7 @@ const IssueWriteContainer = ({ history }) => {
           </SubmitButton>
         </ButtonContainer>
       </InputContainer>
-      <Sidebar />
+      <WriteSidebar />
     </Container>
   );
 };
