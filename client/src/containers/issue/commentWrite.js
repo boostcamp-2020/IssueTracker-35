@@ -72,9 +72,9 @@ const CommentWriteContainer = () => {
   } = useContext(UserContext);
 
   const inputEventHandler = () => {
-    const titleInput = titleRef.current;
+    const contentInput = contentRef.current;
 
-    if (!titleInput.value) return setAble(false);
+    if (!contentInput.value) return setAble(false);
     setAble(true);
   };
 
