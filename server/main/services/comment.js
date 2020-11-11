@@ -1,4 +1,4 @@
-const { Comment } = require('@/models');
+const { Comment, User } = require('@/models');
 const { fn, col } = require('sequelize');
 class CommentService {
   constructor(Comment) {
@@ -11,6 +11,19 @@ class CommentService {
         attributes: ['issue_id', [fn('COUNT', col('id')), 'comment_count']],
         where: { is_issue: false },
         group: 'issue_id',
+      });
+      return comments;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+  async getCommentsByIssueID(issueID) {
+    try {
+      const comments = await this.Comment.findAll({
+        attributes: ['id', 'content', 'createdAt'],
+        include: [{ model: User, attributes: ['id', 'nickname', 'image'] }],
+        where: { issue_id: issueID, is_issue: false },
+        required: false,
       });
       return comments;
     } catch (err) {

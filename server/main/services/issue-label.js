@@ -22,6 +22,18 @@ class IssueLabelService {
       throw Error(err);
     }
   }
+  async getLabelsByIssueId(issueID) {
+    try {
+      const labels = await this.IssueLabel.findAll({
+        include: [{ model: Label, attributes: ['id', 'title', 'color'] }],
+        where: { issue_id: issueID },
+        required: false,
+      });
+      return labels;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
   async create(issueID, labels, transaction) {
     try {
       const bulkData = [];

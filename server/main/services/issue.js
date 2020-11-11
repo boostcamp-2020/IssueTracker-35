@@ -1,4 +1,4 @@
-const { Issue, User, Milestone } = require('@/models');
+const { Issue, User, Milestone, IssueLabel, Label } = require('@/models');
 
 class IssueService {
   constructor(Issue) {
@@ -25,6 +25,23 @@ class IssueService {
         required: false,
       });
       return issues;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async retrieveById(issueID) {
+    try {
+      const issue = this.Issue.findOne({
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+          { model: Milestone, attributes: ['id', 'title'] },
+          { model: User, attributes: ['nickname'] },
+        ],
+        where: { id: issueID },
+        required: false,
+      });
+      return issue;
     } catch (err) {
       throw Error(err);
     }
