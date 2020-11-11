@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Sidebar from '@/containers/issue/sidebar';
 import IssueDetailHeader from '@/containers/issue/detailHeader';
 import Comment from '@/components/issue/comment';
-
+import CommentWriteContainer from '@/containers/issue/commentWrite';
 import styled from 'styled-components';
 import { Input, Button } from '@/styles/styled';
 import color from '@/styles/colors';
@@ -45,6 +45,7 @@ const IssueDetailContainer = ({ match }) => {
       <ContentContainer>
         <CommentContainer>
           <Comment issue={issue} />
+          <CommentWriteContainer />
         </CommentContainer>
         <Sidebar />
       </ContentContainer>
