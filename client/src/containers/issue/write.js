@@ -90,6 +90,9 @@ const IssueWriteContainer = ({ history }) => {
     const issue = {
       title,
       content,
+      assignees: [],
+      labels: [],
+      milestone: [],
     };
 
     const {

@@ -57,12 +57,7 @@ class IssueController {
         milestone[0],
         transaction
       );
-      await commentService.createIssue(
-        content,
-        userID,
-        milestone[0],
-        transaction
-      );
+      await commentService.createIssue(content, issueID, userID, transaction);
       await assignmentService.create(issueID, assignees, transaction);
       await issueLabelService.create(issueID, labels, transaction);
 
@@ -101,12 +96,11 @@ class IssueController {
     if (!Array.isArray(array)) {
       return false;
     }
-    let result = true;
     // 내부 type 체크
     if (array.length !== 0) {
       return !array.some(value => !parseInt(value)); // issue 생성시 array로 받는 내부 값들은 id값(int형)
     }
-    return result;
+    return true;
   }
 
   static _initAllIssuesResponseResults(objectArray) {
