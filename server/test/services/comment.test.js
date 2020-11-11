@@ -24,12 +24,11 @@ describe('retrieve comments', () => {
   test('comments for a issue with valid ID', async () => {
     //given
     const IssueID = 3;
-    const expectedCommentIds = [5, 6];
+    const expectedCommentIds = [3, 5, 6];
     const expectedUsersIds = [1, 2];
 
     //when
     const comments = await commentService.getCommentsByIssueID(IssueID);
-
     //then
     comments.forEach(comment => {
       expect(expectedCommentIds.includes(comment.id)).toBeTruthy();

@@ -20,7 +20,7 @@ describe('retrieve assignees', () => {
     },
     TIMEOUT
   );
-  test('a issue with valid issueID', async () => {
+  test('an issue with valid issueID', async () => {
     // given
     const issueID = 2;
     const assignmentID = 1;
@@ -35,7 +35,7 @@ describe('retrieve assignees', () => {
     expect(result).toStrictEqual(expectedAssignee);
     expect(assignments[0].id).toBe(assignmentID);
   });
-  test('a issue with invalid issueID', async () => {
+  test('an issue with invalid issueID', async () => {
     //given
     const issueID = 99999;
     //when

@@ -5,7 +5,7 @@ const { expectedLabels } = require('@test/seeds/label');
 
 describe('retrieve labels', () => {
   test(
-    'get labels for all issue',
+    'get labels for all issues',
     async () => {
       // given
       const expectedLabel = expectedLabels[0];
@@ -23,27 +23,23 @@ describe('retrieve labels', () => {
   test('get labels for a issue with valid issueID', async () => {
     // given
     const issueID = 3;
-    const expectedDatas = [...expectedLabels].reduce((acc, label, idx) => {
-      acc[idx] = Object.assign({}, label);
-      delete acc[idx].content;
-      return acc;
-    }, []);
+
+    const expectedData = expectedLabels.map(label => {
+      const copy = { ...label };
+      delete copy.content;
+      return copy;
+    });
 
     //when
     const issueLabels = await issueLabelService.getLabelsByIssueId(issueID);
 
     //then
-    issueLabels.forEach(issueLabel =>
-      expect(
-        expectedDatas.some(expectedData => {
-          if (
-            JSON.stringify(issueLabel.Label) === JSON.stringify(expectedData)
-          ) {
-            return true;
-          }
-        })
-      ).toBeTruthy()
-    );
+    expect(issueLabels.length).not.toBe(0);
+    issueLabels.forEach(issueLabel => {
+      const expectedId = issueLabel.Label.id;
+      const expectedLabel = expectedData.find(label => label.id === expectedId);
+      expect(issueLabel.Label.dataValues).toStrictEqual(expectedLabel);
+    });
   });
   test('get labels for a issue with invalid issueID', async () => {
     // given
