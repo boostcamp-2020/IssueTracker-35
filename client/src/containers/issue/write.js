@@ -114,11 +114,8 @@ const IssueWriteContainer = ({ history }) => {
     history.push('/issues');
   };
 
-  const inputEventHandler = () => {
-    const titleInput = titleRef.current;
-
-    if (!titleInput.value) return setAble(false);
-    setAble(true);
+  const handleChange = ({ target }) => {
+    if (isAble === !target.value) setAble(!isAble);
   };
 
   return (
@@ -126,7 +123,7 @@ const IssueWriteContainer = ({ history }) => {
       <ProfileImage src={user?.image} alt="" />
       <InputContainer>
         <TitleInput
-          onChange={inputEventHandler}
+          onChange={handleChange}
           placeholder="Title"
           type="text"
           ref={titleRef}
