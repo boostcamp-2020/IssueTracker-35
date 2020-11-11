@@ -50,6 +50,7 @@ const Header = () => {
   const logoutHandler = () => {
     localStorage.removeItem('token');
     dispatch({ type: LOGOUT });
+    location.href = '/';
   };
 
   return (
