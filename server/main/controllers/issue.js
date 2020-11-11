@@ -104,11 +104,7 @@ class IssueController {
     let result = true;
     // 내부 type 체크
     if (array.length !== 0) {
-      array.forEach(value => {
-        if (!parseInt(value)) {
-          result = false; // issue 생성시 array로 받는 내부 값들은 id값(int형)
-        }
-      });
+      return !array.some(value => !parseInt(value)); // issue 생성시 array로 받는 내부 값들은 id값(int형)
     }
     return result;
   }
