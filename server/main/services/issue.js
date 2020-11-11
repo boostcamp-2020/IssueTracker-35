@@ -28,6 +28,23 @@ class IssueService {
       throw Error(err);
     }
   }
+  async createIssue(title, userID, milestoneID = null, transaction) {
+    try {
+      const result = await this.Issue.create(
+        {
+          title: title,
+          is_open: true,
+          milestone_id: milestoneID,
+          user_id: userID,
+        },
+        { transaction: transaction }
+      );
+
+      return result.id;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new IssueService(Issue);
