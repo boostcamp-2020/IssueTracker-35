@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
+import { Link } from 'react-router-dom';
 
 import IssueIcon from '@/styles/svgs/issue';
 import CommentIcon from '@/styles/svgs/comment';
@@ -20,6 +21,7 @@ const Checkbox = styled.input`
 `;
 const Title = styled.b`
   cursor: pointer;
+  text-decoration: none;
   &:hover {
     color: ${color.BLUE};
   }
@@ -36,7 +38,7 @@ const IssueCenter = styled.div`
   padding: 5px 0;
   flex-direction: column;
   justify-content: flex-start;
-  width: 70%;
+  width: 75%;
 `;
 
 const IssueBody = styled.div`
@@ -64,11 +66,22 @@ const IssueRight = styled.div`
   padding: 10px;
   justify-content: space-between;
   align-items: start;
-  width: 30%;
+  width: 25%;
+`;
+
+const AssigneeImages = styled.div``;
+
+const ProfileImage = styled.img`
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  margin: 5px;
+  height: 30px;
+  width: 30px;
 `;
 
 const Comment = styled.div`
   display: flex;
+  width: 30px;
   align-items: center;
 `;
 
@@ -76,17 +89,15 @@ const CommentCount = styled.p`
   margin: 0 3px;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${color.BLACK};
+`;
+
 // TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
-const IssueItem = ({ issue, toggleSelected, now }) => {
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = () => {
-    setChecked(!checked);
-    toggleSelected(issue.id);
-  };
-
-  const describe = issue =>
-    `#${issue.id} ${issue.is_open
+const IssueItem = ({ issue, checked, toggleSelected, now }) => {
+  const describe = () =>
+    `#${issue.id} ${issue.isOpen
       ? `opened ${getTimestamp(now, issue.createdAt)} by ${issue.author.nickname
       }`
       : `by ${issue.author.nickname} was closed ${getTimestamp(
@@ -103,30 +114,35 @@ const IssueItem = ({ issue, toggleSelected, now }) => {
           name="issues"
           value={issue.id}
           checked={checked}
-          onChange={handleChange}
+          onChange={() => toggleSelected(issue.id, checked)}
         />
-        <IssueIcon isOpen={issue.is_open} />
+        <IssueIcon isOpen={issue.isOpen} />
       </IssueLeft>
 
       <IssueCenter>
         <IssueHeader>
-          <Title>{issue.title}</Title>
+          <StyledLink to={`/issues/${issue.id}`}>
+            <Title>{issue.title}</Title>
+          </StyledLink>
         </IssueHeader>
         <IssueBody>
-          <Description>{describe(issue)}</Description>
+          <Description>{describe()}</Description>
         </IssueBody>
       </IssueCenter>
 
       <IssueRight>
-        {!!issue.comment_count && (
-          <Comment>
-            <CommentIcon />
-            <CommentCount>{issue.comment_count}</CommentCount>
-          </Comment>
-        )}
+        <AssigneeImages></AssigneeImages>
+        <Comment>
+          {!!issue.commentCount && (
+            <>
+              <CommentIcon />
+              <CommentCount>{issue.commentCount}</CommentCount>
+            </>
+          )}
+        </Comment>
       </IssueRight>
     </Container>
   );
 };
 
-export default IssueItem;
+export default React.memo(IssueItem);

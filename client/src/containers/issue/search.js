@@ -73,6 +73,7 @@ const Label = styled.label`
   width: 100%;
 `;
 
+// TODO count style 적용, label, milestone context를 useContext로 받아서 count 출력
 const SearchContainer = () => {
   return (
     <Container>

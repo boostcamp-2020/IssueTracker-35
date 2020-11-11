@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import IssueIcon from '@/styles/svgs/issueState';
 import DropDown from '@/components/issue/dropdown';
+
+import { IssueListContext } from '@/store/issue';
+import { TOGGLE_ALL } from '@/store/issue/actions';
 
 import styled from 'styled-components';
 import color from '@/styles/colors';
@@ -51,13 +54,27 @@ const FilterRight = styled.div`
 `;
 
 const Filter = () => {
+  const { state, dispatch } = useContext(IssueListContext);
+
+  const boxRef = useRef();
+  useEffect(() => {
+    const selected = state.selected.size;
+    const checkedAll = state.issues.length === state.selected.size;
+    boxRef.current.checked = selected && checkedAll;
+    boxRef.current.indeterminate = selected && !checkedAll;
+  }, [state.selected]);
+
   const openCount = 2;
   const closedCount = 1;
 
   return (
     <Container>
       <FilterLeft>
-        <Checkbox type="checkbox"></Checkbox>
+        <Checkbox
+          type="checkbox"
+          onChange={() => dispatch({ type: TOGGLE_ALL })}
+          ref={boxRef}
+        ></Checkbox>
         <OpenOrClosedDiv>
           <IssueIcon isOpen={true} isSelected={true} />
           <State isSelected={true}>{openCount} Open</State>

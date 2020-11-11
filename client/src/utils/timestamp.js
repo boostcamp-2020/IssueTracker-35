@@ -4,6 +4,7 @@ const SECOND = 1e3,
   DAY = 864e5; // miliseconds
 
 export default (now, created) => {
+  if (typeof created === 'string') created = new Date(created);
   const diff = now - created;
   let amount;
   if (diff < HOUR) {

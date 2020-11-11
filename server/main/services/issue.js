@@ -21,6 +21,7 @@ class IssueService {
             attributes: ['title'],
           },
         ],
+        order: [['id', 'DESC']],
         required: false,
       });
       return issues;

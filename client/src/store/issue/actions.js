@@ -1,5 +1,17 @@
-const TOGGLE = 'TOGGLE';
+const FETCH = 'FETCH';
+const CHECK = 'CHECK';
+const UNCHECK = 'UNCHECK';
 const TOGGLE_ALL = 'TOGGLE_ALL';
 const NEW_ISSUE = 'NEW_ISSUE';
+const OPEN_ISSUES = 'OPEN_ISSUES';
+const CLOSE_ISSUES = 'CLOSE_ISSUES';
 
-export { TOGGLE, TOGGLE_ALL, NEW_ISSUE };
+export {
+  FETCH,
+  CHECK,
+  UNCHECK,
+  TOGGLE_ALL,
+  NEW_ISSUE,
+  OPEN_ISSUES,
+  CLOSE_ISSUES,
+};
