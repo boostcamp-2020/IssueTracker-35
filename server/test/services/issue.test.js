@@ -23,14 +23,24 @@ describe('retrieve', () => {
   test(
     'an issue by id',
     async () => {
+      //given
+      const initailIssue = Object.assign({}, expectedIssue);
+      delete initailIssue.userID;
+      const user = { nickname: 'user11' };
+      const expectedMilestone = {
+        id: 1,
+        title: 'sprint 2',
+      };
       // when
       const issue = await issueService.retrieveById(expectedIssue.id);
 
       // then
       expect(issue).not.toBeUndefined();
-      Object.keys(expectedIssue).forEach(key =>
-        expect(expectedIssue[key]).toBe(issue[key])
+      Object.keys(initailIssue).forEach(key =>
+        expect(initailIssue[key]).toBe(issue[key])
       );
+      expect(issue.Milestone.dataValues).toStrictEqual(expectedMilestone);
+      expect(issue.User.dataValues).toStrictEqual(user);
     },
     TIMEOUT
   );
@@ -40,7 +50,7 @@ describe('retrieve', () => {
     const issue = await issueService.retrieveById(NONEXISTING_ID);
 
     // then
-    expect(issue).toBeUndefined();
+    expect(issue).toBeNull();
   });
 });
 

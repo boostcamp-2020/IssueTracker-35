@@ -2,10 +2,11 @@ const TIMEOUT = 10000;
 
 const { commentService } = require('@/services/index');
 const { expectedComments } = require('@test/seeds/comment');
+const { users } = require('@test/seeds/user');
 
-describe('comments for all issue', () => {
+describe('retrieve comments', () => {
   test(
-    'comments',
+    'comments  for all issue',
     async () => {
       // when
       const comments = await commentService.getCommentCount();
@@ -20,6 +21,29 @@ describe('comments for all issue', () => {
     },
     TIMEOUT
   );
+  test('comments for a issue with valid ID', async () => {
+    //given
+    const IssueID = 3;
+    const expectedCommentIds = [5, 6];
+    const expectedUsersIds = [1, 2];
+
+    //when
+    const comments = await commentService.getCommentsByIssueID(IssueID);
+
+    //then
+    comments.forEach(comment => {
+      expect(expectedCommentIds.includes(comment.id)).toBeTruthy();
+      expect(expectedUsersIds.includes(comment.User.id)).toBeTruthy();
+    });
+  });
+  test('comments for a issue with invalid ID', async () => {
+    //given
+    const IssueID = 99999;
+    //when
+    const comments = await commentService.getCommentsByIssueID(IssueID);
+    //then
+    expect(comments.length).toBe(0);
+  });
 });
 
 describe('create comment', () => {

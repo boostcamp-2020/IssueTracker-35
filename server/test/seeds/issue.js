@@ -28,7 +28,7 @@ const issues = [
   },
 ];
 
-const expectedIssue = issues[3];
+const expectedIssue = issues[1];
 
 const issueIds = new Set();
 issues.forEach(issue => issueIds.add(issue.id));
