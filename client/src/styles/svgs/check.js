@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import color from '../colors';
 
 const Svg = styled.svg`
+  visibility: ${({ isChecked }) => (isChecked ? 'visible' : 'hidden')};
   margin-left: 10px;
 `;
 
-const CheckMark = () => {
+const CheckMark = ({ isChecked }) => {
   return (
     <Svg
       viewBox="0 0 16 16"
@@ -15,6 +16,7 @@ const CheckMark = () => {
       height="16"
       aria-hidden="true"
       fill={color.LIGHT_BLACK}
+      isChecked={isChecked}
     >
       <path
         fillRule="evenodd"
