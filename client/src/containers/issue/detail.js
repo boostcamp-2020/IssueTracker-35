@@ -24,6 +24,13 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
+const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+`;
+
 const IssueDetailContainer = ({ match }) => {
   // TODO 서버에서 해당 issue id로 이슈 정보를 조회해야 함
   const {
@@ -36,7 +43,9 @@ const IssueDetailContainer = ({ match }) => {
     <Container>
       {issue && <IssueDetailHeader issue={issue} />}
       <ContentContainer>
-        <Comment />
+        <CommentContainer>
+          <Comment issue={issue} />
+        </CommentContainer>
         <Sidebar />
       </ContentContainer>
     </Container>
