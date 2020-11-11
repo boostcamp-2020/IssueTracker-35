@@ -28,8 +28,7 @@ class UserController {
   async getAllUsers(req, res, next) {
     try {
       const users = await userService.retrieveAllUsers();
-      const responseData = { users: Object.values(users) };
-      responseHandler(res, 200, responseData);
+      responseHandler(res, 200, { users });
     } catch (err) {
       next(err);
     }
