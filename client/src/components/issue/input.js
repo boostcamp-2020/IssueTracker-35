@@ -24,6 +24,7 @@ const ContentInput = styled(Textarea)`
   margin-bottom: 10px;
   font-size: ${size.DEFAULT_FONT_SIZE};
   padding: 8px;
+  background-color: ${color.THIN_GRAY};
 `;
 
 const Count = styled.p`

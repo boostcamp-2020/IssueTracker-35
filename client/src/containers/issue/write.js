@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/containers/issue/sidebar';
 
@@ -9,6 +9,7 @@ import { UserContext } from '@/store/user';
 import color from '@/styles/colors';
 import { IssueListContext } from '@/store/issue';
 import { NEW_ISSUE } from '@/store/issue/actions';
+import { issueAPI } from '@/api/issue';
 
 const Container = styled.div`
   display: flex;
@@ -41,9 +42,12 @@ const TitleInput = styled(Input)`
   margin-bottom: 1rem;
   font-size: 1rem;
   padding: 5px 12px;
+  background-color: ${color.THIN_GRAY};
 `;
 
-const SubmitButton = styled(Button)``;
+const SubmitButton = styled(Button)`
+  opacity: ${({ isAble }) => (isAble ? '1' : '0.5')};
+`;
 
 const CancelButton = styled(Button)`
   background-color: transparent;
@@ -70,6 +74,7 @@ const TabButton = styled(Button)`
 `;
 
 const IssueWriteContainer = ({ history }) => {
+  const [isAble, setAble] = useState(false);
   const titleRef = useRef();
   const contentRef = useRef();
 
@@ -83,25 +88,46 @@ const IssueWriteContainer = ({ history }) => {
     const content = contentRef.current.value;
 
     const issue = {
-      id: Math.floor(Math.random() * 100000 + 5),
       title,
       content,
-      isOpen: true,
-      author: { nickname: user.nickname },
-      createdAt: new Date(),
-      commentCount: 1,
     };
 
-    // await issueAPI.submitIssue();
-    dispatch({ type: NEW_ISSUE, issue });
+    const {
+      data: { id },
+    } = await issueAPI.submitIssue(issue);
+
+    dispatch({
+      type: NEW_ISSUE,
+      issue: {
+        ...issue,
+        id,
+        commentCount: 0,
+        createdAt: new Date(),
+        isOpen: true,
+        author: { nickname: user.nickname },
+      },
+    });
+
     history.push('/issues');
+  };
+
+  const inputEventHandler = () => {
+    const titleInput = titleRef.current;
+
+    if (!titleInput.value) return setAble(false);
+    setAble(true);
   };
 
   return (
     <Container>
       <ProfileImage src={user?.image} alt="" />
       <InputContainer>
-        <TitleInput placeholder="Title" type="text" ref={titleRef} />
+        <TitleInput
+          onChange={inputEventHandler}
+          placeholder="Title"
+          type="text"
+          ref={titleRef}
+        />
         <TabContainer>
           <TabButton>Write</TabButton>
         </TabContainer>
@@ -110,7 +136,13 @@ const IssueWriteContainer = ({ history }) => {
           <Link to="/issues">
             <CancelButton>Cancel</CancelButton>
           </Link>
-          <SubmitButton onClick={handleSubmit}>Submit new issue</SubmitButton>
+          <SubmitButton
+            isAble={isAble}
+            onClick={handleSubmit}
+            disabled={!isAble}
+          >
+            Submit new issue
+          </SubmitButton>
         </ButtonContainer>
       </InputContainer>
       <Sidebar />
