@@ -93,7 +93,9 @@ const IssueDetailHeader = ({ issue }) => {
         </IssueTitle>
         <ButtonContainer>
           <EditButton>Edit</EditButton>
-          <NewIssueButton>New Issue</NewIssueButton>
+          <Link to="/issues/new">
+            <NewIssueButton>New Issue</NewIssueButton>
+          </Link>
         </ButtonContainer>
       </TitleContainer>
       <DescriptionContainer>
