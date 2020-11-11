@@ -7,11 +7,11 @@ class UserService {
   }
   async retrieveAllUsers() {
     try {
-      const user = await this.User.findAll({
+      const users = await this.User.findAll({
         attributes: ['id', 'nickname', 'image'],
       });
 
-      return user;
+      return users;
     } catch (err) {
       throw Error(err);
     }

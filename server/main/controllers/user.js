@@ -3,28 +3,44 @@ const { createJWT } = require('@/utils/auth');
 const { userService } = require('@/services/index');
 
 class UserController {
-  async getGithubLoginUrl(req, res) {
-    const clientID = process.env.CLIENT_ID;
-    const url = `https://github.com/login/oauth/authorize?client_id=${clientID}`;
+  async getGithubLoginUrl(req, res, next) {
+    try {
+      const clientID = process.env.CLIENT_ID;
+      const url = `https://github.com/login/oauth/authorize?client_id=${clientID}`;
 
-    responseHandler(res, 200, { url });
+      responseHandler(res, 200, { url });
+    } catch (err) {
+      next(err);
+    }
   }
 
-  async generateToken(req, res) {
-    const { user } = req;
-    const token = createJWT(user);
+  async generateToken(req, res, next) {
+    try {
+      const { user } = req;
+      const token = createJWT(user);
 
-    const { id, nickname, image } = user;
-    responseHandler(res, 200, { token, id, nickname, image });
+      const { id, nickname, image } = user;
+      responseHandler(res, 200, { token, id, nickname, image });
+    } catch (err) {
+      next(err);
+    }
   }
-  async getAllUsers(req, res) {
-    const users = await userService.retrieveAllUsers();
-    const responseData = { users: Object.values(users) };
-    responseHandler(res, 200, responseData);
+  async getAllUsers(req, res, next) {
+    try {
+      const users = await userService.retrieveAllUsers();
+      const responseData = { users: Object.values(users) };
+      responseHandler(res, 200, responseData);
+    } catch (err) {
+      next(err);
+    }
   }
-  async getOwnInfo(req, res) {
-    const { user } = req;
-    responseHandler(res, 200, user);
+  async getOwnInfo(req, res, next) {
+    try {
+      const { user } = req;
+      responseHandler(res, 200, user);
+    } catch (err) {
+      next(err);
+    }
   }
 }
 
