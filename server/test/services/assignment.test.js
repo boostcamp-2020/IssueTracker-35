@@ -21,3 +21,17 @@ describe('assignees for all issue', () => {
     TIMEOUT
   );
 });
+
+describe('create assignment', () => {
+  test('valid datas', async () => {
+    // given
+    const issueID = 1;
+    const assignees = ['2'];
+
+    //when
+    const result = await assignmentService.create(issueID, assignees);
+
+    //then
+    expect(result).toBeTruthy();
+  });
+});

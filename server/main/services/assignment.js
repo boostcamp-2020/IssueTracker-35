@@ -22,6 +22,22 @@ class AssignmentService {
       throw Error(err);
     }
   }
+  async create(issueID, assignees, transaction) {
+    try {
+      const bulkData = [];
+      assignees.forEach(assignee => {
+        bulkData.push({ issue_id: issueID, assignee: assignee });
+      });
+
+      const result = await this.Assignment.bulkCreate(bulkData, {
+        transaction: transaction,
+      });
+
+      return result ? true : false;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new AssignmentService(Assignment);

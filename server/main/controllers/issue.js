@@ -3,12 +3,11 @@ const {
   issueService,
   assignmentService,
   issueLabelService,
-  labelService,
   commentService,
-  milestoneService,
 } = require('@/services/index');
 
 const { convertObjectKeys } = require('@/utils/api');
+const { sequelize } = require('@/models');
 
 class IssueController {
   async getAllIssues(req, res, next) {
@@ -37,14 +36,77 @@ class IssueController {
 
       // api response에 맞추어 issue들을 array로 변환
       const data = { issues: Object.values(issues) };
-      // milestone, label count 등록
-      data.labelCount = await labelService.getTotalCount();
-      data.milestoneCount = await milestoneService.getTotalCount();
 
       responseHandler(res, 200, data);
     } catch (err) {
       next(err);
     }
+  }
+
+  async createIssue(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { title, assignees, content, labels, milestone } = req.body;
+      const { user } = req;
+
+      const userID = user.id;
+
+      const issueID = await issueService.createIssue(
+        title,
+        userID,
+        milestone[0],
+        transaction
+      );
+      await commentService.createIssue(
+        content,
+        userID,
+        milestone[0],
+        transaction
+      );
+      await assignmentService.create(issueID, assignees, transaction);
+      await issueLabelService.create(issueID, labels, transaction);
+
+      await transaction.commit();
+      responseHandler(res, 200, { id: issueID });
+    } catch (err) {
+      await transaction.rollback();
+      next(err);
+    }
+  }
+  isValidParams(req, res, next) {
+    const err = new Error('Bad Request');
+    err.status = 400;
+
+    const { title, content, assignees, labels, milestone } = req.body;
+
+    if (typeof title !== 'string' || title === '') {
+      return next(err);
+    }
+    if (content && typeof content !== 'string') {
+      return next(err);
+    }
+    if (!IssueController._isValidArrayCondition(assignees)) {
+      return next(err);
+    }
+    if (!IssueController._isValidArrayCondition(labels)) {
+      return next(err);
+    }
+    if (!IssueController._isValidArrayCondition(milestone)) {
+      return next(err);
+    }
+    return next();
+  }
+  static _isValidArrayCondition(array) {
+    // array 타입 체크
+    if (!Array.isArray(array)) {
+      return false;
+    }
+    let result = true;
+    // 내부 type 체크
+    if (array.length !== 0) {
+      return !array.some(value => !parseInt(value)); // issue 생성시 array로 받는 내부 값들은 id값(int형)
+    }
+    return result;
   }
 
   static _initAllIssuesResponseResults(objectArray) {
