@@ -33,22 +33,22 @@ const Assignee = ({ checked, setChecked }) => {
   const [users, setUsers] = useState([]);
 
   const getUsers = async () => {
-    /* const {
-       data: { users },
-    } = await userAPI.getAllUsers(); */
+    const {
+      data: { users },
+    } = await userAPI.getAllUsers();
 
-    setUsers(initState);
+    setUsers(users);
   };
 
   useEffect(getUsers, []);
 
-  const handleCheck = (isChecked, userId) => {
+  const handleCheck = (isChecked, user) => {
     if (isChecked) {
-      const newChecked = new Set(checked);
-      newChecked.delete(userId);
+      const newChecked = new Map(checked);
+      newChecked.delete(user.id);
       return setChecked(newChecked);
     }
-    setChecked(new Set([...checked, userId]));
+    setChecked(new Map([...checked, [user.id, user]]));
   };
 
   return (
@@ -56,10 +56,7 @@ const Assignee = ({ checked, setChecked }) => {
       {users.map(user => {
         const isChecked = checked.has(user.id);
         return (
-          <Container
-            key={user.id}
-            onClick={() => handleCheck(isChecked, user.id)}
-          >
+          <Container key={user.id} onClick={() => handleCheck(isChecked, user)}>
             <CheckMark isChecked={isChecked} />
             <ProfileImage src={user.image} />
             <Nickname>{user.nickname}</Nickname>
@@ -69,56 +66,5 @@ const Assignee = ({ checked, setChecked }) => {
     </>
   );
 };
-
-const initState = [
-  {
-    id: 1,
-    nickname: 'aaa',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 2,
-    nickname: 'bbb',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 3,
-    nickname: 'ccc',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 4,
-    nickname: 'dds',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 5,
-    nickname: 'aaa',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 7,
-    nickname: 'bbb',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 8,
-    nickname: 'ccc',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-  {
-    id: 6,
-    nickname: 'dds',
-    image:
-      'https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4',
-  },
-];
 
 export default Assignee;
