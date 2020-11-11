@@ -1,15 +1,20 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
-import { WriteSidebar } from '@/containers/issue/sidebar';
 
 import styled from 'styled-components';
 import { Input, Button } from '@/styles/styled';
-import { DebouncedInput as ContentInput } from '@/components/issue/input';
-import { UserContext } from '@/store/user';
 import color from '@/styles/colors';
+
+import { DebouncedInput as ContentInput } from '@/components/issue/input';
+import { WriteSidebar } from '@/containers/issue/sidebar';
+
+import { UserContext } from '@/store/user';
 import { IssueListContext } from '@/store/issue';
 import { NEW_ISSUE } from '@/store/issue/actions';
+import { reducer, initState } from '@/store/sidebar';
+
 import { issueAPI } from '@/api/issue';
+import CheckMark from '../../styles/svgs/check';
 
 const Container = styled.div`
   display: flex;
@@ -74,6 +79,8 @@ const TabButton = styled(Button)`
 `;
 
 const IssueWriteContainer = ({ history }) => {
+  const [sidebarState, sidebarDispatch] = useReducer(reducer, initState);
+
   const [isAble, setAble] = useState(false);
   const titleRef = useRef();
   const contentRef = useRef();
@@ -81,18 +88,19 @@ const IssueWriteContainer = ({ history }) => {
   const {
     state: { user },
   } = useContext(UserContext);
-  const { state, dispatch } = useContext(IssueListContext);
+  const { dispatch } = useContext(IssueListContext);
 
   const handleSubmit = async () => {
     const title = titleRef.current.value;
     const content = contentRef.current.value;
+    console.log(sidebarState);
 
     const issue = {
       title,
       content,
-      assignees: [],
-      labels: [],
-      milestone: [],
+      assignees: [...sidebarState.assignees.keys()],
+      labels: [...sidebarState.labels.keys()],
+      milestone: sidebarState.milestone,
     };
 
     const {
@@ -145,7 +153,7 @@ const IssueWriteContainer = ({ history }) => {
           </SubmitButton>
         </ButtonContainer>
       </InputContainer>
-      <WriteSidebar />
+      <WriteSidebar state={sidebarState} dispatch={sidebarDispatch} />
     </Container>
   );
 };
