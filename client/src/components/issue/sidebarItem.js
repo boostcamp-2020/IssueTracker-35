@@ -52,7 +52,7 @@ const SideBarItem = ({ headerText, title, content, children }) => {
         <CogWheel />
       </Header>
       <Body>{content}</Body>
-      <Modal title={headerText} visible={isVisible} hideModal={hideModal}>
+      <Modal title={headerText} isVisible={isVisible} hideModal={hideModal}>
         {children}
       </Modal>
     </Container>

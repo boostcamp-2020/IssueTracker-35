@@ -71,11 +71,8 @@ const CommentWriteContainer = () => {
     state: { user },
   } = useContext(UserContext);
 
-  const inputEventHandler = () => {
-    const contentInput = contentRef.current;
-
-    if (!contentInput.value) return setAble(false);
-    setAble(true);
+  const notify = value => {
+    if (isAble === !value) setAble(!isAble);
   };
 
   return (
@@ -85,10 +82,7 @@ const CommentWriteContainer = () => {
         <TabContainer>
           <TabButton>Write</TabButton>
         </TabContainer>
-        <ContentInput
-          inputEventHandler={inputEventHandler}
-          contentRef={contentRef}
-        />
+        <ContentInput contentRef={contentRef} notify={notify} />
         <ButtonContainer>
           <Link to="/issues">
             <CloseIssueButton>Cancel</CloseIssueButton>

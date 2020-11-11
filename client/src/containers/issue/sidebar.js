@@ -55,8 +55,8 @@ const Sidebar = () => {
       />
       <SidebarItem
         headerText="Set milestone"
-        title={'Milestone'}
-        content={'No milestone'}
+        title="Milestone"
+        content="No milestone"
       />
     </Container>
   );

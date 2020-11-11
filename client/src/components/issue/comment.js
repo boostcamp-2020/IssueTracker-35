@@ -56,10 +56,10 @@ const Body = styled.div`
   padding: 10px;
 `;
 
-const Comment = ({ issue }) => {
+const Comment = ({ comment }) => {
   return (
     <Container>
-      {/* TODO issue.author.image 로 src를 바꿔주어야 함 */}
+      {/* TODO comment.author.image 로 src를 바꿔주어야 함 */}
       <ProfileImage
         src="https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4"
         alt=""
@@ -67,9 +67,9 @@ const Comment = ({ issue }) => {
       <ContentContainer>
         <Header>
           <HeaderLeft>
-            <Nickname>{issue?.author.nickname}</Nickname>
+            <Nickname>{comment?.author.nickname}</Nickname>
             <Timestamp>
-              commented {getTimestamp(new Date(), issue?.createdAt)}
+              commented {getTimestamp(new Date(), comment?.createdAt)}
             </Timestamp>
           </HeaderLeft>
         </Header>

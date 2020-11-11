@@ -44,7 +44,7 @@ const IssueDetailContainer = ({ match }) => {
       {issue && <IssueDetailHeader issue={issue} />}
       <ContentContainer>
         <CommentContainer>
-          <Comment issue={issue} />
+          <Comment comment={issue} />
           <CommentWriteContainer />
         </CommentContainer>
         <Sidebar />

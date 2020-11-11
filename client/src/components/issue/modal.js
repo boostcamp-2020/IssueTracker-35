@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import { Div } from '@/styles/styled';
 
 const Overlay = styled.div`
-  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  display: 'block';
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@ const Overlay = styled.div`
 `;
 
 const Container = styled(Div.column)`
-  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  display: 'block';
   position: absolute;
   top: 30px;
   background-color: ${color.WHITE};
@@ -37,14 +37,18 @@ const Title = styled.div`
 `;
 
 // TODO: 출력할 목록을 서버에서 조회하고 출력해야 함
-const Modal = ({ title, visible = false, hideModal, children }) => {
+const Modal = ({ title, isVisible = false, hideModal, children }) => {
   return (
     <>
-      <Overlay visible={visible} onClick={hideModal} />
-      <Container visible={visible}>
-        <Title>{title}</Title>
-        {children}
-      </Container>
+      {isVisible && (
+        <>
+          <Overlay onClick={hideModal} />
+          <Container>
+            <Title>{title}</Title>
+            {children}
+          </Container>
+        </>
+      )}
     </>
   );
 };

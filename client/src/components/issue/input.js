@@ -38,7 +38,7 @@ const Count = styled.p`
   right: 10px;
 `;
 
-const DebouncedInput = ({ contentRef }) => {
+const DebouncedInput = ({ contentRef, notify }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ const DebouncedInput = ({ contentRef }) => {
     if (state.timerId)
       clearTimeout(state.timerId); /* debounce INPUT, or cancel CLEAR_COUNT */
     const value = event.target.value;
+    if (notify) notify(value);
     dispatch({
       type: INPUT_CONTENT,
       timerId:
