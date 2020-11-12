@@ -1,16 +1,11 @@
-import { NEW, ADD, CANCEL, INIT } from './actions';
+import { TOGGEL, ADD, INIT } from './actions';
 
 export default (state, action) => {
   switch (action.type) {
-    case NEW:
+    case TOGGEL:
       return {
         labels: state.labels,
-        create: true,
-      };
-    case CANCEL:
-      return {
-        labels: state.labels,
-        create: false,
+        create: action.create,
       };
     case ADD:
       return {

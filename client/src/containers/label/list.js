@@ -5,10 +5,12 @@ import MilestoneIcon from '@/styles/svgs/milestone';
 import { Button, Div } from '@/styles/styled';
 import { initState, LabelContext } from '@/store/label';
 
+import NewLabelConainer from '@/containers/label/new';
 import LabelItem from '@/components/label/item';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
+import { TOGGEL } from '../../store/label/actions';
 
 const Container = styled.div`
   max-width: 1280px;
@@ -96,6 +98,10 @@ const LabelCount = styled.p`
 const LabelListContainer = () => {
   const { state, dispatch } = useContext(LabelContext);
 
+  const handleToggle = () => {
+    dispatch({ type: TOGGEL, create: !state.create });
+  };
+
   return (
     <Container>
       <ListHeader>
@@ -111,8 +117,9 @@ const LabelListContainer = () => {
             Milestones
           </MileStoneButton>
         </ButtonContainer>
-        <NewIssueButton>New label</NewIssueButton>
+        <NewIssueButton onClick={handleToggle}>New label</NewIssueButton>
       </ListHeader>
+      {state.create && <NewLabelConainer />}
       <ListBody>
         <ItemHeader>
           <LabelCount>{state.labels.length} labels</LabelCount>
