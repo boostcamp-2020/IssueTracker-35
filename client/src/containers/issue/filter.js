@@ -64,8 +64,8 @@ const Filter = () => {
     boxRef.current.indeterminate = selected && !checkedAll;
   }, [state.selected]);
 
-  const openCount = 2;
-  const closedCount = 1;
+  const openCount = state.issues.filter(issue => issue.isOpen).length;
+  const closedCount = state.issues.length - openCount;
 
   return (
     <Container>

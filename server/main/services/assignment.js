@@ -11,7 +11,7 @@ class AssignmentService {
         include: [
           {
             model: User,
-            attributes: ['nickname', 'image'],
+            attributes: ['id', 'nickname', 'image'],
           },
         ],
         group: ['id', 'issue_id'],

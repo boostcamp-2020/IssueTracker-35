@@ -20,6 +20,7 @@ const Container = styled.div`
 const Checkbox = styled.input`
   margin-right: 1rem;
 `;
+
 const Title = styled.b`
   cursor: pointer;
   text-decoration: none;
@@ -70,7 +71,24 @@ const IssueRight = styled.div`
   width: 25%;
 `;
 
-const AssigneeImages = styled.div``;
+const AssigneeImages = styled.img`
+  object-fit: cover;
+  object-position: center;
+  margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  left: ${({ distance }) => distance}px;
+`;
+
+const AssigneeContainer = styled.div`
+  position: relative;
+  display: flex;
+  width: 30px;
+  align-items: center;
+`;
 
 const Comment = styled.div`
   display: flex;
@@ -134,7 +152,17 @@ const IssueItem = ({ issue, checked, toggleSelected, now }) => {
       </IssueCenter>
 
       <IssueRight>
-        <AssigneeImages></AssigneeImages>
+        <AssigneeContainer>
+          {issue.assignees?.map((assignee, idx) =>
+            idx < 3 ? (
+              <AssigneeImages
+                key={assignee.id}
+                src={assignee.image}
+                distance={idx * 10}
+              />
+            ) : undefined
+          )}
+        </AssigneeContainer>
         <Comment>
           {!!issue.commentCount && (
             <>
