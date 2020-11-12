@@ -1,7 +1,8 @@
 const express = require('express');
 const issueController = require('@/controllers/issue');
 const issueLabelController = require('@/controllers/issue-label');
-const { authenticateUser } = require('@/utils/middleware');
+const assignmentController = require('@/controllers/assignment');
+const { authenticateUser, isValidIssueID } = require('@/utils/middleware');
 const router = express.Router();
 
 router.get('/', authenticateUser, issueController.getAllIssues);
@@ -16,15 +17,24 @@ router.post(
 router.get(
   '/:issueID',
   authenticateUser,
-  issueController.isValidIssueID,
+  isValidIssueID,
   issueController.getIssueDetails
 );
 
 router.put(
   '/:issueID/labels',
   authenticateUser,
-  issueLabelController.isValidIssueID,
+  issueLabelController.isValidReqeustData,
+  isValidIssueID,
   issueLabelController.amendIssueLabels
+);
+
+router.put(
+  '/:issueID/assignees',
+  authenticateUser,
+  assignmentController.isValidReqeustData,
+  isValidIssueID,
+  assignmentController.amendAssignments
 );
 
 module.exports = router;

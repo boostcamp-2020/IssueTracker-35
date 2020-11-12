@@ -3,13 +3,8 @@ const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
+const { status } = require('@test/api/response-status');
 const { labelService } = require('@/services/index');
-
-const SUCCESS_CODE = 200;
-const UNAUTHORIZED_CODE = 401;
-const BAD_REQUEST_CODE = 400;
-const UNAUTHORIZED_MESSAGE = 'Unauthorized';
-const BAD_REQEUST_MESSAGE = 'Bad Request';
 
 describe('retrieve all labels API test', () => {
   const RETRIEVE_ALL_LABEL_URL = '/labels';
@@ -27,7 +22,7 @@ describe('retrieve all labels API test', () => {
           const { code, success, labels } = res.body;
 
           //then
-          expect(code).toBe(SUCCESS_CODE);
+          expect(code).toBe(status.code.SUCCESS);
           expect(success).toBeTruthy();
           expect(labels).toStrictEqual(expectedLabels);
           done();
@@ -48,8 +43,8 @@ describe('retrieve all labels API test', () => {
           const { code, message } = res.body;
 
           //then
-          expect(code).toBe(UNAUTHORIZED_CODE);
-          expect(message).toBe(UNAUTHORIZED_MESSAGE);
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
@@ -80,7 +75,7 @@ describe('create label API test', () => {
           //then
           const { id, success, code } = res.body;
 
-          expect(code).toBe(SUCCESS_CODE);
+          expect(code).toBe(status.code.SUCCESS);
           expect(id).toBeGreaterThanOrEqual(expectedLabels.length);
           expect(success).toBeTruthy();
           labelService.remove(id);
@@ -102,8 +97,8 @@ describe('create label API test', () => {
           const { code, message } = res.body;
 
           //then
-          expect(code).toBe(UNAUTHORIZED_CODE);
-          expect(message).toBe(UNAUTHORIZED_MESSAGE);
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
@@ -128,8 +123,8 @@ describe('create label API test', () => {
           }
           const { code, message } = res.body;
           //then
-          expect(code).toBe(BAD_REQUEST_CODE);
-          expect(message).toBe(BAD_REQEUST_MESSAGE);
+          expect(code).toBe(status.code.BAD_REQUEST);
+          expect(message).toBe(status.message.BAD_REQUEST);
           done();
         });
     } catch (err) {
@@ -154,8 +149,8 @@ describe('create label API test', () => {
           }
           const { code, message } = res.body;
           //then
-          expect(code).toBe(BAD_REQUEST_CODE);
-          expect(message).toBe(BAD_REQEUST_MESSAGE);
+          expect(code).toBe(status.code.BAD_REQUEST);
+          expect(message).toBe(status.message.BAD_REQUEST);
           done();
         });
     } catch (err) {
