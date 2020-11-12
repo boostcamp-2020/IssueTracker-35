@@ -113,7 +113,11 @@ const IssueDetailHeader = ({ issue }) => {
   const [title, setTitle] = useState(issue.title);
   const [isAble, setAble] = useState(true);
 
-  const handleEdit = () => setEdit(!isEdit);
+  const handleEdit = () => {
+    if (!isEdit) return setEdit(true);
+    setTitle(issue.title);
+    setEdit(false);
+  };
 
   const handleChange = ({ target }) => {
     setTitle(target.value);

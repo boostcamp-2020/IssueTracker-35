@@ -156,7 +156,7 @@ const IssueItem = ({ issue, checked, toggleSelected, now }) => {
       <IssueRight>
         <AssigneeContainer>
           {issue.assignees?.map((assignee, idx) =>
-            idx < 3 ? (
+            idx < 5 ? (
               <AssigneeImages
                 key={assignee.id}
                 src={assignee.image}
