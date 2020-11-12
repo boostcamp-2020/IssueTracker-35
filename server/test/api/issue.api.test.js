@@ -10,7 +10,7 @@ const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
 
-  it('success retrieve all issues', done => {
+  it('successfully', done => {
     //given
     const expectedIssue = {
       id: 3,
@@ -48,7 +48,7 @@ describe('retrieve all issues', () => {
       done(err);
     }
   });
-  it('invalid token -> 401 Unauthorized', done => {
+  it('with invalid token -> 401 Unauthorized', done => {
     try {
       request(app)
         .get(ALL_ISSUE_URL)
@@ -70,7 +70,7 @@ describe('retrieve all issues', () => {
 describe('retrieve issue details', () => {
   const ISSUE_DETAIL_URL = '/issues/2';
 
-  it('success retrieve issue details', done => {
+  it('successfully', done => {
     //given
     const expectedIssue = {
       id: 2,
@@ -134,7 +134,7 @@ describe('retrieve issue details', () => {
       done(err);
     }
   });
-  it('invalid token -> 401 Unauthorized', done => {
+  it('with invalid token -> 401 Unauthorized', done => {
     try {
       request(app)
         .get(ISSUE_DETAIL_URL)
