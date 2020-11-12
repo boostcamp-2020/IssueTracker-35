@@ -16,7 +16,7 @@ class IssueController {
 
       IssueController._initAllIssuesResponseResults(issues); // response에 담겨야할 key 생성 및 camel case로 전환
       // Assignees 등록
-      const assignees = await assignmentService.getAssignees();
+      const assignees = await assignmentService.getAssigneesByAllIssues();
       IssueController._setValueByIssueID(issues, assignees)(
         'assignees',
         'User'
@@ -28,16 +28,44 @@ class IssueController {
         'Label'
       );
       // Comment count 등록
-      const commentCounts = await commentService.getCommentCount();
-      IssueController._setValueByIssueID(issues, commentCounts.rows)(
-        'commentCount',
-        'comment_count'
-      );
+      const comments = await commentService.getCommentCount();
+      comments.rows.forEach(comment => {
+        const issueID = comment.issue_id;
+        const count = comment.dataValues.comment_count;
+        issues.forEach(issue => {
+          if (issue.id === issueID) {
+            issue.dataValues.commentCount = count;
+          }
+        });
+      });
 
       // api response에 맞추어 issue들을 array로 변환
       const data = { issues: Object.values(issues) };
 
       responseHandler(res, 200, data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getIssueDetails(req, res, next) {
+    const { issueID } = req.params;
+    try {
+      const { issue } = req.body;
+      IssueController._initIssueDetailResponseResults(issue, issueID);
+
+      const labels = await issueLabelService.getLabelsByIssueId(issueID);
+      const assignees = await assignmentService.getAssigneesByIssue(issueID);
+      const comments = await commentService.getCommentsByIssueID(issueID);
+
+      IssueController._setIssueDetailResponseResults(
+        issue,
+        labels,
+        assignees,
+        comments
+      );
+
+      responseHandler(res, 200, { issue: issue });
     } catch (err) {
       next(err);
     }
@@ -68,6 +96,22 @@ class IssueController {
       next(err);
     }
   }
+
+  async isValidIssueID(req, res, next) {
+    const err = new Error('Not Found');
+    err.status = 404;
+    const { issueID } = req.params;
+    if (!issueID) {
+      return next(err);
+    }
+    const issue = await issueService.retrieveById(issueID);
+    if (!issue) {
+      return next(err);
+    }
+    req.body.issue = issue;
+    next();
+  }
+
   isValidParams(req, res, next) {
     const err = new Error('Bad Request');
     err.status = 400;
@@ -91,6 +135,7 @@ class IssueController {
     }
     return next();
   }
+
   static _isValidArrayCondition(array) {
     // array 타입 체크
     if (!Array.isArray(array)) {
@@ -118,16 +163,53 @@ class IssueController {
       issue.dataValues.commentCount = 0;
     });
   }
+
   static _setValueByIssueID(origin, target) {
     return (originKey, targetKey) => {
       target.forEach(targetObject => {
         const { issue_id } = targetObject;
-        if (origin[issue_id]) {
-          origin[issue_id].dataValues[originKey] =
-            targetObject.dataValues[targetKey];
-        }
+        origin.forEach(originObject => {
+          if (originObject.id === issue_id) {
+            originObject.dataValues[originKey].push(
+              targetObject.dataValues[targetKey]
+            );
+          }
+        });
       });
     };
+  }
+  static async _initIssueDetailResponseResults(issue) {
+    convertObjectKeys(issue)('User', 'author');
+    convertObjectKeys(issue)('is_open', 'isOpen');
+    convertObjectKeys(issue)('Milestone', 'milestone');
+    issue.dataValues.labels = [];
+    issue.dataValues.assignees = [];
+    issue.dataValues.comments = [];
+  }
+  static _setIssueDetailValues(issue, objectArray) {
+    return (issueKey, targetKey) => {
+      objectArray.forEach(data => {
+        issue.dataValues[issueKey].push(data[targetKey]);
+      });
+    };
+  }
+  static _setIssueDetailResponseResults(issue, labels, assignees, comments) {
+    // labels, assigness 붙여주는 작업
+    IssueController._setIssueDetailValues(issue, labels)('labels', 'Label');
+    IssueController._setIssueDetailValues(issue, assignees)(
+      'assignees',
+      'User'
+    );
+
+    // author 객체 내부의 nickname 빼오는 작업
+    const author = issue.dataValues.author.nickname;
+    issue.dataValues.author = author;
+
+    //comment를 붙여주는 작업
+    comments.forEach(comment => {
+      convertObjectKeys(comment)('User', 'owner'); //owner로 수정
+    });
+    issue.dataValues.comments = comments;
   }
 }
 

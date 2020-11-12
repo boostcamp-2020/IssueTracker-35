@@ -5,9 +5,9 @@ class AssignmentService {
     this.Assignment = Assignment;
   }
 
-  async getAssignees() {
+  async getAssigneesByAllIssues() {
     try {
-      const Assignees = await this.Assignment.findAll({
+      const assignees = await this.Assignment.findAll({
         include: [
           {
             model: User,
@@ -17,7 +17,24 @@ class AssignmentService {
         group: ['id', 'issue_id'],
         required: false,
       });
-      return Assignees;
+      return assignees;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+  async getAssigneesByIssue(issueID) {
+    try {
+      const assignees = await this.Assignment.findAll({
+        where: { issue_id: issueID },
+        include: [
+          {
+            model: User,
+            attributes: ['id', 'nickname', 'image'],
+          },
+        ],
+        required: false,
+      });
+      return assignees;
     } catch (err) {
       throw Error(err);
     }
