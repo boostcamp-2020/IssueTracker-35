@@ -22,6 +22,13 @@ router.get(
   issueController.getIssueDetails
 );
 
+router.patch(
+  '/:issueID',
+  authenticateUser,
+  isValidIssueID,
+  issueController.updateIssueTitle
+);
+
 router.post(
   '/:issueID/comments',
   authenticateUser,
