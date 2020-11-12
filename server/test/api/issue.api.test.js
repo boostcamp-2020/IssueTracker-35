@@ -4,7 +4,7 @@ const app = require('@/app');
 const { users, expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
 const { status } = require('@test/api/response-status');
-const { issueIds, expectedIssue } = require('@test/seeds/issue');
+const { issueIds, otherIssue } = require('@test/seeds/issue');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 describe('retrieve all issues', () => {
@@ -154,7 +154,7 @@ describe('retrieve issue details', () => {
 });
 
 describe('update title of an issue', () => {
-  const ISSUE_DETAIL_URL = `/issues/${expectedIssue.id}`;
+  const ISSUE_DETAIL_URL = `/issues/${otherIssue.id}`;
   const data = { title: '우욱' };
 
   it('successfully', done => {

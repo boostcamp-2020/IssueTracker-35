@@ -2,7 +2,7 @@ const TIMEOUT = 10000;
 const NONEXISTING_ID = 99999;
 
 const { issueService } = require('@/services/index');
-const { expectedIssue, issueIds } = require('@test/seeds/issue');
+const { expectedIssue, otherIssue, issueIds } = require('@test/seeds/issue');
 const { Issue } = require('@/models');
 
 describe('retrieve', () => {
@@ -80,7 +80,7 @@ describe('create issue', () => {
 describe('update', () => {
   test('update title', async () => {
     const data = {
-      id: 1,
+      id: otherIssue.id,
       title: '수정 테스트',
     };
     const updateResult = await issueService.updateTitle(data.id, data.title);
