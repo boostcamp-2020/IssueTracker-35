@@ -4,7 +4,7 @@ const {
   assignmentService,
   issueLabelService,
   commentService,
-} = require('@/services/index');
+} = require('@/services');
 
 const { convertObjectKeys } = require('@/utils/api');
 const { sequelize } = require('@/models');
@@ -85,7 +85,12 @@ class IssueController {
         milestone[0],
         transaction
       );
-      await commentService.createIssue(content, issueID, userID, transaction);
+      await commentService.createIssueComment(
+        content,
+        issueID,
+        userID,
+        transaction
+      );
       await assignmentService.create(issueID, assignees, transaction);
       await issueLabelService.create(issueID, labels, transaction);
 

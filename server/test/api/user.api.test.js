@@ -93,17 +93,15 @@ describe('retrieve All users API', () => {
           if (err) {
             throw err;
           }
-          const { code, success } = res.body;
+          const { code, success, users } = res.body;
 
           //then
           expect(code).toBe(status.code.SUCCESS);
           expect(success).toBeTruthy();
 
-          res.body.users.forEach(user => {
-            const userID = user.id;
-            const expectedUser = expectedUsers.find(
-              target => target.id === userID
-            );
+          expectedUsers.forEach(expectedUser => {
+            const expectedID = expectedUser.id;
+            const user = users.find(target => target.id === expectedID);
             expect(user).toStrictEqual(expectedUser);
           });
 

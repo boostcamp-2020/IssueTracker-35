@@ -18,9 +18,8 @@ class UserService {
   }
   async retrieveById(id) {
     try {
-      const user = await this.User.findOne({
+      const user = await this.User.findByPk(id, {
         attributes: ['id', 'nickname', 'image'],
-        where: { id },
       });
 
       return user;
