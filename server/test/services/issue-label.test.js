@@ -76,18 +76,18 @@ describe('remove labels associated with issue id', () => {
     expect(insertResult).toBeTruthy();
 
     //when
-    const removeResult = await issueLabelService.removeAllByIssueID(issueID);
+    const removed = await issueLabelService.removeAllByIssueID(issueID);
 
     //then
-    expect(removeResult).toBeGreaterThan(0);
+    expect(removed).toBeGreaterThan(0);
   });
   test('invalid issueID', async () => {
     //given
     const issueID = 99999;
 
-    //when, then
-    await expect(
-      issueLabelService.removeAllByIssueID(issueID)
-    ).rejects.toThrow();
+    //when
+    const removed = await issueLabelService.removeAllByIssueID(issueID);
+    //then
+    expect(removed).toBe(0);
   });
 });
