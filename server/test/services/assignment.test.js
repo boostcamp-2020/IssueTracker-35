@@ -58,3 +58,30 @@ describe('create assignment', () => {
     expect(result).toBeTruthy();
   });
 });
+
+describe('remove assignees by issue id', () => {
+  test('valid issuseID', async () => {
+    // given
+    const issueID = 4;
+    const assignee = [2];
+    const createResult = await assignmentService.create(issueID, assignee);
+    expect(createResult).toBeTruthy();
+
+    //when
+    const removedCount = await assignmentService.removeAllByIssueID(issueID);
+
+    //then
+    expect(removedCount).toBeGreaterThan(0);
+  });
+
+  test('invalid issueID', async () => {
+    // given
+    const issueID = 99999;
+
+    //when
+    const removedCount = await assignmentService.removeAllByIssueID(issueID);
+
+    //then
+    expect(removedCount).toBe(0);
+  });
+});

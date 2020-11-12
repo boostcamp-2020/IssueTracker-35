@@ -2,21 +2,20 @@
 const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
-const { expectedLabels } = require('@test/seeds/label');
 const { status } = require('@test/api/response-status');
-const { issueLabelService } = require('@/services/index');
+const { assignmentService } = require('@/services/index');
 
-describe('modify issue-labels', () => {
-  const ISSUE_LABEL_API = '/issues/1/labels';
+describe('modify assignment', () => {
+  const ASSIGNMENT_API = '/issues/4/assignees';
 
   it('modify success', done => {
     // given
-    const labels = [1, 2];
+    const assignees = [1, 2, 3];
     try {
       request(app)
-        .put(ISSUE_LABEL_API) // when
+        .put(ASSIGNMENT_API) // when
         .set('Authorization', expectedUserToken)
-        .send({ labels })
+        .send({ assignees })
         .end(async (err, res) => {
           if (err) {
             throw err;
@@ -27,30 +26,24 @@ describe('modify issue-labels', () => {
           expect(code).toBe(status.code.SUCCESS);
           expect(success).toBeTruthy();
 
-          const labels = await issueLabelService.getLabelsByIssueId(1);
+          const assignments = await assignmentService.getAssigneesByIssue(4);
+          const assigneeIDs = assignments.map(assignment => {
+            return assignment.User.dataValues.id;
+          });
 
-          const targetLabels = expectedLabels.map(label => {
-            const copy = Object.assign({}, label);
-            delete copy.content;
-            return copy;
-          });
-          const recievedLabels = labels.map(issueLabel => {
-            const copy = Object.assign({}, issueLabel.Label.dataValues);
-            return copy;
-          });
-          expect(recievedLabels).toStrictEqual(targetLabels);
-          issueLabelService.removeAllByIssueID(1);
+          expect(assigneeIDs).toStrictEqual(assignees);
+          assignmentService.removeAllByIssueID(4);
           done();
         });
     } catch (err) {
       done(err);
     }
   });
-  it('unAuthorized', done => {
+  it('Unauthorized', done => {
     // given
     try {
       request(app)
-        .put(ISSUE_LABEL_API) // when
+        .put(ASSIGNMENT_API) // when
         .end((err, res) => {
           if (err) {
             throw err;
@@ -68,13 +61,13 @@ describe('modify issue-labels', () => {
   });
   it('not found', done => {
     // given
-    const INVALID_ISSUE_ID_URL = '/issues/99999/labels';
-    const labels = [1, 2];
+    const INVALID_ISSUE_ID_URL = '/issues/99999/assignees';
+    const assignees = [1, 2, 3];
     try {
       request(app)
         .put(INVALID_ISSUE_ID_URL) // when
         .set('Authorization', expectedUserToken)
-        .send({ labels })
+        .send({ assignees })
         .end((err, res) => {
           if (err) {
             throw err;
@@ -90,15 +83,15 @@ describe('modify issue-labels', () => {
       done(err);
     }
   });
-  it('bad request', done => {
+  it('invalid issueID', done => {
     // given
-    const INVALID_ISSUE_ID_URL = '/issues/abc/labels';
-    const labels = [1, 2];
+    const INVALID_ISSUE_ID_URL = '/issues/abc/assignees';
+    const assignees = [1, 2, 3];
     try {
       request(app)
         .put(INVALID_ISSUE_ID_URL) // when
         .set('Authorization', expectedUserToken)
-        .send(labels)
+        .send({ assignees })
         .end((err, res) => {
           if (err) {
             throw err;
