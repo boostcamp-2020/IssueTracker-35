@@ -11,7 +11,7 @@ class AssignmentService {
         include: [
           {
             model: User,
-            attributes: ['nickname', 'image'],
+            attributes: ['id', 'nickname', 'image'],
           },
         ],
         group: ['id', 'issue_id'],
@@ -41,9 +41,9 @@ class AssignmentService {
   }
   async create(issueID, assignees, transaction) {
     try {
-      const bulkData = [];
-      assignees.forEach(assignee => {
-        bulkData.push({ issue_id: issueID, assignee: assignee });
+      const bulkData = assignees.map(assignee => {
+        const data = Object.assign({ issue_id: issueID }, { assignee });
+        return data;
       });
 
       const result = await this.Assignment.bulkCreate(bulkData, {
@@ -51,6 +51,17 @@ class AssignmentService {
       });
 
       return result ? true : false;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+  async removeAllByIssueID(issueID, transaction) {
+    try {
+      const removed = this.Assignment.destroy({
+        where: { issue_id: issueID },
+        transaction: transaction,
+      });
+      return removed;
     } catch (err) {
       throw Error(err);
     }

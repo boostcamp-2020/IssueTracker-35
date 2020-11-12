@@ -1,5 +1,6 @@
 const passport = require('passport');
 const { errorHandler } = require('@/utils/handler');
+const { issueService } = require('@/services/index');
 
 exports.passportAuthenticate = passport.authenticate('custom-github', {
   session: false,
@@ -21,4 +22,19 @@ exports.authenticateUser = (req, res, next) => {
       next(err);
     }
   })(req, res, next);
+};
+
+exports.isValidIssueID = async (req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  const { issueID } = req.params;
+  if (!issueID) {
+    return next(err);
+  }
+  const issue = await issueService.retrieveById(issueID);
+  if (!issue) {
+    return next(err);
+  }
+  req.body.issue = issue;
+  next();
 };

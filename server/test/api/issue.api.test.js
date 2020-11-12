@@ -1,13 +1,11 @@
 /* eslint-disable jest/no-done-callback */
 const request = require('supertest');
 const app = require('@/app');
-const { expectedUserToken } = require('@test/seeds/user');
+const { users, expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
-const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
+const { status } = require('@test/api/response-status');
 const { issueIds } = require('@test/seeds/issue');
-
-const unAuthorizedCode = 401;
-const unAuthorizedMsg = 'Unauthorized';
+const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
@@ -20,14 +18,8 @@ describe('retrieve all issues', () => {
       isOpen: true,
       author: { nickname: 'user11' },
       milestone: [],
-      assignees: [{ nickname: 'user33', image: DEFAULT_PROFILE_IMAGE_URL }],
-      labels: [
-        {
-          id: expectedLabels[1].id,
-          title: expectedLabels[1].title,
-          color: expectedLabels[1].color,
-        },
-      ],
+      assignees: [Object.assign({}, users[2], { password: undefined })],
+      labels: [Object.assign({}, expectedLabels[1], { content: undefined })],
       commentCount: 2,
     };
     try {
@@ -65,8 +57,8 @@ describe('retrieve all issues', () => {
             throw err;
           }
           const { code, message } = res.body;
-          expect(code).toBe(unAuthorizedCode);
-          expect(message).toBe(unAuthorizedMsg);
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
@@ -151,16 +143,12 @@ describe('retrieve issue details', () => {
             throw err;
           }
           const { code, message } = res.body;
-          expect(code).toBe(unAuthorizedCode);
-          expect(message).toBe(unAuthorizedMsg);
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
       done(err);
     }
-  });
-  it('400 bad request', () => {
-    // query parameter가 잘못 날라온 경우 (필터링을 back에서 할지 front에서 할지 아직 모름)
-    expect(true).toBe(true);
   });
 });

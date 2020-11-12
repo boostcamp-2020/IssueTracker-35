@@ -102,21 +102,6 @@ class IssueController {
     }
   }
 
-  async isValidIssueID(req, res, next) {
-    const err = new Error('Not Found');
-    err.status = 404;
-    const { issueID } = req.params;
-    if (!issueID) {
-      return next(err);
-    }
-    const issue = await issueService.retrieveById(issueID);
-    if (!issue) {
-      return next(err);
-    }
-    req.body.issue = issue;
-    next();
-  }
-
   isValidParams(req, res, next) {
     const err = new Error('Bad Request');
     err.status = 400;

@@ -2,11 +2,12 @@
 const request = require('supertest');
 const app = require('@/app');
 const { users, expectedUserToken } = require('@test/seeds/user');
+const { status } = require('@test/api/response-status');
 
 describe('login API test', () => {
   const GITHUB_LOGIN_URL = '/users/login/github';
 
-  it('get github login url', done => {
+  it('retrieve github login url', done => {
     const gitHubUrlRegx = /github.com\/login\/oauth\/authorize\?client_id=/;
     try {
       request(app)
@@ -65,8 +66,8 @@ describe('user/me API test', () => {
             throw err;
           }
           const { code, message } = res.body;
-          expect(code).toBe(401);
-          expect(message).toBe('Unauthorized');
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
@@ -75,7 +76,7 @@ describe('user/me API test', () => {
   });
 });
 
-describe('get All users API', () => {
+describe('retrieve All users API', () => {
   const GET_ALL_USERS_URL = '/users';
   it('Authenticated', done => {
     // given
@@ -95,7 +96,7 @@ describe('get All users API', () => {
           const { code, success, users } = res.body;
 
           //then
-          expect(code).toBe(200);
+          expect(code).toBe(status.code.SUCCESS);
           expect(success).toBeTruthy();
 
           expectedUsers.forEach(expectedUser => {
@@ -119,8 +120,8 @@ describe('get All users API', () => {
             throw err;
           }
           const { code, message } = res.body;
-          expect(code).toBe(401);
-          expect(message).toBe('Unauthorized');
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
