@@ -83,7 +83,7 @@ describe('update', () => {
       id: 1,
       title: '수정 테스트',
     };
-    const updateResult = await issueService.updateIssue(data.id, data.title);
+    const updateResult = await issueService.updateTitle(data.id, data.title);
     expect(updateResult).toBeTruthy();
     const { title } = (await Issue.findByPk(data.id)).dataValues;
     expect(title).toBe(data.title);
