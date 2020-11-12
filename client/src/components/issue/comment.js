@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
@@ -59,21 +59,17 @@ const Body = styled.div`
 const Comment = ({ comment }) => {
   return (
     <Container>
-      {/* TODO comment.author.image 로 src를 바꿔주어야 함 */}
-      <ProfileImage
-        src="https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4"
-        alt=""
-      />
+      <ProfileImage src={comment.owner.image} alt="" />
       <ContentContainer>
         <Header>
           <HeaderLeft>
-            <Nickname>{comment?.author.nickname}</Nickname>
+            <Nickname>{comment.owner.nickname}</Nickname>
             <Timestamp>
-              commented {getTimestamp(new Date(), comment?.createdAt)}
+              commented {getTimestamp(new Date(), comment.createdAt)}
             </Timestamp>
           </HeaderLeft>
         </Header>
-        <Body></Body>
+        <Body>{comment.content}</Body>
       </ContentContainer>
     </Container>
   );

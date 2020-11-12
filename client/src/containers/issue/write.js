@@ -93,7 +93,6 @@ const IssueWriteContainer = ({ history }) => {
   const handleSubmit = async () => {
     const title = titleRef.current.value;
     const content = contentRef.current.value;
-    console.log(sidebarState);
 
     const issue = {
       title,

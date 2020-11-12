@@ -81,7 +81,7 @@ const IssueState = styled.div`
 
 const IssueDetailHeader = ({ issue }) => {
   const describe = issue =>
-    `opened this issue ${getTimestamp(new Date(), issue.createdAt)} · ${issue.commentCount || 0
+    `opened this issue ${getTimestamp(new Date(), issue.createdAt)} · ${issue.comments?.length || 0
     } comments`;
 
   return (
@@ -102,7 +102,7 @@ const IssueDetailHeader = ({ issue }) => {
         <IssueState isOpen={issue.isOpen}>
           {issue.isOpen ? 'Open' : 'Closed'}
         </IssueState>
-        <Author>{issue.author.nickname}</Author>
+        <Author>{issue.author}</Author>
         <Description>{describe(issue)}</Description>
       </DescriptionContainer>
     </Container>

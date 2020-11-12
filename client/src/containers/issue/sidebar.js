@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
@@ -12,7 +12,8 @@ import {
   UPDATE_LABEL,
   UPDATE_MILESTONE,
 } from '@/store/sidebar/actions';
-import { reducer } from '@/store/sidebar';
+import { reducer, initState } from '@/store/sidebar';
+import { INIT } from '@/store/sidebar/actions';
 
 const Container = styled.div`
   width: 25%;
@@ -134,17 +135,20 @@ const WriteSidebar = ({ state, dispatch, user }) => {
   );
 };
 
-const init = issue => ({
-  assignees: new Map(issue?.assignees.map(assignee => [assignee.id, assignee])),
-  labels: new Map(issue?.labels.map(label => [label.id, label])),
-  milestone: issue?.milestone?.id,
-});
-
 const DetailSidebar = ({ issue }) => {
-  const [state, dispatch] = useReducer(reducer, issue, init);
   const {
     state: { user },
   } = useContext(UserContext);
+
+  const [state, dispatch] = useReducer(reducer, initState);
+
+  const initIssue = () => {
+    if (issue) {
+      dispatch({ type: INIT, issue });
+    }
+  };
+
+  useEffect(initIssue, [issue]);
 
   const handleAssigneesChange = async checked => {
     try {
