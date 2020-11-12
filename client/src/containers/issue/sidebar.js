@@ -16,6 +16,7 @@ import {
 } from '@/store/sidebar/actions';
 import { reducer, initState } from '@/store/sidebar';
 import { INIT } from '@/store/sidebar/actions';
+import { compareKeyOfMap } from '@/utils/compare';
 
 const Container = styled.div`
   width: 25%;
@@ -167,21 +168,35 @@ const DetailSidebar = ({ issue }) => {
   useEffect(initIssue, [issue]);
 
   const handleAssigneesChange = async checked => {
-    /*     const {
-      data: { success },
-    } = await issueAPI.changeAssignees(issue.id, checked);
- */
-    dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
+    const origin = state.assignees;
+    const target = checked;
 
-    // if (!success) alert('Assignee 업데이트에 실패하였습니다.');
+    if (compareKeyOfMap(origin, target)) return;
+
+    const assignees = [...checked.keys()];
+
+    const {
+      data: { success },
+    } = await issueAPI.changeAssignees(issue.id, assignees);
+
+    dispatch({ type: UPDATE_ASSIGNEE, assignees: target });
+
+    if (!success) alert('Assignee 업데이트에 실패하였습니다.');
   };
 
   const handleLabelsChange = async checked => {
+    const origin = state.labels;
+    const target = checked;
+
+    if (compareKeyOfMap(origin, target)) return;
+
+    const labels = [...target.keys()];
+
     const {
       data: { success },
-    } = await issueAPI.changeLabels(issue.id, checked);
+    } = await issueAPI.changeLabels(issue.id, labels);
 
-    dispatch({ type: UPDATE_LABEL, labels: checked });
+    dispatch({ type: UPDATE_LABEL, labels: target });
     if (!success) alert('Label 업데이트에 실패하였습니다.');
   };
 
