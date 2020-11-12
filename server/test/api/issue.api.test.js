@@ -23,6 +23,7 @@ describe('retrieve all issues', () => {
       assignees: [{ nickname: 'user33', image: DEFAULT_PROFILE_IMAGE_URL }],
       labels: [
         {
+          id: expectedLabels[1].id,
           title: expectedLabels[1].title,
           color: expectedLabels[1].color,
         },
