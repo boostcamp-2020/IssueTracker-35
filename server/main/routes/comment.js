@@ -1,8 +1,13 @@
 const express = require('express');
 const commentController = require('@/controllers/comment');
-const { authenticateUser } = require('@/utils/middleware');
+const { authenticateUser, isValidCommentID } = require('@/utils/middleware');
 const router = express.Router();
 
-router.patch('/:commentID', authenticateUser, commentController.updateComment);
+router.patch(
+  '/:commentID',
+  authenticateUser,
+  isValidCommentID,
+  commentController.updateComment
+);
 
 module.exports = router;

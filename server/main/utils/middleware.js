@@ -1,6 +1,6 @@
 const passport = require('passport');
 const { errorHandler } = require('@/utils/handler');
-const { issueService } = require('@/services/index');
+const { commentService, issueService } = require('@/services');
 
 exports.passportAuthenticate = passport.authenticate('custom-github', {
   session: false,
@@ -36,5 +36,15 @@ exports.isValidIssueID = async (req, res, next) => {
     return next(err);
   }
   req.body.issue = issue;
+  next();
+};
+
+exports.isValidCommentID = async (req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  const { commentID } = req.params;
+  if (!commentID || (await commentService.getById(commentID))) {
+    return next(err);
+  }
   next();
 };
