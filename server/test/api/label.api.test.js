@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
-const { labelService } = require('@/services/index');
+const { labelService } = require('@/services');
 
 const SUCCESS_CODE = 200;
 const UNAUTHORIZED_CODE = 401;

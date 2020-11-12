@@ -46,14 +46,15 @@ describe('retrieve comments', () => {
 });
 
 describe('create comment', () => {
-  test('for an issue with valid data', async () => {
+  const issueID = 4;
+
+  test('from issue content with valid data', async () => {
     //given
-    const issueID = 4;
     const content = '4번째 이슈에 대한 내용을 생성합니다!!';
     const userID = 1;
 
     //when
-    const commentID = await commentService.createIssue(
+    const commentID = await commentService.createIssueComment(
       content,
       issueID,
       userID
@@ -62,5 +63,14 @@ describe('create comment', () => {
     //then
     expect(typeof commentID).toBe('number');
     expect(commentID).toBeGreaterThanOrEqual(expectedComments.length);
+  });
+
+  test('of an issue', async () => {
+    //given
+    const content = '4번째 이슈 답-글';
+    const userID = 2;
+
+    //when
+    const commentID = await commentService.create(content, issueID, userID);
   });
 });
