@@ -26,8 +26,7 @@ class IssueLabelController {
 
     const { labels } = req.body;
     const { issueID } = req.params;
-
-    if (!issueID || typeof parseInt(issueID) !== 'number') {
+    if (!issueID || isNaN(parseInt(issueID))) {
       return next(err);
     }
     if (!labels || !Array.isArray(labels)) {

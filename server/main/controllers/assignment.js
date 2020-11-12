@@ -26,7 +26,7 @@ class AssignmentController {
     const { assignees } = req.body;
     const { issueID } = req.params;
 
-    if (!issueID || typeof parseInt(issueID) !== 'number') {
+    if (!issueID || isNaN(parseInt(issueID))) {
       return next(err);
     }
     if (!assignees || !Array.isArray(assignees)) {
