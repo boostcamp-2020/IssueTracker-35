@@ -1,10 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import Label from '@/components/label';
+
+import { labelAPI } from '@/api/label';
 
 import styled from 'styled-components';
 import { Button, Div, Input } from '@/styles/styled';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
+import Random from '@/styles/svgs/random';
+import { TOGGLE, ADD } from '@/store/label/actions';
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +38,7 @@ const ButtonContainer = styled.div`
 
 const NewIssueButton = styled(Button)``;
 
-const EditButton = styled(Button)`
+const CancelButton = styled(Button)`
   background-color: ${color.GHOST_WHITE};
   color: ${color.DARK_GRAY};
   border: 1px solid ${color.LIGHT_GRAY};
@@ -72,35 +76,83 @@ const StyledLabel = styled.label`
   margin-bottom: 10px;
 `;
 
-const LabelContainer = styled(FormContainer)``;
+const LabelContainer = styled(FormContainer)`
+  padding-left: 20px;
+`;
 
-const NewLabelConainer = ({ state, dispatch }) => {
-  const [label, setLabel] = useState({
-    title: '',
-    description: '',
-    color: '#',
-  });
+const ColorBody = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const RandomButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ color }) => `#${color}`};
+  width: 34px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 6px;
+`;
+
+const init = color => ({
+  title: '',
+  color,
+  value: color,
+});
+
+const NewLabelConainer = ({ dispatch }) => {
+  const [label, setLabel] = useState(init(color.RANDOM()));
+  const contentRef = useRef();
 
   const handleTitle = ({ target }) => {
+    const title = target.value;
+
     setLabel({
-      title: target.value,
-      description: label.description,
+      title,
       color: label.color,
+      value: label.value,
     });
   };
 
   const handleColor = ({ target }) => {
+    const value = (target.value.length > 6 ? label : target).value;
+    const validValue = color.isValid(value) ? value : label.color;
     setLabel({
-      title: label.name,
-      description: label.description,
-      color: target.value,
+      title: label.title,
+      color: validValue,
+      value,
     });
+  };
+
+  const handleRandom = () => {
+    const value = color.RANDOM();
+    return setLabel({ title: label.title, color: value, value });
+  };
+
+  const handleSubmit = async () => {
+    const newLabel = {
+      title: label.title,
+      color: label.color,
+      content: contentRef.current.value,
+    };
+
+    const {
+      data: { id },
+    } = await labelAPI.submitLabel(newLabel);
+    newLabel.id = id;
+
+    dispatch({ type: ADD, label: newLabel });
   };
 
   return (
     <Container>
       <LabelContainer>
-        <Label label={label} />
+        <Label label={label} height="30px" />
       </LabelContainer>
       <FormContainer>
         <NameConainer>
@@ -113,19 +165,26 @@ const NewLabelConainer = ({ state, dispatch }) => {
         </NameConainer>
         <DescriptionConainer>
           <StyledLabel>Description</StyledLabel>
-          <LabelInput placeholder="Description (optional)" />
+          <LabelInput ref={contentRef} placeholder="Description (optional)" />
         </DescriptionConainer>
         <ColorConainer>
           <StyledLabel>Color</StyledLabel>
-          <LabelInput
-            placeholder="color"
-            onChange={handleColor}
-            value={label.color}
-          />
+          <ColorBody>
+            <RandomButton color={label.color} onClick={handleRandom}>
+              <Random backgroundColor={label.color} />
+            </RandomButton>
+            <LabelInput
+              placeholder="color"
+              onChange={handleColor}
+              value={label.value}
+            />
+          </ColorBody>
         </ColorConainer>
         <ButtonContainer>
-          <EditButton>Edit</EditButton>
-          <NewIssueButton>New Issue</NewIssueButton>
+          <CancelButton onClick={() => dispatch({ type: TOGGLE })}>
+            Cancel
+          </CancelButton>
+          <NewIssueButton onClick={handleSubmit}>Create label</NewIssueButton>
         </ButtonContainer>
       </FormContainer>
     </Container>

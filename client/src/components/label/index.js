@@ -17,14 +17,14 @@ const Container = styled.div`
 const Title = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ isBlack }) => (isBlack ? color.BLACK : color.WHITE)};
+  color: ${({ labelColor }) => `#${color.getBackgroundTextColor(labelColor)}`};
 `;
 
-const Label = ({ label, height = 'auto', isBlack = true }) => {
+const Label = ({ label, height = 'auto' }) => {
   return (
     <>
       <Container height={height} labelColor={label.color}>
-        <Title isBlack={isBlack}>{label.title}</Title>
+        <Title labelColor={label.color}>{label.title || 'Label Preview'}</Title>
       </Container>
     </>
   );
