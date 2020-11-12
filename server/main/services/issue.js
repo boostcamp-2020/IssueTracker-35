@@ -32,13 +32,12 @@ class IssueService {
 
   async retrieveById(issueID) {
     try {
-      const issue = this.Issue.findOne({
+      const issue = this.Issue.findByPk(issueID, {
         attributes: { exclude: ['milestone_id', 'user_id', 'updatedAt'] },
         include: [
           { model: Milestone, attributes: ['id', 'title'] },
           { model: User, attributes: ['nickname'] },
         ],
-        where: { id: issueID },
         required: false,
       });
       return issue;
