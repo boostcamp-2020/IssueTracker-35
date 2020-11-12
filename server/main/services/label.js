@@ -23,6 +23,22 @@ class LabelService {
       throw Error(err);
     }
   }
+  async create(data) {
+    try {
+      const result = await this.Label.create(data);
+      return result;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+  async remove(labelID) {
+    try {
+      const result = await this.Label.destroy({ where: { id: labelID } });
+      return result;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new LabelService(Label);
