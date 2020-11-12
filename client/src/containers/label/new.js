@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Label from '@/components/label';
 
 import styled from 'styled-components';
 import { Button, Div, Input } from '@/styles/styled';
@@ -7,6 +8,7 @@ import size from '@/styles/sizes';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 90%;
   margin: 1rem auto;
@@ -25,8 +27,9 @@ const FormContainer = styled.div`
 const ButtonContainer = styled.div`
   width: 25%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
+  margin-bottom: 10px;
 `;
 
 const NewIssueButton = styled(Button)``;
@@ -35,7 +38,7 @@ const EditButton = styled(Button)`
   background-color: ${color.GHOST_WHITE};
   color: ${color.DARK_GRAY};
   border: 1px solid ${color.LIGHT_GRAY};
-  margin-right: 10px;
+  margin-right: 5px;
 `;
 
 const NameConainer = styled(Div.column)`
@@ -49,6 +52,12 @@ const DescriptionConainer = styled(NameConainer)`
   align-items: start;
 `;
 
+const ColorConainer = styled(NameConainer)`
+  width: 16%;
+  align-items: start;
+  padding: 10px;
+`;
+
 const LabelInput = styled(Input)`
   width: 100%;
   padding: 5px 12px;
@@ -57,24 +66,63 @@ const LabelInput = styled(Input)`
   border-radius: 5px;
 `;
 
-const Label = styled.label`
+const StyledLabel = styled.label`
   font-weight: 700;
   font-size: ${size.DEFAULT_FONT_SIZE};
   margin-bottom: 10px;
 `;
 
+const LabelContainer = styled(FormContainer)``;
+
 const NewLabelConainer = ({ state, dispatch }) => {
+  const [label, setLabel] = useState({
+    title: '',
+    description: '',
+    color: '#',
+  });
+
+  const handleTitle = ({ target }) => {
+    setLabel({
+      title: target.value,
+      description: label.description,
+      color: label.color,
+    });
+  };
+
+  const handleColor = ({ target }) => {
+    setLabel({
+      title: label.name,
+      description: label.description,
+      color: target.value,
+    });
+  };
+
   return (
     <Container>
+      <LabelContainer>
+        <Label label={label} />
+      </LabelContainer>
       <FormContainer>
         <NameConainer>
-          <Label>Label name</Label>
-          <LabelInput placeholder="Label name" />
+          <StyledLabel>Label name</StyledLabel>
+          <LabelInput
+            placeholder="Label name"
+            onChange={handleTitle}
+            value={label.title}
+          />
         </NameConainer>
         <DescriptionConainer>
-          <Label>Description</Label>
+          <StyledLabel>Description</StyledLabel>
           <LabelInput placeholder="Description (optional)" />
         </DescriptionConainer>
+        <ColorConainer>
+          <StyledLabel>Color</StyledLabel>
+          <LabelInput
+            placeholder="color"
+            onChange={handleColor}
+            value={label.color}
+          />
+        </ColorConainer>
         <ButtonContainer>
           <EditButton>Edit</EditButton>
           <NewIssueButton>New Issue</NewIssueButton>
