@@ -51,6 +51,7 @@ const FilterLeft = styled.div`
 const FilterRight = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-right: 50px;
 `;
 
 const Filter = () => {
@@ -64,8 +65,8 @@ const Filter = () => {
     boxRef.current.indeterminate = selected && !checkedAll;
   }, [state.selected]);
 
-  const openCount = 2;
-  const closedCount = 1;
+  const openCount = state.issues.filter(issue => issue.isOpen).length;
+  const closedCount = state.issues.length - openCount;
 
   return (
     <Container>

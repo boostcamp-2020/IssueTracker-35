@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
 import { Link } from 'react-router-dom';
 
+import Label from '@/components/label';
 import IssueIcon from '@/styles/svgs/issue';
 import CommentIcon from '@/styles/svgs/comment';
 import getTimestamp from '@/utils/timestamp';
 
 const Container = styled.div`
+  position: relative;
   border-top: 1px solid ${color.LIGHT_GRAY2};
   display: flex;
   &:hover {
@@ -19,6 +21,7 @@ const Container = styled.div`
 const Checkbox = styled.input`
   margin-right: 1rem;
 `;
+
 const Title = styled.b`
   cursor: pointer;
   text-decoration: none;
@@ -51,7 +54,7 @@ const IssueHeader = styled.div`
   display: flex;
   align-item: center;
   padding: 3px 5px;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const IssueLeft = styled.div`
@@ -64,19 +67,29 @@ const IssueLeft = styled.div`
 const IssueRight = styled.div`
   display: flex;
   padding: 10px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: start;
   width: 25%;
 `;
 
-const AssigneeImages = styled.div``;
+const AssigneeImages = styled.img`
+  object-fit: cover;
+  object-position: center;
+  margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  left: ${({ distance }) => distance}px;
+`;
 
-const ProfileImage = styled.img`
-  object-fit: cover; /* Do not scale the image */
-  object-position: center; /* Center the image within the element */
-  margin: 5px;
-  height: 30px;
+const AssigneeContainer = styled.div`
+  position: relative;
+  right: 55px;
+  display: flex;
   width: 30px;
+  align-items: center;
 `;
 
 const Comment = styled.div`
@@ -94,7 +107,12 @@ const StyledLink = styled(Link)`
   color: ${color.BLACK};
 `;
 
-// TODO toggleSelected 미구현 상태, useCallback으로 미리 저장
+const LabelContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 10px;
+`;
+
 const IssueItem = ({ issue, checked, toggleSelected, now }) => {
   const describe = () =>
     `#${issue.id} ${issue.isOpen
@@ -124,6 +142,11 @@ const IssueItem = ({ issue, checked, toggleSelected, now }) => {
           <StyledLink to={`/issues/${issue.id}`}>
             <Title>{issue.title}</Title>
           </StyledLink>
+          <LabelContainer>
+            {issue.labels.map(label => (
+              <Label key={label.id} label={label} />
+            ))}
+          </LabelContainer>
         </IssueHeader>
         <IssueBody>
           <Description>{describe()}</Description>
@@ -131,7 +154,17 @@ const IssueItem = ({ issue, checked, toggleSelected, now }) => {
       </IssueCenter>
 
       <IssueRight>
-        <AssigneeImages></AssigneeImages>
+        <AssigneeContainer>
+          {issue.assignees?.map((assignee, idx) =>
+            idx < 5 ? (
+              <AssigneeImages
+                key={assignee.id}
+                src={assignee.image}
+                distance={idx * 10}
+              />
+            ) : undefined
+          )}
+        </AssigneeContainer>
         <Comment>
           {!!issue.commentCount && (
             <>

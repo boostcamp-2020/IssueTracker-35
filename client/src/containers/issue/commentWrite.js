@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button } from '@/styles/styled';
 import { DebouncedInput as ContentInput } from '@/components/issue/input';
 import { UserContext } from '@/store/user';
+import { issueAPI } from '@/api/issue';
 import color from '@/styles/colors';
 
 const Container = styled.div`
@@ -13,8 +14,6 @@ const Container = styled.div`
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  border-top: 2px solid ${color.LIGHT_GRAY};
-  margin-top: 2rem;
   padding-top: 1rem;
 `;
 
@@ -63,8 +62,9 @@ const TabButton = styled(Button)`
   border-radius: 3px 3px 0 0;
 `;
 
-const CommentWriteContainer = () => {
+const CommentWriteContainer = ({ issue, setIssue }) => {
   const [isAble, setAble] = useState(false);
+  const [clear, setClear] = useState({});
   const contentRef = useRef();
 
   const {
@@ -75,6 +75,27 @@ const CommentWriteContainer = () => {
     if (isAble === !value) setAble(!isAble);
   };
 
+  const submitComment = async () => {
+    const content = contentRef.current.value;
+
+    /*
+     const {
+      data: { id },
+    } = await issueAPI.submitComment(issue.id, content);
+     */
+
+    const id = Math.floor(Math.random() * 500);
+    const comment = {
+      id,
+      content,
+      createdAt: new Date(),
+      owner: user,
+    };
+
+    setIssue({ ...issue, comments: issue.comments.concat(comment) });
+    setClear({});
+  };
+
   return (
     <Container>
       <ProfileImage src={user?.image} alt="" />
@@ -82,12 +103,16 @@ const CommentWriteContainer = () => {
         <TabContainer>
           <TabButton>Write</TabButton>
         </TabContainer>
-        <ContentInput contentRef={contentRef} notify={notify} />
+        <ContentInput contentRef={contentRef} notify={notify} clear={clear} />
         <ButtonContainer>
           <Link to="/issues">
             <CloseIssueButton>Cancel</CloseIssueButton>
           </Link>
-          <SubmitButton isAble={isAble} disabled={!isAble}>
+          <SubmitButton
+            onClick={submitComment}
+            isAble={isAble}
+            disabled={!isAble}
+          >
             Comment
           </SubmitButton>
         </ButtonContainer>

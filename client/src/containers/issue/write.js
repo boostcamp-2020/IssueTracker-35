@@ -14,7 +14,6 @@ import { NEW_ISSUE } from '@/store/issue/actions';
 import { reducer, initState } from '@/store/sidebar';
 
 import { issueAPI } from '@/api/issue';
-import CheckMark from '../../styles/svgs/check';
 
 const Container = styled.div`
   display: flex;
@@ -93,14 +92,13 @@ const IssueWriteContainer = ({ history }) => {
   const handleSubmit = async () => {
     const title = titleRef.current.value;
     const content = contentRef.current.value;
-    console.log(sidebarState);
 
     const issue = {
       title,
       content,
       assignees: [...sidebarState.assignees.keys()],
       labels: [...sidebarState.labels.keys()],
-      milestone: sidebarState.milestone,
+      milestone: sidebarState.milestone || [],
     };
 
     const {
@@ -112,6 +110,8 @@ const IssueWriteContainer = ({ history }) => {
       issue: {
         ...issue,
         id,
+        assignees: [...sidebarState.assignees.values()],
+        labels: [...sidebarState.labels.values()],
         commentCount: 0,
         createdAt: new Date(),
         isOpen: true,
