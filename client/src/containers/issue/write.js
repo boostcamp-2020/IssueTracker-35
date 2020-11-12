@@ -110,6 +110,8 @@ const IssueWriteContainer = ({ history }) => {
       issue: {
         ...issue,
         id,
+        assignees: [...sidebarState.assignees.values()],
+        labels: [...sidebarState.labels.values()],
         commentCount: 0,
         createdAt: new Date(),
         isOpen: true,

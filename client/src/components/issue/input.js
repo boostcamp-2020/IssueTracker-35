@@ -34,12 +34,16 @@ const Count = styled.p`
   right: 10px;
 `;
 
-const DebouncedInput = ({ contentRef, notify }) => {
+const DebouncedInput = ({ contentRef, notify, clear }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
+  const clearTimer = () => state.timerId && clearTimeout(state.timerId);
+
+  useEffect(() => clearTimer, []);
   useEffect(() => {
-    return () => state.timerId && clearTimeout(state.timerId);
-  }, []);
+    if (clear)
+      dispatch({ type: INPUT_CONTENT, timerId: clearTimer(), value: '' });
+  }, [clear]);
 
   const showCallback = () => {
     dispatch({

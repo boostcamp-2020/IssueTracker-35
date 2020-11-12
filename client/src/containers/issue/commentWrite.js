@@ -66,6 +66,7 @@ const TabButton = styled(Button)`
 
 const CommentWriteContainer = ({ issue, setIssue }) => {
   const [isAble, setAble] = useState(false);
+  const [clear, setClear] = useState({});
   const contentRef = useRef();
 
   const {
@@ -94,6 +95,7 @@ const CommentWriteContainer = ({ issue, setIssue }) => {
     };
 
     setIssue({ ...issue, comments: issue.comments.concat(comment) });
+    setClear({});
   };
 
   return (
@@ -103,7 +105,7 @@ const CommentWriteContainer = ({ issue, setIssue }) => {
         <TabContainer>
           <TabButton>Write</TabButton>
         </TabContainer>
-        <ContentInput contentRef={contentRef} notify={notify} />
+        <ContentInput contentRef={contentRef} notify={notify} clear={clear} />
         <ButtonContainer>
           <Link to="/issues">
             <CloseIssueButton>Cancel</CloseIssueButton>
