@@ -13,9 +13,6 @@ describe('retrieve', () => {
 
       //then
       expect(issues.length).toBeGreaterThanOrEqual(issueIds.size); // test에서 생성하는 부분 때문에 증가됨
-
-      // const containsAll = issues.every(issue => issueIds.has(issue.id)); // 삭제 api만든 후 다시 살릴지 생각
-      // expect(containsAll).toBe(true);
     },
     TIMEOUT
   );
@@ -23,14 +20,27 @@ describe('retrieve', () => {
   test(
     'an issue by id',
     async () => {
+      //given
+      const initialIssue = Object.assign({}, expectedIssue);
+      delete initialIssue.user_id;
+      delete initialIssue.milestone_id;
+      const user = { nickname: 'user11' };
+      const expectedMilestone = {
+        id: 1,
+        title: 'sprint 2',
+      };
+
       // when
       const issue = await issueService.retrieveById(expectedIssue.id);
 
       // then
       expect(issue).not.toBeUndefined();
-      Object.keys(expectedIssue).forEach(key =>
-        expect(expectedIssue[key]).toBe(issue[key])
+
+      Object.keys(initialIssue).forEach(key =>
+        expect(initialIssue[key]).toBe(issue[key])
       );
+      expect(issue.Milestone.dataValues).toStrictEqual(expectedMilestone);
+      expect(issue.User.dataValues).toStrictEqual(user);
     },
     TIMEOUT
   );
@@ -40,7 +50,7 @@ describe('retrieve', () => {
     const issue = await issueService.retrieveById(NONEXISTING_ID);
 
     // then
-    expect(issue).toBeUndefined();
+    expect(issue).toBeNull();
   });
 });
 

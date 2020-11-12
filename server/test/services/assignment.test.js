@@ -3,15 +3,15 @@ const TIMEOUT = 10000;
 const { assignmentService } = require('@/services/index');
 const { users } = require('@test/seeds/user');
 
-describe('assignees for all issue', () => {
+describe('retrieve assignees', () => {
   test(
-    'assignees',
+    'all issues',
     async () => {
       // given
       const expectedUser = users[2];
 
       // when
-      const assignees = await assignmentService.getAssignees();
+      const assignees = await assignmentService.getAssigneesByAllIssues();
       const resultAssignee = assignees[1].User.dataValues;
 
       // then
@@ -20,6 +20,29 @@ describe('assignees for all issue', () => {
     },
     TIMEOUT
   );
+  test('an issue with valid issueID', async () => {
+    // given
+    const issueID = 2;
+    const assignmentID = 1;
+    const expectedAssignee = Object.assign({}, users[1]);
+    delete expectedAssignee.password;
+
+    // when
+    const assignments = await assignmentService.getAssigneesByIssue(issueID);
+
+    // then
+    const result = assignments[0].User.dataValues;
+    expect(result).toStrictEqual(expectedAssignee);
+    expect(assignments[0].id).toBe(assignmentID);
+  });
+  test('an issue with invalid issueID', async () => {
+    //given
+    const issueID = 99999;
+    //when
+    const assignments = await assignmentService.getAssigneesByIssue(issueID);
+    //then
+    expect(assignments.length).toBe(0);
+  });
 });
 
 describe('create assignment', () => {

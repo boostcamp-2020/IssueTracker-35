@@ -79,11 +79,11 @@ describe('get All users API', () => {
   const GET_ALL_USERS_URL = '/users';
   it('Authenticated', done => {
     // given
-    const expectedUsers = [...users].reduce((acc, user, idx) => {
-      acc[idx] = Object.assign({}, user);
-      delete acc[idx].password;
-      return acc;
-    }, []);
+    const expectedUsers = users.map(user => {
+      const copy = { ...user };
+      delete copy.password;
+      return copy;
+    });
     try {
       request(app)
         .get(GET_ALL_USERS_URL) // when
@@ -98,15 +98,14 @@ describe('get All users API', () => {
           expect(code).toBe(200);
           expect(success).toBeTruthy();
 
-          expectedUsers.forEach(expectedUser => {
-            expect(
-              res.body.users.some(user => {
-                if (JSON.stringify(user) === JSON.stringify(expectedUser)) {
-                  return true;
-                }
-              })
-            ).toBeTruthy();
+          res.body.users.forEach(user => {
+            const userID = user.id;
+            const expectedUser = expectedUsers.find(
+              target => target.id === userID
+            );
+            expect(user).toStrictEqual(expectedUser);
           });
+
           done();
         });
     } catch (err) {

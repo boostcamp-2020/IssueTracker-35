@@ -29,6 +29,23 @@ class IssueService {
       throw Error(err);
     }
   }
+
+  async retrieveById(issueID) {
+    try {
+      const issue = this.Issue.findOne({
+        attributes: { exclude: ['milestone_id', 'user_id', 'updatedAt'] },
+        include: [
+          { model: Milestone, attributes: ['id', 'title'] },
+          { model: User, attributes: ['nickname'] },
+        ],
+        where: { id: issueID },
+        required: false,
+      });
+      return issue;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
   async createIssue(title, userID, milestoneID = null, transaction) {
     try {
       const result = await this.Issue.create(

@@ -6,9 +6,6 @@ const { expectedLabels } = require('@test/seeds/label');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 const { issueIds } = require('@test/seeds/issue');
 
-const successCode = 200;
-const badRequestCode = 400;
-const badRequestMsg = 'Bad Request';
 const unAuthorizedCode = 401;
 const unAuthorizedMsg = 'Unauthorized';
 
@@ -23,12 +20,14 @@ describe('retrieve all issues', () => {
       isOpen: true,
       author: { nickname: 'user11' },
       milestone: [],
-      assignees: { nickname: 'user22', image: DEFAULT_PROFILE_IMAGE_URL },
-      labels: {
-        title: expectedLabels[0].title,
-        color: expectedLabels[0].color,
-      },
-      commentCount: 1,
+      assignees: [{ nickname: 'user33', image: DEFAULT_PROFILE_IMAGE_URL }],
+      labels: [
+        {
+          title: expectedLabels[1].title,
+          color: expectedLabels[1].color,
+        },
+      ],
+      commentCount: 2,
     };
     try {
       //when
@@ -40,11 +39,14 @@ describe('retrieve all issues', () => {
             throw err;
           }
           const { issues } = res.body;
-          const recievedIssue = issues[2];
+          const recievedIssue = issues.find(
+            issue => issue.id === expectedIssue.id
+          );
           delete recievedIssue.createdAt;
           delete recievedIssue.updatedAt;
 
           //then
+          expect(true).toBe(true);
           expect(recievedIssue).toEqual(expectedIssue);
           expect(issues.length).toBeGreaterThanOrEqual(issueIds.size); // issue create test에서 하나 증가했음 (나중에 delete test도 되면, size 그대로 설정)
           done();
@@ -70,83 +72,82 @@ describe('retrieve all issues', () => {
       done(err);
     }
   });
-  it('400 bad request', () => {
-    // query parameter가 잘못 날라온 경우 (필터링을 back에서 할지 front에서 할지 아직 모름)
-    expect(true).toBe(true);
-  });
 });
 
-describe('create issue', () => {
-  const CREATE_ISSUE_URL = '/issues';
-  const issueCreateBadRequest = (data, testName) => {
-    // eslint-disable-next-line jest/valid-title
-    return it(testName, done => {
-      // given : data
-      try {
-        request(app)
-          .post(CREATE_ISSUE_URL) //when
-          .set('Authorization', expectedUserToken)
-          .send(data)
-          .end((err, res) => {
-            if (err) {
-              throw Error(err);
-            }
-            const { code, message } = res.body;
-            expect(code).toBe(badRequestCode);
-            expect(message).toBe(badRequestMsg);
-            done();
-          });
-      } catch (err) {
-        done(err);
-      }
-    });
-  };
-  it('valid datas', done => {
-    // given
-    const data = {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    };
+describe('retrieve issue details', () => {
+  const ISSUE_DETAIL_URL = '/issues/2';
 
+  it('success retrieve issue details', done => {
+    //given
+    const expectedIssue = {
+      id: 2,
+      title: '두 번째 이슈입니다.',
+      isOpen: true,
+      author: 'user11',
+      milestone: { id: 1, title: 'sprint 2' },
+      labels: [
+        {
+          id: expectedLabels[0].id,
+          title: expectedLabels[0].title,
+          color: expectedLabels[0].color,
+        },
+      ],
+      assignees: [
+        {
+          id: 2,
+          nickname: 'user22',
+          image: DEFAULT_PROFILE_IMAGE_URL,
+        },
+      ],
+      comments: [
+        {
+          id: 2,
+          content: '두 번째 이슈 내용~!!',
+          owner: { id: 1, nickname: 'user11', image: 'hi' },
+        },
+        {
+          id: 4,
+          content: '두 번째 이슈에 대한 댓글!!!!#!',
+          owner: {
+            id: 2,
+            nickname: 'user22',
+            image:
+              'https://user-images.githubusercontent.com/49153756/98246728-0696ff00-1fb6-11eb-8303-162a5bc3581b.png',
+          },
+        },
+      ],
+    };
     try {
+      //when
       request(app)
-        .post(CREATE_ISSUE_URL) //when
+        .get(ISSUE_DETAIL_URL) // when
         .set('Authorization', expectedUserToken)
-        .send(data)
         .end((err, res) => {
           if (err) {
-            throw Error(err);
+            throw err;
           }
+          const { issue } = res.body;
+          delete issue.createdAt;
+          delete issue.comments.createdAt;
+          issue.comments.forEach(comment => {
+            delete comment.createdAt;
+          });
+
           //then
-          const { id, success, code } = res.body;
-          expect(code).toBe(successCode);
-          expect(typeof id).toBe('number');
-          expect(success).toBeTruthy();
+          expect(issue).toStrictEqual(expectedIssue);
           done();
         });
     } catch (err) {
       done(err);
     }
   });
-  it('Unauthorized', done => {
-    // given
-    const data = {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    };
+  it('invalid token -> 401 Unauthorized', done => {
     try {
       request(app)
-        .post(CREATE_ISSUE_URL) //when
-        .send(data)
+        .get(ISSUE_DETAIL_URL)
         .end((err, res) => {
           if (err) {
-            throw Error(err);
+            throw err;
           }
           const { code, message } = res.body;
           expect(code).toBe(unAuthorizedCode);
@@ -157,82 +158,8 @@ describe('create issue', () => {
       done(err);
     }
   });
-  issueCreateBadRequest(
-    {
-      title: {},
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    },
-    'invalid data - wrong type title'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기',
-      content: {},
-      milestone: ['1'],
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    },
-    'invalid data - wrong type content'
-  );
-  issueCreateBadRequest(
-    {
-      // given
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      labels: ['1', '2'],
-    },
-    'invalid data - without assignees'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기, transaction이 된다면 이건 안보여야 합니다',
-      content: 'api 이슈 생성 내용입니당~ 보자보자 너는 담에보자',
-      milestone: ['1'],
-      assignees: ['hi', 2],
-      labels: ['1', '2'],
-    },
-    'invalid data - wrong type assignees'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      assignees: ['2', '3'],
-    },
-    'invalid data - without labels'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['1'],
-      assignees: ['2', '3'],
-      labels: ['invalid value', 2],
-    },
-    'invalid data - wrong type labels'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    },
-    'invalid data - without milestone'
-  );
-  issueCreateBadRequest(
-    {
-      title: 'api로 이슈 생성하기',
-      content: 'api 이슈 생성 내용입니당~',
-      milestone: ['haha'],
-      assignees: ['2', '3'],
-      labels: ['1', '2'],
-    },
-    'invalid data - wrong type milestone'
-  );
+  it('400 bad request', () => {
+    // query parameter가 잘못 날라온 경우 (필터링을 back에서 할지 front에서 할지 아직 모름)
+    expect(true).toBe(true);
+  });
 });
