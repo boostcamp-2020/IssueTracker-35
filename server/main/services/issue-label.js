@@ -11,7 +11,7 @@ class IssueLabelService {
         include: [
           {
             model: Label,
-            attributes: ['title', 'color'],
+            attributes: ['id', 'title', 'color'],
           },
         ],
         group: ['id', 'issue_id'],

@@ -87,7 +87,7 @@ const assigneeProps = (user, state, dispatch, handleAssigneesChange) => {
     component: Assignee,
     renderContent: Object.assign(
       user => (
-        <AssigneeContainer key={user.nickname}>
+        <AssigneeContainer key={user.id}>
           <AssigneeProfile>
             <ProfileImage src={user.image} />
             <Nickname>{user.nickname}</Nickname>
