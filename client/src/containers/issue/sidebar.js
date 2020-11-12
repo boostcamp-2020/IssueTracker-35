@@ -1,10 +1,12 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-// import { issueAPI } from '@/api/issue';
+import { issueAPI } from '@/api/issue';
+import Label from '@/components/label';
 
 import Assignee from '@/components/issue/assignee';
+import LabelList from '@/components/issue/label';
 import SidebarItem from '@/components/issue/sidebarItem';
 import { UserContext } from '@/store/user';
 import {
@@ -12,7 +14,9 @@ import {
   UPDATE_LABEL,
   UPDATE_MILESTONE,
 } from '@/store/sidebar/actions';
-import { reducer } from '@/store/sidebar';
+import { reducer, initState } from '@/store/sidebar';
+import { INIT } from '@/store/sidebar/actions';
+import { compareKeyOfMap } from '@/utils/compare';
 
 const Container = styled.div`
   width: 25%;
@@ -58,6 +62,12 @@ const AssigneeContainer = styled.div`
   margin-bottom: 9px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 9px;
+`;
+
 const assigneeProps = (user, state, dispatch, handleAssigneesChange) => {
   const assignMyself = () =>
     dispatch({
@@ -78,7 +88,7 @@ const assigneeProps = (user, state, dispatch, handleAssigneesChange) => {
     component: Assignee,
     renderContent: Object.assign(
       user => (
-        <AssigneeContainer key={user.nickname}>
+        <AssigneeContainer key={user.id}>
           <AssigneeProfile>
             <ProfileImage src={user.image} />
             <Nickname>{user.nickname}</Nickname>
@@ -96,8 +106,16 @@ const labelProps = (state, handleLabelsChange) => ({
   textContent: 'None yet',
   handleChange: handleLabelsChange,
   selected: state.labels,
-  component: Div,
-  renderContent: () => undefined,
+  component: LabelList,
+  renderContent: Object.assign(
+    label => (
+      <LabelContainer key={label.id}>
+        <Label label={label} />
+      </LabelContainer>
+    ),
+    { displayName: 'Assignee' }
+  ),
+  isColumn: false,
 });
 
 const milestoneProps = (state, handleMilestoneChange) => ({
@@ -134,43 +152,51 @@ const WriteSidebar = ({ state, dispatch, user }) => {
   );
 };
 
-const init = issue => ({
-  assignees: new Map(issue?.assignees.map(assignee => [assignee.id, assignee])),
-  labels: new Map(issue?.labels.map(label => [label.id, label])),
-  milestone: issue?.milestone?.id,
-});
-
 const DetailSidebar = ({ issue }) => {
-  const [state, dispatch] = useReducer(reducer, issue, init);
   const {
     state: { user },
   } = useContext(UserContext);
 
-  const handleAssigneesChange = async checked => {
-    try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
-      dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
-    } catch (err) {
-      alert('Assignee 업데이트에 실패하였습니다.');
+  const [state, dispatch] = useReducer(reducer, initState);
+
+  const initIssue = () => {
+    if (issue) {
+      dispatch({ type: INIT, issue });
     }
+  };
+
+  useEffect(initIssue, [issue]);
+
+  const handleAssigneesChange = async checked => {
+    const origin = state.assignees;
+    const target = checked;
+
+    if (compareKeyOfMap(origin, target)) return;
+
+    const assignees = [...checked.keys()];
+
+    const response = await issueAPI.changeAssignees(issue.id, assignees);
+
+    if (!response) return alert('Assignee 업데이트에 실패하였습니다.');
+    dispatch({ type: UPDATE_ASSIGNEE, assignees: target });
   };
 
   const handleLabelsChange = async checked => {
-    try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
-      dispatch({ type: UPDATE_LABEL, labels: checked });
-    } catch (err) {
-      alert('Label 업데이트에 실패하였습니다.');
-    }
+    const origin = state.labels;
+    const target = checked;
+
+    if (compareKeyOfMap(origin, target)) return;
+
+    const labels = [...target.keys()];
+
+    const response = await issueAPI.changeLabels(issue.id, labels);
+
+    if (!response) return alert('Label 업데이트에 실패하였습니다.');
+    dispatch({ type: UPDATE_LABEL, labels: target });
   };
 
   const handleMilestoneChange = async checked => {
-    try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
-      dispatch({ type: UPDATE_MILESTONE, milestone: checked });
-    } catch (err) {
-      alert('Milestone 업데이트에 실패할 때까지 구현이 될까요?');
-    }
+    dispatch({ type: UPDATE_MILESTONE, milestone: checked });
   };
 
   return (

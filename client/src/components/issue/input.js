@@ -4,12 +4,8 @@ import color from '@/styles/colors';
 import size from '@/styles/sizes';
 import { Textarea } from '@/styles/styled';
 
-import { initState, reducer } from '@/store/comment';
-import {
-  INPUT_CONTENT,
-  SHOW_COUNT,
-  CLEAR_COUNT,
-} from '@/store/comment/actions';
+import { initState, reducer } from '@/store/input';
+import { INPUT_CONTENT, SHOW_COUNT, CLEAR_COUNT } from '@/store/input/actions';
 
 const DELAY = 2000;
 
@@ -38,12 +34,18 @@ const Count = styled.p`
   right: 10px;
 `;
 
-const DebouncedInput = ({ contentRef, notify }) => {
+const DebouncedInput = ({ contentRef, notify, clear }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
+  const clearTimer = () => state.timerId && clearTimeout(state.timerId);
+
+  useEffect(() => clearTimer, []);
   useEffect(() => {
-    return () => state.timerId && clearTimeout(state.timerId);
-  }, []);
+    if (clear) {
+      dispatch({ type: INPUT_CONTENT, timerId: clearTimer(), value: '' });
+      notify('');
+    }
+  }, [clear]);
 
   const showCallback = () => {
     dispatch({

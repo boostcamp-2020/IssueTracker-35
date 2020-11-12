@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-import { Div } from '@/styles/styled';
+import { Div, Button } from '@/styles/styled';
 import getTimestamp from '@/utils/timestamp';
+import { UserContext } from '@/store/user';
 
 const Container = styled.div`
   display: flex;
@@ -12,6 +13,7 @@ const Container = styled.div`
   width: 100%;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 1rem;
 `;
 
 const ProfileImage = styled.img`
@@ -28,17 +30,23 @@ const ContentContainer = styled.div`
   flex: 1 1;
   border: 1px solid ${color.LIGHT_GRAY};
   border-radius: 7px;
+  min-height: 100px;
 `;
 
 const Header = styled(Div.row)`
   justify-content: space-between;
   border-bottom: 1px solid ${color.LIGHT_GRAY};
-  padding: 10px;
+  padding: 8px 10px;
   background-color: ${color.THIN_GRAY};
 `;
 
 const HeaderLeft = styled(Div.row)`
   justify-content: space-between;
+`;
+
+const HeaderRight = styled(Div.row)`
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Nickname = styled.span`
@@ -56,24 +64,49 @@ const Body = styled.div`
   padding: 10px;
 `;
 
-const Comment = ({ comment }) => {
+const Owner = styled.div`
+  background-color: transparent;
+  color: ${color.DARK_GRAY};
+  border: 1px solid ${color.LIGHT_GRAY};
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const EditButton = styled(Button)`
+  background-color: transparent;
+  color: ${color.DARK_GRAY};
+  height: auto;
+  padding: 5px 10px;
+`;
+
+const Comment = ({ comment, author }) => {
+  const {
+    state: { user },
+  } = useContext(UserContext);
+
+  const isOwner = author === comment.owner.nickname;
+  const isMine = user?.nickname === comment.owner.nickname;
+
   return (
     <Container>
-      {/* TODO comment.author.image 로 src를 바꿔주어야 함 */}
-      <ProfileImage
-        src="https://avatars0.githubusercontent.com/u/49153756?s=460&u=a475983d60adb9ddac3d55771bde039d545360dd&v=4"
-        alt=""
-      />
+      <ProfileImage src={comment.owner.image} alt="" />
       <ContentContainer>
         <Header>
           <HeaderLeft>
-            <Nickname>{comment?.author.nickname}</Nickname>
+            <Nickname>{comment.owner.nickname}</Nickname>
             <Timestamp>
-              commented {getTimestamp(new Date(), comment?.createdAt)}
+              commented {getTimestamp(new Date(), comment.createdAt)}
             </Timestamp>
           </HeaderLeft>
+          <HeaderRight>
+            {isOwner && <Owner> Owner </Owner>}
+            {isMine && <EditButton>Edit</EditButton>}
+          </HeaderRight>
         </Header>
-        <Body></Body>
+        <Body>{comment.content}</Body>
       </ContentContainer>
     </Container>
   );

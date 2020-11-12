@@ -1,7 +1,20 @@
-import { UPDATE_ASSIGNEE, UPDATE_LABEL, UPDATE_MILESTONE } from './actions';
+import {
+  INIT,
+  UPDATE_ASSIGNEE,
+  UPDATE_LABEL,
+  UPDATE_MILESTONE,
+} from './actions';
 
 export default (state, action) => {
   switch (action.type) {
+    case INIT:
+      return {
+        assignees: new Map(
+          action.issue.assignees?.map(assignee => [assignee.id, assignee])
+        ),
+        labels: new Map(action.issue.labels?.map(label => [label.id, label])),
+        milestone: action.issue.milestone,
+      };
     case UPDATE_ASSIGNEE:
       return {
         assignees: action.assignees,

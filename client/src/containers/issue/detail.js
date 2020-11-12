@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
-import { IssueListContext } from '@/store/issue';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { DetailSidebar } from '@/containers/issue/sidebar';
 import IssueDetailHeader from '@/containers/issue/detailHeader';
 import Comment from '@/components/issue/comment';
 import CommentWriteContainer from '@/containers/issue/commentWrite';
 import styled from 'styled-components';
-import { Input, Button } from '@/styles/styled';
+import { issueAPI } from '@/api/issue';
 import color from '@/styles/colors';
 
 const Container = styled.div`
@@ -31,21 +29,34 @@ const CommentContainer = styled.div`
   width: 100%;
 `;
 
-const IssueDetailContainer = ({ match }) => {
-  // TODO 서버에서 해당 issue id로 이슈 정보를 조회해야 함
-  const {
-    state: { issues },
-  } = useContext(IssueListContext);
+const Border = styled.div`
+  margin: 2rem 2rem 0 0;
+  border-top: 2px solid ${color.LIGHT_GRAY};
+`;
 
-  const issue = issues.find(issue => +match.params.issueId === issue.id);
+const IssueDetailContainer = ({ match }) => {
+  const [issue, setIssue] = useState(undefined);
+
+  const getIssue = async () => {
+    const {
+      data: { issue },
+    } = await issueAPI.getIssue(match.params.issueId);
+
+    setIssue(issue);
+  };
+
+  useEffect(getIssue, []);
 
   return (
     <Container>
       {issue && <IssueDetailHeader issue={issue} />}
       <ContentContainer>
         <CommentContainer>
-          <Comment comment={issue} />
-          <CommentWriteContainer />
+          {issue?.comments?.map(comment => (
+            <Comment key={comment.id} comment={comment} author={issue.author} />
+          ))}
+          <Border />
+          <CommentWriteContainer issue={issue} setIssue={setIssue} />
         </CommentContainer>
         <DetailSidebar issue={issue} />
       </ContentContainer>
@@ -53,4 +64,7 @@ const IssueDetailContainer = ({ match }) => {
   );
 };
 
-export default IssueDetailContainer;
+export default React.memo(
+  IssueDetailContainer,
+  (prev, next) => prev.match.url === next.match.url
+);
