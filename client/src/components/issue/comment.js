@@ -30,6 +30,7 @@ const ContentContainer = styled.div`
   flex: 1 1;
   border: 1px solid ${color.LIGHT_GRAY};
   border-radius: 7px;
+  min-height: 100px;
 `;
 
 const Header = styled(Div.row)`
@@ -87,7 +88,7 @@ const Comment = ({ comment, author }) => {
   } = useContext(UserContext);
 
   const isOwner = author === comment.owner.nickname;
-  const isMine = user.nickname === comment.owner.nickname;
+  const isMine = user?.nickname === comment.owner.nickname;
 
   return (
     <Container>

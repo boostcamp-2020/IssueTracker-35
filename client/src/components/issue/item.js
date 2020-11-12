@@ -10,6 +10,7 @@ import CommentIcon from '@/styles/svgs/comment';
 import getTimestamp from '@/utils/timestamp';
 
 const Container = styled.div`
+  position: relative;
   border-top: 1px solid ${color.LIGHT_GRAY2};
   display: flex;
   &:hover {
@@ -66,7 +67,7 @@ const IssueLeft = styled.div`
 const IssueRight = styled.div`
   display: flex;
   padding: 10px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: start;
   width: 25%;
 `;
@@ -85,6 +86,7 @@ const AssigneeImages = styled.img`
 
 const AssigneeContainer = styled.div`
   position: relative;
+  right: 55px;
   display: flex;
   width: 30px;
   align-items: center;

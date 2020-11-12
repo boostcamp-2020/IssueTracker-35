@@ -51,6 +51,7 @@ const FilterLeft = styled.div`
 const FilterRight = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-right: 50px;
 `;
 
 const Filter = () => {

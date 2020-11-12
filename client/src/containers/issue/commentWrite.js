@@ -14,8 +14,6 @@ const Container = styled.div`
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  border-top: 2px solid ${color.LIGHT_GRAY};
-  margin-top: 2rem;
   padding-top: 1rem;
 `;
 

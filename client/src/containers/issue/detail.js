@@ -5,6 +5,7 @@ import Comment from '@/components/issue/comment';
 import CommentWriteContainer from '@/containers/issue/commentWrite';
 import styled from 'styled-components';
 import { issueAPI } from '@/api/issue';
+import color from '@/styles/colors';
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +29,11 @@ const CommentContainer = styled.div`
   width: 100%;
 `;
 
+const Border = styled.div`
+  margin: 2rem 2rem 0 0;
+  border-top: 2px solid ${color.LIGHT_GRAY};
+`;
+
 const IssueDetailContainer = ({ match }) => {
   const [issue, setIssue] = useState(undefined);
 
@@ -49,7 +55,7 @@ const IssueDetailContainer = ({ match }) => {
           {issue?.comments?.map(comment => (
             <Comment key={comment.id} comment={comment} author={issue.author} />
           ))}
-
+          <Border />
           <CommentWriteContainer issue={issue} setIssue={setIssue} />
         </CommentContainer>
         <DetailSidebar issue={issue} />
