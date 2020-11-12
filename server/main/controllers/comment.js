@@ -7,15 +7,15 @@ class CommentController {
     this.updateComment = this.updateComment.bind(this);
   }
 
-  validate(body, id) {
+  validate(body) {
     const err = new Error('Bad Request');
     err.status = 400;
 
-    if (!body || typeof body.content !== 'string' || isNaN(id)) return err;
+    if (!body || typeof body.content !== 'string') return err;
   }
 
   async createComment(req, res, next) {
-    const err = this.validate(req.body, req.params.issueID);
+    const err = this.validate(req.body);
     if (err) return next(err);
     const id = await commentService.create(
       req.body.content,
@@ -27,7 +27,7 @@ class CommentController {
   }
 
   async updateComment(req, res, next) {
-    const err = this.validate(req.body, req.params.commentID);
+    const err = this.validate(req.body);
     if (err) return next(err);
     await commentService.update(req.body.content, req.params.commentID);
     responseHandler(res, 200);

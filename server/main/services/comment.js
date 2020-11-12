@@ -18,6 +18,11 @@ class CommentService {
     }
   }
 
+  async getAuthorByCommentID(id) {
+    const comment = await this.Comment.findByPk(id);
+    return comment;
+  }
+
   async getCommentsByIssueID(issueID) {
     try {
       const comments = await this.Comment.findAll({
