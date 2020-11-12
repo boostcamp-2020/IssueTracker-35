@@ -2,7 +2,7 @@ import React, { useReducer, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-// import { issueAPI } from '@/api/issue';
+import { issueAPI } from '@/api/issue';
 import Label from '@/components/label';
 
 import Assignee from '@/components/issue/assignee';
@@ -167,30 +167,26 @@ const DetailSidebar = ({ issue }) => {
   useEffect(initIssue, [issue]);
 
   const handleAssigneesChange = async checked => {
-    try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
-      dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
-    } catch (err) {
-      alert('Assignee 업데이트에 실패하였습니다.');
-    }
+    /*     const {
+      data: { success },
+    } = await issueAPI.changeAssignees(issue.id, checked);
+ */
+    dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
+
+    // if (!success) alert('Assignee 업데이트에 실패하였습니다.');
   };
 
   const handleLabelsChange = async checked => {
-    try {
-      // await issueAPI.changeLabels(issue.id, labels);
-      dispatch({ type: UPDATE_LABEL, labels: checked });
-    } catch (err) {
-      alert('Label 업데이트에 실패하였습니다.');
-    }
+    const {
+      data: { success },
+    } = await issueAPI.changeLabels(issue.id, checked);
+
+    dispatch({ type: UPDATE_LABEL, labels: checked });
+    if (!success) alert('Label 업데이트에 실패하였습니다.');
   };
 
   const handleMilestoneChange = async checked => {
-    try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
-      dispatch({ type: UPDATE_MILESTONE, milestone: checked });
-    } catch (err) {
-      alert('Milestone 업데이트에 실패할 때까지 구현이 될까요?');
-    }
+    dispatch({ type: UPDATE_MILESTONE, milestone: checked });
   };
 
   return (
