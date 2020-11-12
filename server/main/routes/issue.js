@@ -24,7 +24,6 @@ router.get(
 router.post(
   '/:issueID/comments',
   authenticateUser,
-  issueController.isValidComment,
   commentController.createComment
 );
 
