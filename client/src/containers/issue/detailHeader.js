@@ -108,7 +108,7 @@ const SaveButton = styled(EditButton)`
   opacity: ${({ isAble }) => (isAble ? 1 : 0.5)};
 `;
 
-const IssueDetailHeader = ({ issue }) => {
+const IssueDetailHeader = ({ issue, setIssue }) => {
   const [isEdit, setEdit] = useState(false);
   const [title, setTitle] = useState(issue.title);
   const [isAble, setAble] = useState(true);
@@ -125,9 +125,10 @@ const IssueDetailHeader = ({ issue }) => {
   };
 
   const updateTitle = async () => {
-    // const res = await issueAPI.updateTitle(issue.id, title);
-    // if (!res) alert('수정에 실패했습니다.');
+    const res = await issueAPI.updateTitle(issue.id, title);
+    if (!res) alert('수정에 실패했습니다.');
 
+    setIssue({ ...issue, title });
     setEdit(false);
   };
 
