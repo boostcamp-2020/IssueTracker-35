@@ -47,7 +47,7 @@ const IssueDetailContainer = ({ match }) => {
       <ContentContainer>
         <CommentContainer>
           {issue?.comments?.map(comment => (
-            <Comment key={comment.id} comment={comment} />
+            <Comment key={comment.id} comment={comment} author={issue.author} />
           ))}
 
           <CommentWriteContainer issue={issue} setIssue={setIssue} />

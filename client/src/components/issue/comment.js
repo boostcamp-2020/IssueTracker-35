@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-import { Div } from '@/styles/styled';
+import { Div, Button } from '@/styles/styled';
 import getTimestamp from '@/utils/timestamp';
+import { UserContext } from '@/store/user';
 
 const Container = styled.div`
   display: flex;
@@ -34,12 +35,17 @@ const ContentContainer = styled.div`
 const Header = styled(Div.row)`
   justify-content: space-between;
   border-bottom: 1px solid ${color.LIGHT_GRAY};
-  padding: 10px;
+  padding: 8px 10px;
   background-color: ${color.THIN_GRAY};
 `;
 
 const HeaderLeft = styled(Div.row)`
   justify-content: space-between;
+`;
+
+const HeaderRight = styled(Div.row)`
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Nickname = styled.span`
@@ -57,7 +63,32 @@ const Body = styled.div`
   padding: 10px;
 `;
 
-const Comment = ({ comment }) => {
+const Owner = styled.div`
+  background-color: transparent;
+  color: ${color.DARK_GRAY};
+  border: 1px solid ${color.LIGHT_GRAY};
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const EditButton = styled(Button)`
+  background-color: transparent;
+  color: ${color.DARK_GRAY};
+  height: auto;
+  padding: 5px 10px;
+`;
+
+const Comment = ({ comment, author }) => {
+  const {
+    state: { user },
+  } = useContext(UserContext);
+
+  const isOwner = author === comment.owner.nickname;
+  const isMine = user.nickname === comment.owner.nickname;
+
   return (
     <Container>
       <ProfileImage src={comment.owner.image} alt="" />
@@ -69,6 +100,10 @@ const Comment = ({ comment }) => {
               commented {getTimestamp(new Date(), comment.createdAt)}
             </Timestamp>
           </HeaderLeft>
+          <HeaderRight>
+            {isOwner && <Owner> Owner </Owner>}
+            {isMine && <EditButton>Edit</EditButton>}
+          </HeaderRight>
         </Header>
         <Body>{comment.content}</Body>
       </ContentContainer>
