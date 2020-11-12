@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-done-callback */
 const request = require('supertest');
 const app = require('@/app');
-const { expectedUserToken } = require('@test/seeds/user');
+const { users, expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 const { issueIds } = require('@test/seeds/issue');
@@ -20,14 +20,8 @@ describe('retrieve all issues', () => {
       isOpen: true,
       author: { nickname: 'user11' },
       milestone: [],
-      assignees: [{ nickname: 'user33', image: DEFAULT_PROFILE_IMAGE_URL }],
-      labels: [
-        {
-          id: expectedLabels[1].id,
-          title: expectedLabels[1].title,
-          color: expectedLabels[1].color,
-        },
-      ],
+      assignees: [Object.assign({}, users[2], { password: undefined })],
+      labels: [Object.assign({}, expectedLabels[1], { content: undefined })],
       commentCount: 2,
     };
     try {
