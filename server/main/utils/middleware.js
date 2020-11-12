@@ -42,12 +42,13 @@ exports.isValidIssueID = async (req, res, next) => {
 exports.isValidCommentID = async (req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
-  const { issueID } = req.params;
-  const issue = issueID && (await issueService.getAuthorByCommentID(issueID));
-  if (!issue) {
+  const { commentID } = req.params;
+  const comment =
+    commentID && (await commentService.getAuthorByCommentID(commentID));
+  if (!comment) {
     return next(err);
   }
-  req.body.author = issue.user_id;
+  req.body.author = comment.dataValues.user_id;
   next();
 };
 
