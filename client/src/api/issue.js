@@ -1,4 +1,4 @@
-import { requestGET, requestPOST, requestPUT } from '@/api';
+import { requestGET, requestPOST, requestPUT, requestPATCH } from '@/api';
 
 const BASE_ISSUES_PATH = '/issues';
 
@@ -21,4 +21,7 @@ export const issueAPI = {
 
   changeLabels: (issueId, labels) =>
     requestPUT(TARGET_ISSUE_LABEL_PATH(issueId), { labels }),
+
+  updateTitle: (issueId, title) =>
+    requestPATCH(TARGET_ISSUE_PATH(issueId), { title }),
 };

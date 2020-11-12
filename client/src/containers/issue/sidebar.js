@@ -175,13 +175,10 @@ const DetailSidebar = ({ issue }) => {
 
     const assignees = [...checked.keys()];
 
-    const {
-      data: { success },
-    } = await issueAPI.changeAssignees(issue.id, assignees);
+    const response = await issueAPI.changeAssignees(issue.id, assignees);
 
+    if (!response) return alert('Assignee 업데이트에 실패하였습니다.');
     dispatch({ type: UPDATE_ASSIGNEE, assignees: target });
-
-    if (!success) alert('Assignee 업데이트에 실패하였습니다.');
   };
 
   const handleLabelsChange = async checked => {
@@ -192,12 +189,10 @@ const DetailSidebar = ({ issue }) => {
 
     const labels = [...target.keys()];
 
-    const {
-      data: { success },
-    } = await issueAPI.changeLabels(issue.id, labels);
+    const response = await issueAPI.changeLabels(issue.id, labels);
 
+    if (!response) return alert('Label 업데이트에 실패하였습니다.');
     dispatch({ type: UPDATE_LABEL, labels: target });
-    if (!success) alert('Label 업데이트에 실패하였습니다.');
   };
 
   const handleMilestoneChange = async checked => {
