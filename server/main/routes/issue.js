@@ -24,7 +24,7 @@ router.get(
 router.put(
   '/:issueID/labels',
   authenticateUser,
-  issueLabelController.isValidIssueID,
+  isValidIssueID,
   issueLabelController.amendIssueLabels
 );
 

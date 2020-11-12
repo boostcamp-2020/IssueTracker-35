@@ -1,5 +1,5 @@
 const { responseHandler } = require('@/utils/handler');
-const { issueService, issueLabelService } = require('@/services/index');
+const { issueLabelService } = require('@/services/index');
 const { sequelize } = require('@/models');
 
 class IssueLabelController {
@@ -19,20 +19,6 @@ class IssueLabelController {
       await transaction.rollback();
       next(err);
     }
-  }
-  async isValidIssueID(req, res, next) {
-    const err = new Error('Bad Request');
-    err.status = 400;
-    const { issueID } = req.params;
-    if (!issueID) {
-      return next(err);
-    }
-    const issue = await issueService.retrieveById(issueID);
-    if (!issue) {
-      return next(err);
-    }
-
-    next();
   }
 }
 
