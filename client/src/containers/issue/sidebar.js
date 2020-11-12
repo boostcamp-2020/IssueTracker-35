@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
 // import { issueAPI } from '@/api/issue';
+import Label from '@/components/label';
 
 import Assignee from '@/components/issue/assignee';
-import Label from '@/components/issue/label';
+import LabelList from '@/components/issue/label';
 import SidebarItem from '@/components/issue/sidebarItem';
 import { UserContext } from '@/store/user';
 import {
@@ -60,6 +61,12 @@ const AssigneeContainer = styled.div`
   margin-bottom: 9px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 9px;
+`;
+
 const assigneeProps = (user, state, dispatch, handleAssigneesChange) => {
   const assignMyself = () =>
     dispatch({
@@ -98,8 +105,16 @@ const labelProps = (state, handleLabelsChange) => ({
   textContent: 'None yet',
   handleChange: handleLabelsChange,
   selected: state.labels,
-  component: Label,
-  renderContent: () => undefined,
+  component: LabelList,
+  renderContent: Object.assign(
+    label => (
+      <LabelContainer key={label.id}>
+        <Label label={label} />
+      </LabelContainer>
+    ),
+    { displayName: 'Assignee' }
+  ),
+  isColumn: false,
 });
 
 const milestoneProps = (state, handleMilestoneChange) => ({

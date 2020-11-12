@@ -27,7 +27,7 @@ const Header = styled.div`
 
 const Body = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ isColumn }) => (isColumn ? 'column' : 'row')};
   justify-content: flex-start;
   margin-bottom: 1rem;
   font-size: 14px;
@@ -48,6 +48,7 @@ const SideBarItem = ({
   selected,
   component,
   renderContent,
+  isColumn = true,
 }) => {
   const [isVisible, setVisible] = useState(false);
 
@@ -63,7 +64,7 @@ const SideBarItem = ({
         <Title>{title}</Title>
         <CogWheel />
       </Header>
-      <Body>
+      <Body isColumn={isColumn}>
         {selected?.size
           ? [...selected.values()].map(renderContent)
           : textContent}
