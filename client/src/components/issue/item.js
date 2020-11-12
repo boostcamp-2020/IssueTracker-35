@@ -99,6 +99,7 @@ const Comment = styled.div`
 
 const CommentCount = styled.p`
   margin: 0 3px;
+  color: ${color.GRAY};
 `;
 
 const StyledLink = styled(Link)`

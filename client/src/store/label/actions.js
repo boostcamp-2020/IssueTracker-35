@@ -1,7 +1,7 @@
-const TOGGEL = 'TOGGEL';
+const TOGGLE = 'TOGGLE';
 const ADD = 'ADD';
 const UPDATE = 'UPDATE';
 const DELETE = 'DELETE';
 const INIT = 'INIT';
 
-export { TOGGEL, ADD, UPDATE, INIT, DELETE };
+export { TOGGLE, ADD, UPDATE, INIT, DELETE };

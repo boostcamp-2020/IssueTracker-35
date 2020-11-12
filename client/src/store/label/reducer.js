@@ -1,11 +1,11 @@
-import { TOGGEL, ADD, INIT } from './actions';
+import { TOGGLE, ADD, INIT } from './actions';
 
 export default (state, action) => {
   switch (action.type) {
-    case TOGGEL:
+    case TOGGLE:
       return {
         labels: state.labels,
-        create: action.create,
+        create: !state.create,
       };
     case ADD:
       return {
