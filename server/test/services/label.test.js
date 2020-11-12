@@ -15,4 +15,16 @@ describe('Total Labels', () => {
     },
     TIMEOUT
   );
+  test('retrieve all labels', async () => {
+    //given
+    //when
+    const labels = await labelService.getAllLabels();
+    const recievedLabels = labels.map(label => {
+      const copy = Object.assign({}, label.dataValues);
+      return copy;
+    });
+
+    //then
+    expect(recievedLabels).toStrictEqual(expectedLabels);
+  });
 });
