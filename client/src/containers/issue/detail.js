@@ -51,7 +51,7 @@ const IssueDetailContainer = ({ match }) => {
             <Comment key={comment.id} comment={comment} />
           ))}
 
-          <CommentWriteContainer />
+          <CommentWriteContainer issue={issue} setIssue={setIssue} />
         </CommentContainer>
         <DetailSidebar issue={issue} />
       </ContentContainer>

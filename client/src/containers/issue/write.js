@@ -14,7 +14,6 @@ import { NEW_ISSUE } from '@/store/issue/actions';
 import { reducer, initState } from '@/store/sidebar';
 
 import { issueAPI } from '@/api/issue';
-import CheckMark from '../../styles/svgs/check';
 
 const Container = styled.div`
   display: flex;
@@ -99,7 +98,7 @@ const IssueWriteContainer = ({ history }) => {
       content,
       assignees: [...sidebarState.assignees.keys()],
       labels: [...sidebarState.labels.keys()],
-      milestone: sidebarState.milestone,
+      milestone: sidebarState.milestone || [],
     };
 
     const {

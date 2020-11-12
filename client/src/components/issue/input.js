@@ -4,12 +4,8 @@ import color from '@/styles/colors';
 import size from '@/styles/sizes';
 import { Textarea } from '@/styles/styled';
 
-import { initState, reducer } from '@/store/comment';
-import {
-  INPUT_CONTENT,
-  SHOW_COUNT,
-  CLEAR_COUNT,
-} from '@/store/comment/actions';
+import { initState, reducer } from '@/store/input';
+import { INPUT_CONTENT, SHOW_COUNT, CLEAR_COUNT } from '@/store/input/actions';
 
 const DELAY = 2000;
 

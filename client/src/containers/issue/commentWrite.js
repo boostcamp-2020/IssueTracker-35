@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button } from '@/styles/styled';
 import { DebouncedInput as ContentInput } from '@/components/issue/input';
 import { UserContext } from '@/store/user';
+import { issueAPI } from '@/api/issue';
 import color from '@/styles/colors';
 
 const Container = styled.div`
@@ -63,7 +64,7 @@ const TabButton = styled(Button)`
   border-radius: 3px 3px 0 0;
 `;
 
-const CommentWriteContainer = () => {
+const CommentWriteContainer = ({ issue, setIssue }) => {
   const [isAble, setAble] = useState(false);
   const contentRef = useRef();
 
@@ -73,6 +74,26 @@ const CommentWriteContainer = () => {
 
   const notify = value => {
     if (isAble === !value) setAble(!isAble);
+  };
+
+  const submitComment = async () => {
+    const content = contentRef.current.value;
+
+    /*
+     const {
+      data: { id },
+    } = await issueAPI.submitComment(issue.id, content);
+     */
+
+    const id = Math.floor(Math.random() * 500);
+    const comment = {
+      id,
+      content,
+      createdAt: new Date(),
+      owner: user,
+    };
+
+    setIssue({ ...issue, comments: issue.comments.concat(comment) });
   };
 
   return (
@@ -87,7 +108,11 @@ const CommentWriteContainer = () => {
           <Link to="/issues">
             <CloseIssueButton>Cancel</CloseIssueButton>
           </Link>
-          <SubmitButton isAble={isAble} disabled={!isAble}>
+          <SubmitButton
+            onClick={submitComment}
+            isAble={isAble}
+            disabled={!isAble}
+          >
             Comment
           </SubmitButton>
         </ButtonContainer>
