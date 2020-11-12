@@ -50,6 +50,20 @@ class IssueLabelService {
       throw Error(err);
     }
   }
+  async removeAllByIssueID(issueID, transaction) {
+    try {
+      const result = await this.IssueLabel.destroy(
+        {
+          where: { issue_id: issueID },
+        },
+        { transaction: transaction }
+      );
+
+      return result;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
 }
 
 module.exports = new IssueLabelService(IssueLabel);
