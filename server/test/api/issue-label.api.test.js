@@ -2,7 +2,7 @@
 const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
-const { expectedLabels } = request('@/test/seeds/label');
+const { expectedLabels } = require('@test/seeds/label');
 const { issueLabelService } = require('@/services/index');
 
 const SUCCESS_CODE = 200;
@@ -21,7 +21,7 @@ describe('modify issue-labels', () => {
       request(app)
         .put(ISSUE_LABEL_API) // when
         .set('Authorization', expectedUserToken)
-        .send(labels)
+        .send({ labels })
         .end(async (err, res) => {
           if (err) {
             throw err;
