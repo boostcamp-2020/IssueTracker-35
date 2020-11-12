@@ -102,6 +102,23 @@ class IssueController {
     }
   }
 
+  async updateIssueTitle(req, res, next) {
+    const title = req.body && req.body.title;
+    if (!title || typeof title !== 'string') {
+      // 빈 문자열도 거부
+      const err = new Error('Bad Request');
+      err.status = 400;
+      return next(err);
+    }
+
+    try {
+      if (await issueService.updateTitle(req.params.issueID, title))
+        responseHandler(res, 200);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   isValidParams(req, res, next) {
     const err = new Error('Bad Request');
     err.status = 400;

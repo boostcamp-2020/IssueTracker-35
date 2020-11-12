@@ -29,6 +29,7 @@ const issues = [
 ];
 
 const expectedIssue = issues[1];
+const otherIssue = issues[3];
 
 const issueIds = new Set();
 issues.forEach(issue => issueIds.add(issue.id));
@@ -41,4 +42,10 @@ const finiIssues = async () => {
   await Issue.destroy({ where: {} });
 };
 
-module.exports = { initIssues, finiIssues, expectedIssue, issueIds };
+module.exports = {
+  initIssues,
+  finiIssues,
+  expectedIssue,
+  otherIssue,
+  issueIds,
+};

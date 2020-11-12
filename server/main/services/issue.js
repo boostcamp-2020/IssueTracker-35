@@ -62,6 +62,9 @@ class IssueService {
       throw Error(err);
     }
   }
+  async updateTitle(issueID, title) {
+    return (await this.Issue.update({ title }, { where: { id: issueID } }))[0];
+  }
 }
 
 module.exports = new IssueService(Issue);
