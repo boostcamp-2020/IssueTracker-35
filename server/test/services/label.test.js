@@ -28,3 +28,52 @@ describe('Total Labels', () => {
     expect(recievedLabels).toStrictEqual(expectedLabels);
   });
 });
+
+describe('Create Label', () => {
+  test('valid data', async () => {
+    // given
+    const expectedLabel = {
+      title: 'label 생성!!',
+      content: '나는 개똥벌레22',
+      color: 'FE2E2E',
+    };
+
+    // when
+    const label = await labelService.create(expectedLabel);
+
+    // then
+    Object.keys(expectedLabel).forEach(key =>
+      expect(label.dataValues[key]).toBe(expectedLabel[key])
+    );
+    expect(label.id).toBeGreaterThanOrEqual(expectedLabels.length);
+    await labelService.remove(label.id);
+  });
+  test('invalid title', async () => {
+    // given
+    const label = {
+      title: null,
+      content: 'title 없어서 등록되면 안된다',
+      color: 'FE2E2E',
+    };
+
+    // when
+    const labelID = await labelService.create(label);
+
+    // then
+    expect(labelID).toBeGreaterThanOrEqual(expectedLabels.length);
+  });
+  test('invalid color', async () => {
+    // given
+    const label = {
+      title: 'color가 없는 테스트',
+      content: '등록되면 안된다',
+      color: null,
+    };
+
+    // when
+    const labelID = await labelService.create(label);
+
+    // then
+    expect(labelID).toBeGreaterThanOrEqual(expectedLabels.length);
+  });
+});
