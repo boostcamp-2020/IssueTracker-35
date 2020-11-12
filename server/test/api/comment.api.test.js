@@ -52,6 +52,7 @@ describe('create comment', () => {
     try {
       request(app)
         .post(CREATE_URL(expectedComments[INDEX.comment].issue_id))
+        .set('Authorization', createJWT(users[INDEX.user]))
         .end((err, res) => {
           if (err) throw err;
           const { code } = res.body;
