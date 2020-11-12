@@ -10,7 +10,7 @@ import LabelItem from '@/components/label/item';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-import { TOGGEL } from '../../store/label/actions';
+import { TOGGLE } from '../../store/label/actions';
 
 const Container = styled.div`
   max-width: 1280px;
@@ -99,7 +99,7 @@ const LabelListContainer = () => {
   const { state, dispatch } = useContext(LabelContext);
 
   const handleToggle = () => {
-    dispatch({ type: TOGGEL, create: !state.create });
+    dispatch({ type: TOGGLE, create: !state.create });
   };
 
   return (
@@ -119,7 +119,7 @@ const LabelListContainer = () => {
         </ButtonContainer>
         <NewIssueButton onClick={handleToggle}>New label</NewIssueButton>
       </ListHeader>
-      {state.create && <NewLabelConainer />}
+      {state.create && <NewLabelConainer dispatch={dispatch} />}
       <ListBody>
         <ItemHeader>
           <LabelCount>{state.labels.length} labels</LabelCount>
