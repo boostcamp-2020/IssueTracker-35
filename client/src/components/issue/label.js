@@ -20,7 +20,7 @@ const LabelContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const ColorTitlte = styled.div`
@@ -29,18 +29,20 @@ const ColorTitlte = styled.div`
 `;
 
 const Color = styled.div`
-  margin: 10px;
-  height: 20px;
-  width: 20px;
+  background-color: ${({ labelColor }) => `#${labelColor}`};
+  margin: 5px 8px;
+  height: 15px;
+  width: 15px;
   border-radius: 50%;
 `;
 
 const Title = styled.span`
-  font-size: ${size.DEFAULT_FONT_SIZE};
+  font-size: 12px;
 `;
 
 const Content = styled.span`
-  font-size: ${size.DEFAULT_FONT_SIZE};
+  font-size: 12px;
+  margin: 0 0 5px 8px;
 `;
 
 const Label = ({ checked, setChecked }) => {
