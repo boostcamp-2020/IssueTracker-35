@@ -2,12 +2,7 @@
 const request = require('supertest');
 const app = require('@/app');
 const { expectedUserToken } = require('@test/seeds/user');
-
-const successCode = 200;
-const badRequestCode = 400;
-const badRequestMsg = 'Bad Request';
-const unAuthorizedCode = 401;
-const unAuthorizedMsg = 'Unauthorized';
+const { status } = require('@test/api/response-status');
 
 describe('create issue', () => {
   const CREATE_ISSUE_URL = '/issues';
@@ -25,8 +20,8 @@ describe('create issue', () => {
               throw Error(err);
             }
             const { code, message } = res.body;
-            expect(code).toBe(badRequestCode);
-            expect(message).toBe(badRequestMsg);
+            expect(code).toBe(status.code.BAD_REQUEST);
+            expect(message).toBe(status.message.BAD_REQUEST);
             done();
           });
       } catch (err) {
@@ -55,7 +50,7 @@ describe('create issue', () => {
           }
           //then
           const { id, success, code } = res.body;
-          expect(code).toBe(successCode);
+          expect(code).toBe(status.code.SUCCESS);
           expect(typeof id).toBe('number');
           expect(success).toBeTruthy();
           done();
@@ -82,8 +77,8 @@ describe('create issue', () => {
             throw Error(err);
           }
           const { code, message } = res.body;
-          expect(code).toBe(unAuthorizedCode);
-          expect(message).toBe(unAuthorizedMsg);
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {
