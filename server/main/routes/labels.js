@@ -5,5 +5,10 @@ const { authenticateUser } = require('@/utils/middleware');
 const router = express.Router();
 
 router.get('/', authenticateUser, labelController.getAllLabels);
-
+router.post(
+  '/',
+  authenticateUser,
+  labelController.isValidToCreate,
+  labelController.createLabel
+);
 module.exports = router;
