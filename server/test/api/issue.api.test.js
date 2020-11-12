@@ -4,13 +4,13 @@ const app = require('@/app');
 const { users, expectedUserToken } = require('@test/seeds/user');
 const { expectedLabels } = require('@test/seeds/label');
 const { status } = require('@test/api/response-status');
-const { issueIds } = require('@test/seeds/issue');
+const { issueIds, otherIssue } = require('@test/seeds/issue');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 describe('retrieve all issues', () => {
   const ALL_ISSUE_URL = '/issues';
 
-  it('success retrieve all issues', done => {
+  it('successfully', done => {
     //given
     const expectedIssue = {
       id: 3,
@@ -48,7 +48,7 @@ describe('retrieve all issues', () => {
       done(err);
     }
   });
-  it('invalid token -> 401 Unauthorized', done => {
+  it('with invalid token -> 401 Unauthorized', done => {
     try {
       request(app)
         .get(ALL_ISSUE_URL)
@@ -70,7 +70,7 @@ describe('retrieve all issues', () => {
 describe('retrieve issue details', () => {
   const ISSUE_DETAIL_URL = '/issues/2';
 
-  it('success retrieve issue details', done => {
+  it('successfully', done => {
     //given
     const expectedIssue = {
       id: 2,
@@ -134,7 +134,7 @@ describe('retrieve issue details', () => {
       done(err);
     }
   });
-  it('invalid token -> 401 Unauthorized', done => {
+  it('with invalid token -> 401 Unauthorized', done => {
     try {
       request(app)
         .get(ISSUE_DETAIL_URL)
@@ -145,6 +145,43 @@ describe('retrieve issue details', () => {
           const { code, message } = res.body;
           expect(code).toBe(status.code.UNAUTHORIZED);
           expect(message).toBe(status.message.UNAUTHORIZED);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('update title of an issue', () => {
+  const ISSUE_DETAIL_URL = `/issues/${otherIssue.id}`;
+  const data = { title: '우욱' };
+
+  it('successfully', done => {
+    try {
+      request(app)
+        .patch(ISSUE_DETAIL_URL)
+        .set('Authorization', expectedUserToken)
+        .send(data)
+        .end((err, res) => {
+          const { code } = res.body;
+          expect(code).toBe(status.code.SUCCESS);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+
+  it('with invalid title', done => {
+    try {
+      request(app)
+        .patch(ISSUE_DETAIL_URL)
+        .set('Authorization', expectedUserToken)
+        .send({ data: { title: '?' } })
+        .end((err, res) => {
+          const { code } = res.body;
+          expect(code).toBe(status.code.BAD_REQUEST);
           done();
         });
     } catch (err) {

@@ -45,8 +45,8 @@ describe('Create Label', () => {
     Object.keys(expectedLabel).forEach(key =>
       expect(label.dataValues[key]).toBe(expectedLabel[key])
     );
-    expect(label.id).toBeGreaterThanOrEqual(expectedLabels.length);
     await labelService.remove(label.id);
+    expect(label.id).toBeGreaterThanOrEqual(expectedLabels.length);
   });
   test('invalid title', async () => {
     // given

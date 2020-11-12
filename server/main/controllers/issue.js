@@ -4,7 +4,7 @@ const {
   assignmentService,
   issueLabelService,
   commentService,
-} = require('@/services/index');
+} = require('@/services');
 
 const { convertObjectKeys } = require('@/utils/api');
 const { sequelize } = require('@/models');
@@ -85,7 +85,12 @@ class IssueController {
         milestone[0],
         transaction
       );
-      await commentService.createIssue(content, issueID, userID, transaction);
+      await commentService.createIssueComment(
+        content,
+        issueID,
+        userID,
+        transaction
+      );
       await assignmentService.create(issueID, assignees, transaction);
       await issueLabelService.create(issueID, labels, transaction);
 
@@ -93,6 +98,23 @@ class IssueController {
       responseHandler(res, 200, { id: issueID });
     } catch (err) {
       await transaction.rollback();
+      next(err);
+    }
+  }
+
+  async updateIssueTitle(req, res, next) {
+    const title = req.body && req.body.title;
+    if (!title || typeof title !== 'string') {
+      // 빈 문자열도 거부
+      const err = new Error('Bad Request');
+      err.status = 400;
+      return next(err);
+    }
+
+    try {
+      if (await issueService.updateTitle(req.params.issueID, title))
+        responseHandler(res, 200);
+    } catch (err) {
       next(err);
     }
   }
