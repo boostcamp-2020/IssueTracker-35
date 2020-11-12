@@ -41,8 +41,10 @@ const DebouncedInput = ({ contentRef, notify, clear }) => {
 
   useEffect(() => clearTimer, []);
   useEffect(() => {
-    if (clear)
+    if (clear) {
       dispatch({ type: INPUT_CONTENT, timerId: clearTimer(), value: '' });
+      notify('');
+    }
   }, [clear]);
 
   const showCallback = () => {
