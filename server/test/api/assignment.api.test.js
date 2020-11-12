@@ -31,8 +31,7 @@ describe('modify assignment', () => {
           expect(code).toBe(SUCCESS_CODE);
           expect(success).toBeTruthy();
 
-          const assignments = await assignmentService.getAssigneesByIssue(1);
-
+          const assignments = await assignmentService.getAssigneesByIssue(4);
           const assigneeIDs = assignments.map(assignment => {
             return assignment.User.dataValues.id;
           });
