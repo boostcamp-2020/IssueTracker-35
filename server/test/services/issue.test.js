@@ -3,6 +3,7 @@ const NONEXISTING_ID = 99999;
 
 const { issueService } = require('@/services/index');
 const { expectedIssue, issueIds } = require('@test/seeds/issue');
+const { Issue } = require('@/models');
 
 describe('retrieve', () => {
   test(
@@ -79,10 +80,12 @@ describe('create issue', () => {
 describe('update', () => {
   test('update title', async () => {
     const data = {
-      id: 2,
+      id: 1,
       title: '수정 테스트',
     };
-    const updateResult = await issueService.updateIssue(data);
-    expect(updateResult).toBe(true);
+    const updateResult = await issueService.updateIssue(data.id, data.title);
+    expect(updateResult).toBeTruthy();
+    const { title } = (await Issue.findByPk(data.id)).dataValues;
+    expect(title).toBe(data.title);
   });
 });
