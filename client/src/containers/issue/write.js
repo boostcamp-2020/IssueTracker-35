@@ -153,7 +153,11 @@ const IssueWriteContainer = ({ history }) => {
           </SubmitButton>
         </ButtonContainer>
       </InputContainer>
-      <WriteSidebar state={sidebarState} dispatch={sidebarDispatch} />
+      <WriteSidebar
+        state={sidebarState}
+        dispatch={sidebarDispatch}
+        user={user}
+      />
     </Container>
   );
 };

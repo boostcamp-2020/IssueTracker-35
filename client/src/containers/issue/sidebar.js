@@ -1,6 +1,7 @@
 import React, { useReducer, useContext } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 // import { issueAPI } from '@/api/issue';
 
 import Assignee from '@/components/issue/assignee';
@@ -32,7 +33,84 @@ const Content = styled.div`
   display: flex;
 `;
 
-const WriteSidebar = ({ state, dispatch }) => {
+const ProfileImage = styled.img`
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+`;
+
+const Nickname = styled.span`
+  font-size: ${size.DEFAULT_FONT_SIZE};
+`;
+
+const AssigneeProfile = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AssigneeContainer = styled.div`
+  display: flex;
+  flex: 1 1;
+  justify-content: flex-start;
+  margin-bottom: 9px;
+`;
+
+const assigneeProps = (user, state, dispatch, handleAssigneesChange) => {
+  const assignMyself = () =>
+    dispatch({
+      type: UPDATE_ASSIGNEE,
+      assignees: new Map([[user.id, user]]),
+    });
+
+  return {
+    headerText: 'Assign up to 10 People to this issue',
+    title: 'Assignees',
+    textContent: (
+      <Content>
+        No one--<Span onClick={assignMyself}>assign yourself</Span>
+      </Content>
+    ),
+    handleChange: handleAssigneesChange,
+    selected: state.assignees,
+    component: Assignee,
+    renderContent: Object.assign(
+      user => (
+        <AssigneeContainer key={user.nickname}>
+          <AssigneeProfile>
+            <ProfileImage src={user.image} />
+            <Nickname>{user.nickname}</Nickname>
+          </AssigneeProfile>
+        </AssigneeContainer>
+      ),
+      { displayName: 'Assignee' }
+    ),
+  };
+};
+
+const labelProps = (state, handleLabelsChange) => ({
+  headerText: 'Apply labels to this issue',
+  title: 'Labels',
+  textContent: 'None yet',
+  handleChange: handleLabelsChange,
+  selected: state.labels,
+  component: Div,
+  renderContent: () => undefined,
+});
+
+const milestoneProps = (state, handleMilestoneChange) => ({
+  headerText: 'Set milestone',
+  title: 'Milestone',
+  textContent: 'No milestone',
+  handleChange: handleMilestoneChange,
+  selected: state.milestone,
+  component: Div,
+  renderContent: () => undefined,
+});
+
+const WriteSidebar = ({ state, dispatch, user }) => {
   const handleAssigneesChange = checked => {
     dispatch({ type: UPDATE_ASSIGNEE, assignees: checked });
   };
@@ -48,29 +126,10 @@ const WriteSidebar = ({ state, dispatch }) => {
   return (
     <Container>
       <SidebarItem
-        headerText="Assign up to 10 People to this issue"
-        title="Assignees"
-        content="No one-assign yourself"
-        handleChange={handleAssigneesChange}
-        selected={state.assignees}
-        component={Assignee}
-      ></SidebarItem>
-      <SidebarItem
-        headerText="Apply labels to this issue"
-        title="Labels"
-        content="None yet"
-        handleChange={handleLabelsChange}
-        selected={state.labels}
-        component={Div}
+        {...assigneeProps(user, state, dispatch, handleAssigneesChange)}
       />
-      <SidebarItem
-        headerText="Set milestone"
-        title="Milestone"
-        content="No milestone"
-        handleChange={handleMilestoneChange}
-        selected={state.milestone}
-        component={Div}
-      />
+      <SidebarItem {...labelProps(state, handleLabelsChange)} />
+      <SidebarItem {...milestoneProps(state, handleMilestoneChange)} />
     </Container>
   );
 };
@@ -114,42 +173,13 @@ const DetailSidebar = ({ issue }) => {
     }
   };
 
-  const assignMyself = () =>
-    dispatch({
-      type: UPDATE_ASSIGNEE,
-      assignees: new Map([[user.id, user]]),
-    });
-
   return (
     <Container>
       <SidebarItem
-        headerText="Assign up to 10 People to this issue"
-        title="Assignees"
-        content={
-          <Content>
-            No one--<Span onClick={assignMyself}>assign yourself</Span>
-          </Content>
-        }
-        handleChange={handleAssigneesChange}
-        selected={state.assignees}
-        component={Assignee}
-      ></SidebarItem>
-      <SidebarItem
-        headerText="Apply labels to this issue"
-        title="Labels"
-        content="None yet"
-        handleChange={handleLabelsChange}
-        selected={state.labels}
-        component={Div}
+        {...assigneeProps(user, state, dispatch, handleAssigneesChange)}
       />
-      <SidebarItem
-        headerText="Set milestone"
-        title="Milestone"
-        content="No milestone"
-        handleChange={handleMilestoneChange}
-        selected={state.milestone}
-        component={Div}
-      />
+      <SidebarItem {...labelProps(state, handleLabelsChange)} />
+      <SidebarItem {...milestoneProps(state, handleMilestoneChange)} />
     </Container>
   );
 };

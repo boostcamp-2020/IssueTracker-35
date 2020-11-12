@@ -40,38 +40,14 @@ const Title = styled.p`
   margin: 10px 0;
 `;
 
-const ProfileImage = styled.img`
-  object-fit: cover; /* Do not scale the image */
-  object-position: center; /* Center the image within the element */
-  margin-right: 5px;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-`;
-
-const Nickname = styled.span`
-  font-size: ${size.DEFAULT_FONT_SIZE};
-`;
-
-const AssigneeProfile = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const AssigneeContainer = styled.div`
-  display: flex;
-  flex: 1 1;
-  justify-content: flex-start;
-  margin-bottom: 9px;
-`;
-
 const SideBarItem = ({
   headerText,
   title,
-  content,
+  textContent,
   handleChange,
   selected,
   component,
+  renderContent,
 }) => {
   const [isVisible, setVisible] = useState(false);
 
@@ -89,15 +65,8 @@ const SideBarItem = ({
       </Header>
       <Body>
         {selected?.size
-          ? [...selected.values()].map(user => (
-            <AssigneeContainer key={user.nickname}>
-              <AssigneeProfile>
-                <ProfileImage src={user.image} />
-                <Nickname>{user.nickname}</Nickname>
-              </AssigneeProfile>
-            </AssigneeContainer>
-          ))
-          : content}
+          ? [...selected.values()].map(renderContent)
+          : textContent}
       </Body>
       {isVisible && (
         <Modal
