@@ -9,13 +9,13 @@ const Container = styled.div`
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 2rem;
-  padding: 3px 7px;
+  padding: 1px 7px;
   margin-right: 5px;
 `;
 
 const Title = styled.span`
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: ${({ isBlack }) => (isBlack ? color.BLACK : color.WHITE)};
 `;
 

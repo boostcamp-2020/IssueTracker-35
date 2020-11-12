@@ -3,7 +3,7 @@ import color from '@/styles/colors';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import getTimestamp from '@/utils/timestamp';
-import { Input, Button } from '@/styles/styled';
+import { Button } from '@/styles/styled';
 
 const Container = styled.div`
   display: flex;

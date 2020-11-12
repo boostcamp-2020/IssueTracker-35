@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
-import size from '@/styles/sizes';
 import CheckMark from '@/styles/svgs/check';
 import { labelAPI } from '@/api/label';
 

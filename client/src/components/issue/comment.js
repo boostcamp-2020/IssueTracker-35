@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
@@ -12,6 +12,7 @@ const Container = styled.div`
   width: 100%;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 1rem;
 `;
 
 const ProfileImage = styled.img`

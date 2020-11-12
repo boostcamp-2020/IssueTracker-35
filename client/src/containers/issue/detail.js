@@ -5,7 +5,6 @@ import Comment from '@/components/issue/comment';
 import CommentWriteContainer from '@/containers/issue/commentWrite';
 import styled from 'styled-components';
 import { issueAPI } from '@/api/issue';
-import color from '@/styles/colors';
 
 const Container = styled.div`
   display: flex;
