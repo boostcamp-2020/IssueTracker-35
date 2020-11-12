@@ -66,3 +66,28 @@ describe('create issue label', () => {
     expect(result).toBeTruthy();
   });
 });
+
+describe('remove labels associated with issue id', () => {
+  test('valid issueID', async () => {
+    //given
+    const issueID = 1;
+    const labels = [1];
+    const insertResult = await issueLabelService.create(issueID, labels);
+    expect(insertResult).toBeTruthy();
+
+    //when
+    const removed = await issueLabelService.removeAllByIssueID(issueID);
+
+    //then
+    expect(removed).toBeGreaterThan(0);
+  });
+  test('invalid issueID', async () => {
+    //given
+    const issueID = 99999;
+
+    //when
+    const removed = await issueLabelService.removeAllByIssueID(issueID);
+    //then
+    expect(removed).toBe(0);
+  });
+});
