@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 import size from '@/styles/sizes';
-import CheckedSvg from '@/styles/svgs/check';
+import CheckMark from '@/styles/svgs/check';
+import { userAPI } from '@/api/user';
 
 const Container = styled.div`
   width: 100%;
@@ -28,20 +29,40 @@ const Nickname = styled.span`
   font-size: ${size.DEFAULT_FONT_SIZE};
 `;
 
-const CheckMark = styled(CheckedSvg)`
-  display: none;
-`;
+const Assignee = ({ checked, setChecked }) => {
+  const [users, setUsers] = useState([]);
 
-const Assignee = ({ assignees }) => {
+  const getUsers = async () => {
+    const {
+      data: { users },
+    } = await userAPI.getAllUsers();
+
+    setUsers(users);
+  };
+
+  useEffect(getUsers, []);
+
+  const handleCheck = (isChecked, user) => {
+    if (isChecked) {
+      const newChecked = new Map(checked);
+      newChecked.delete(user.id);
+      return setChecked(newChecked);
+    }
+    setChecked(new Map([...checked, [user.id, user]]));
+  };
+
   return (
     <>
-      {assignees.map(assignee => (
-        <Container key={assignee.id}>
-          <CheckMark />
-          <ProfileImage src={assignee.image} />
-          <Nickname>{assignee.nickname}</Nickname>
-        </Container>
-      ))}
+      {users.map(user => {
+        const isChecked = checked.has(user.id);
+        return (
+          <Container key={user.id} onClick={() => handleCheck(isChecked, user)}>
+            <CheckMark isChecked={isChecked} />
+            <ProfileImage src={user.image} />
+            <Nickname>{user.nickname}</Nickname>
+          </Container>
+        );
+      })}
     </>
   );
 };

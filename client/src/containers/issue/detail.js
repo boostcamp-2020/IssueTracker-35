@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { IssueListContext } from '@/store/issue';
 import { Link } from 'react-router-dom';
-import Sidebar from '@/containers/issue/sidebar';
+import { DetailSidebar } from '@/containers/issue/sidebar';
 import IssueDetailHeader from '@/containers/issue/detailHeader';
 import Comment from '@/components/issue/comment';
 import CommentWriteContainer from '@/containers/issue/commentWrite';
@@ -47,7 +47,7 @@ const IssueDetailContainer = ({ match }) => {
           <Comment comment={issue} />
           <CommentWriteContainer />
         </CommentContainer>
-        <Sidebar />
+        <DetailSidebar issue={issue} />
       </ContentContainer>
     </Container>
   );

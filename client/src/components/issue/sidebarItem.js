@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CogWheel from '@/styles/svgs/cogwheel';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 import Modal from '@/components/issue/modal';
 
 const Container = styled.div`
@@ -26,8 +27,8 @@ const Header = styled.div`
 
 const Body = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
   margin-bottom: 1rem;
   font-size: 14px;
   margin: 0 0 10px 0;
@@ -39,11 +40,22 @@ const Title = styled.p`
   margin: 10px 0;
 `;
 
-const SideBarItem = ({ headerText, title, content, children }) => {
+const SideBarItem = ({
+  headerText,
+  title,
+  textContent,
+  handleChange,
+  selected,
+  component,
+  renderContent,
+}) => {
   const [isVisible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const hideModal = checked => {
+    setVisible(false);
+    handleChange(checked);
+  };
 
   return (
     <Container>
@@ -51,10 +63,19 @@ const SideBarItem = ({ headerText, title, content, children }) => {
         <Title>{title}</Title>
         <CogWheel />
       </Header>
-      <Body>{content}</Body>
-      <Modal title={headerText} isVisible={isVisible} hideModal={hideModal}>
-        {children}
-      </Modal>
+      <Body>
+        {selected?.size
+          ? [...selected.values()].map(renderContent)
+          : textContent}
+      </Body>
+      {isVisible && (
+        <Modal
+          title={headerText}
+          selected={selected}
+          hideModal={hideModal}
+          component={component}
+        ></Modal>
+      )}
     </Container>
   );
 };
