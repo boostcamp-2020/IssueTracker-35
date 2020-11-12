@@ -19,6 +19,25 @@ class IssueLabelController {
       next(err);
     }
   }
+
+  async isValidReqeustData(req, res, next) {
+    const err = new Error('Bad Request');
+    err.status = 400;
+
+    const { labels } = req.body;
+    const { issueID } = req.params;
+
+    if (!issueID || typeof parseInt(issueID) !== 'number') {
+      return next(err);
+    }
+    if (!labels || !Array.isArray(labels)) {
+      return next(err);
+    }
+    if (labels.some(label => typeof label !== 'number')) {
+      return next(err);
+    }
+    next();
+  }
 }
 
 module.exports = new IssueLabelController();

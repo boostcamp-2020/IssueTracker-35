@@ -19,6 +19,24 @@ class AssignmentController {
       next(err);
     }
   }
+  async isValidReqeustData(req, res, next) {
+    const err = new Error('Bad Request');
+    err.status = 400;
+
+    const { assignees } = req.body;
+    const { issueID } = req.params;
+
+    if (!issueID || typeof parseInt(issueID) !== 'number') {
+      return next(err);
+    }
+    if (!assignees || !Array.isArray(assignees)) {
+      return next(err);
+    }
+    if (assignees.some(label => typeof label !== 'number')) {
+      return next(err);
+    }
+    next();
+  }
 }
 
 module.exports = new AssignmentController();

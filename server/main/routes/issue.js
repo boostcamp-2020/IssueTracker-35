@@ -24,6 +24,7 @@ router.get(
 router.put(
   '/:issueID/labels',
   authenticateUser,
+  issueLabelController.isValidReqeustData,
   isValidIssueID,
   issueLabelController.amendIssueLabels
 );
@@ -31,6 +32,7 @@ router.put(
 router.put(
   '/:issueID/assignees',
   authenticateUser,
+  assignmentController.isValidReqeustData,
   isValidIssueID,
   assignmentController.amendAssignments
 );
