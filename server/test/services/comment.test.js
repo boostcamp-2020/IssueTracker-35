@@ -6,7 +6,7 @@ const { users } = require('@test/seeds/user');
 
 describe('retrieve comments', () => {
   test(
-    'comments  for all issue',
+    'for all issues',
     async () => {
       // when
       const comments = await commentService.getCommentCount();
@@ -21,7 +21,7 @@ describe('retrieve comments', () => {
     },
     TIMEOUT
   );
-  test('comments for a issue with valid ID', async () => {
+  test('of an issue with valid ID', async () => {
     //given
     const IssueID = 3;
     const expectedCommentIds = [3, 5, 6];
@@ -35,7 +35,7 @@ describe('retrieve comments', () => {
       expect(expectedUsersIds.includes(comment.User.id)).toBeTruthy();
     });
   });
-  test('comments for a issue with invalid ID', async () => {
+  test('of an issue with invalid ID', async () => {
     //given
     const IssueID = 99999;
     //when
@@ -46,7 +46,7 @@ describe('retrieve comments', () => {
 });
 
 describe('create comment', () => {
-  test('create for issue with valid data', async () => {
+  test('for an issue with valid data', async () => {
     //given
     const issueID = 4;
     const content = '4번째 이슈에 대한 내용을 생성합니다!!';
