@@ -85,10 +85,12 @@ const SearchContainer = () => {
         </Label>
       </FilterContainer>
       <ButtonContainer>
-        <LabelButton>
-          <LabelIcon />
-          Labels
-        </LabelButton>
+        <Link to="/labels">
+          <LabelButton>
+            <LabelIcon />
+            Labels
+          </LabelButton>
+        </Link>
         <MileStoneButton>
           <MilestoneIcon />
           Milestones
