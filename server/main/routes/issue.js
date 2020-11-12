@@ -17,7 +17,7 @@ router.post(
 router.get(
   '/:issueID',
   authenticateUser,
-  issueController.isValidIssueID,
+  isValidIssueID,
   issueController.getIssueDetails
 );
 

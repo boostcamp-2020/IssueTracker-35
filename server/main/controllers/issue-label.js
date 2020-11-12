@@ -15,7 +15,6 @@ class IssueLabelController {
       await transaction.commit();
       responseHandler(res, 200);
     } catch (err) {
-      console.log(err);
       await transaction.rollback();
       next(err);
     }

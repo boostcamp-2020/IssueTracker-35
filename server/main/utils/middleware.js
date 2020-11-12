@@ -25,8 +25,8 @@ exports.authenticateUser = (req, res, next) => {
 };
 
 exports.isValidIssueID = async (req, res, next) => {
-  const err = new Error('Bad Request');
-  err.status = 400;
+  const err = new Error('Not Found');
+  err.status = 404;
   const { issueID } = req.params;
   if (!issueID) {
     return next(err);
@@ -35,6 +35,6 @@ exports.isValidIssueID = async (req, res, next) => {
   if (!issue) {
     return next(err);
   }
-
+  req.body.issue = issue;
   next();
 };
