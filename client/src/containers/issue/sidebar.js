@@ -5,6 +5,7 @@ import size from '@/styles/sizes';
 // import { issueAPI } from '@/api/issue';
 
 import Assignee from '@/components/issue/assignee';
+import Label from '@/components/issue/label';
 import SidebarItem from '@/components/issue/sidebarItem';
 import { UserContext } from '@/store/user';
 import {
@@ -97,7 +98,7 @@ const labelProps = (state, handleLabelsChange) => ({
   textContent: 'None yet',
   handleChange: handleLabelsChange,
   selected: state.labels,
-  component: Div,
+  component: Label,
   renderContent: () => undefined,
 });
 
@@ -161,7 +162,7 @@ const DetailSidebar = ({ issue }) => {
 
   const handleLabelsChange = async checked => {
     try {
-      // await issueAPI.changeAssignees(issue.id, assignees);
+      // await issueAPI.changeLabels(issue.id, labels);
       dispatch({ type: UPDATE_LABEL, labels: checked });
     } catch (err) {
       alert('Label 업데이트에 실패하였습니다.');
