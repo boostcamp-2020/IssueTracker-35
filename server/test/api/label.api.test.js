@@ -31,7 +31,7 @@ describe('retrieve all labels API test', () => {
       done(err);
     }
   });
-  it('unAuthorized', done => {
+  it('Unauthorized', done => {
     // given
     try {
       request(app)
