@@ -47,7 +47,6 @@ const Title = styled.div`
   border-radius: 6px 6px 0 0;
 `;
 
-// TODO: 출력할 목록을 서버에서 조회하고 출력해야 함
 const Modal = ({ title, hideModal, selected, component }) => {
   const Component = component;
   const [checked, setChecked] = useState(selected);
