@@ -35,6 +35,7 @@ class CommentService {
           },
         ],
         where: { issue_id: issueID },
+        order: ['id'],
         required: false,
       });
       return comments;
