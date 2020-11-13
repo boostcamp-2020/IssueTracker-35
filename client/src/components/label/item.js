@@ -49,6 +49,14 @@ const EditButton = styled(Button)`
 
 const DeleteButton = styled(EditButton)``;
 
+const I = styled.i`
+  color: ${color.GRAY};
+  font-size: 12px;
+  padding-bottom: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
+`;
+
 const LabelItem = ({ label }) => {
   return (
     <Container>
@@ -57,7 +65,11 @@ const LabelItem = ({ label }) => {
       </LabelLeft>
 
       <LabelCenter>
-        <Description>{label.content}</Description>
+        {label.content ? (
+          <Description>{label.content}</Description>
+        ) : (
+            <I>No Description</I>
+          )}
       </LabelCenter>
 
       <LabelRight>
