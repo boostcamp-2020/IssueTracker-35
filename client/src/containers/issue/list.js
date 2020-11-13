@@ -1,14 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IssueListContext } from '@/store/issue';
+import { UNCHECK, CHECK } from '@/store/issue/actions';
+
 import IssueItem from '@/components/issue/item';
-import { Button } from '@/styles/styled';
+import Filter from '@/containers/issue/filter';
+import SearchContainer from '@/containers/issue/search';
 import styled from 'styled-components';
 import color from '@/styles/colors';
 
 const Container = styled.div`
-  width: 100%;
+  max-width: 1280px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,47 +23,49 @@ const Container = styled.div`
 const ListHeader = styled.div`
   width: 90%;
   display: flex;
+  height: 100px;
+  align-items: center;
 `;
 
 const ListBody = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
-  border: 1px solid;
-  padding: 1rem;
 `;
 
-const NewIssueButton = styled(Button)`
-  font-size: 1rem;
-  margin: 10px;
+const ItemList = styled.div`
+  border: 1px solid ${color.LIGHT_GRAY2};
+  border-top: none;
+  border-radius: 0 0 5px 5px;
 `;
 
-const FilterHeader = styled.div`
-  border: 1px solid ${color.GRAY};
-  height: 50px;
-`;
-
-// TODO : comment
 const IssueListContainer = () => {
   const { state, dispatch } = useContext(IssueListContext);
+
+  const toggleSelected = (issueId, checked) =>
+    dispatch({
+      type: checked ? UNCHECK : CHECK,
+      issueId,
+    });
 
   return (
     <Container>
       <ListHeader>
-        <Link to="/issues/new">
-          <NewIssueButton>New issue</NewIssueButton>
-        </Link>
+        <SearchContainer />
       </ListHeader>
       <ListBody>
-        <FilterHeader></FilterHeader>
-        {state.issues.map(issue => (
-          <IssueItem
-            key={issue.id}
-            issue={issue}
-            toggleSelected={console.log}
-            now={state.timestamp}
-          ></IssueItem>
-        ))}
+        <Filter></Filter>
+        <ItemList>
+          {state.issues.map(issue => (
+            <IssueItem
+              key={issue.id}
+              issue={issue}
+              checked={state.selected.has(issue.id)}
+              toggleSelected={toggleSelected}
+              now={state.timestamp}
+            ></IssueItem>
+          ))}
+        </ItemList>
       </ListBody>
     </Container>
   );

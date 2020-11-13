@@ -11,6 +11,7 @@ const issues = [
     id: 2,
     title: '두 번째 이슈입니다.',
     is_open: true,
+    milestone_id: 1,
     user_id: 1,
   },
   {
@@ -27,7 +28,8 @@ const issues = [
   },
 ];
 
-const expectedIssue = issues[3];
+const expectedIssue = issues[1];
+const otherIssue = issues[3];
 
 const issueIds = new Set();
 issues.forEach(issue => issueIds.add(issue.id));
@@ -40,4 +42,10 @@ const finiIssues = async () => {
   await Issue.destroy({ where: {} });
 };
 
-module.exports = { initIssues, finiIssues, expectedIssue, issueIds };
+module.exports = {
+  initIssues,
+  finiIssues,
+  expectedIssue,
+  otherIssue,
+  issueIds,
+};

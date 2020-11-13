@@ -1,13 +1,27 @@
 const TIMEOUT = 10000;
 
-const userService = require('@/services/user');
-const { expectedUser, newUser } = require('@test/seeds/user');
+const { userService } = require('@/services/index');
+const { users, newUser } = require('@test/seeds/user');
 const { DEFAULT_PROFILE_IMAGE_URL } = require('@/utils/auth');
 
 describe('retrieve', () => {
   test(
+    'all users',
+    async () => {
+      //given
+      //when
+      const results = await userService.retrieveAllUsers();
+      //then
+      expect(users.length).toBe(results.length);
+    },
+    TIMEOUT
+  );
+  test(
     'a user by id',
     async () => {
+      //given
+      const expectedUser = users[0];
+
       // when
       const user = await userService.retrieveById(expectedUser.id);
 
@@ -32,6 +46,9 @@ describe('retrieve', () => {
   test(
     'check username is duplicate - unavailable',
     async () => {
+      //given
+      const expectedUser = users[0];
+
       // when
       const user = await userService.checkDuplicate(expectedUser.nickname);
 

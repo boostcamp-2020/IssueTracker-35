@@ -1,7 +1,10 @@
 const passport = require('passport');
 const { errorHandler } = require('@/utils/handler');
+const { commentService, issueService } = require('@/services');
 
-exports.passportAuthenticate = passport.authenticate('custom-github', { session: false });
+exports.passportAuthenticate = passport.authenticate('custom-github', {
+  session: false,
+});
 
 exports.authenticateUser = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
@@ -19,4 +22,39 @@ exports.authenticateUser = (req, res, next) => {
       next(err);
     }
   })(req, res, next);
+};
+
+exports.isValidIssueID = async (req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  const { issueID } = req.params;
+  if (!issueID) {
+    return next(err);
+  }
+  const issue = await issueService.retrieveById(issueID);
+  if (!issue) {
+    return next(err);
+  }
+  req.body.issue = issue;
+  next();
+};
+
+exports.isValidCommentID = async (req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  const { commentID } = req.params;
+  const comment =
+    commentID && (await commentService.getAuthorByCommentID(commentID));
+  if (!comment) {
+    return next(err);
+  }
+  req.body.author = comment.dataValues.user_id;
+  next();
+};
+
+exports.isUserAuthorOfComment = async (req, res, next) => {
+  const err = new Error('Forbidden');
+  err.status = 403;
+  if (req.body.author !== req.user.id) return next(err);
+  next();
 };

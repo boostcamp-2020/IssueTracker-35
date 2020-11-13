@@ -1,12 +1,13 @@
 /* eslint-disable jest/no-done-callback */
 const request = require('supertest');
 const app = require('@/app');
-const { expectedUser, expectedUserToken } = require('@test/seeds/user');
+const { users, expectedUserToken } = require('@test/seeds/user');
+const { status } = require('@test/api/response-status');
 
 describe('login API test', () => {
   const GITHUB_LOGIN_URL = '/users/login/github';
 
-  it('get github login url', done => {
+  it('retrieve github login url', done => {
     const gitHubUrlRegx = /github.com\/login\/oauth\/authorize\?client_id=/;
     try {
       request(app)
@@ -32,12 +33,17 @@ describe('user/me API test', () => {
   const invalidToken = 'token 2';
 
   //when
-  test('valid token', done => {
+  it('valid token', done => {
+    //given
+    const expectedUser = users[0];
     try {
       request(app)
         .get(VERIFY_Identity_URL)
         .set('Authorization', validToken)
         .end((err, res) => {
+          if (err) {
+            throw err;
+          }
           const { id, nickname, image } = res.body;
           //then
           expect(id).toBe(expectedUser.id);
@@ -50,15 +56,72 @@ describe('user/me API test', () => {
     }
   });
 
-  test('invalid token', done => {
+  it('invalid token', done => {
     try {
       request(app)
         .get(VERIFY_Identity_URL)
         .set('Authorization', invalidToken)
         .end((err, res) => {
+          if (err) {
+            throw err;
+          }
           const { code, message } = res.body;
-          expect(code).toBe(401);
-          expect(message).toBe('Unauthorized');
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('retrieve All users API', () => {
+  const GET_ALL_USERS_URL = '/users';
+  it('Authenticated', done => {
+    // given
+    const expectedUsers = users.map(user => {
+      const copy = { ...user };
+      delete copy.password;
+      return copy;
+    });
+    try {
+      request(app)
+        .get(GET_ALL_USERS_URL) // when
+        .set('Authorization', expectedUserToken)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          const { code, success, users } = res.body;
+
+          //then
+          expect(code).toBe(status.code.SUCCESS);
+          expect(success).toBeTruthy();
+
+          expectedUsers.forEach(expectedUser => {
+            const expectedID = expectedUser.id;
+            const user = users.find(target => target.id === expectedID);
+            expect(user).toStrictEqual(expectedUser);
+          });
+
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('unAuthenticated', done => {
+    try {
+      request(app)
+        .get(GET_ALL_USERS_URL)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          const { code, message } = res.body;
+          expect(code).toBe(status.code.UNAUTHORIZED);
+          expect(message).toBe(status.message.UNAUTHORIZED);
           done();
         });
     } catch (err) {

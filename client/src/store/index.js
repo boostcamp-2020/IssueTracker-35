@@ -1,4 +1,5 @@
 import { IssueListProvider } from '@/store/issue';
 import { UserProvider } from '@/store/user';
+import { LabelProvider } from '@/store/label';
 
-export default [IssueListProvider, UserProvider];
+export default [LabelProvider, IssueListProvider, UserProvider];
