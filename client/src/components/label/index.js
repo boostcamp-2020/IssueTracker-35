@@ -18,6 +18,7 @@ const Title = styled.span`
   font-size: 12px;
   font-weight: 600;
   color: ${({ labelColor }) => `#${color.getBackgroundTextColor(labelColor)}`};
+  white-space: nowrap;
 `;
 
 const Label = ({ label, height = 'auto' }) => {

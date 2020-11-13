@@ -45,7 +45,6 @@ const DebouncedInput = ({ contentRef, notify, clear }) => {
       dispatch({ type: INPUT_CONTENT, timerId: clearTimer(), value: '' });
       notify('');
     }
-    return () => dispatch(); // clean up
   }, [clear]);
 
   const showCallback = () => {

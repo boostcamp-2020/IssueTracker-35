@@ -65,6 +65,7 @@ const AssigneeContainer = styled.div`
 const LabelContainer = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   margin-bottom: 9px;
 `;
 

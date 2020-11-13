@@ -8,6 +8,7 @@ import color from '@/styles/colors';
 
 import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
+import { PrivateRoute, GuestRoute } from '@/utils/accessRoute';
 
 import Header from '@/components/header';
 import LoginContainer from '@/containers/login';
@@ -38,22 +39,25 @@ const AppProvider = ({ contexts, children }) =>
   );
 
 const App = () => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
-  const isLoggedIn = !state.token;
   return (
     <>
       <GlobalStyle />
       <Switch>
-        <Route
-          path="/"
+        <GuestRoute path="/" exact component={LoginContainer} />
+        <PrivateRoute
           exact
-          component={isLoggedIn ? LoginContainer : IssueListContainer}
+          path="/issues/new"
+          component={IssueWriteContainer}
         />
-        <Route exact path="/issues/new" component={IssueWriteContainer} />
-        <Route exact path="/issues/:issueId" component={IssueDetailContainer} />
-        <Route exact path="/issues" component={IssueListContainer} />
-        <Route exact path="/labels" component={LabelListContainer} />
+        <PrivateRoute
+          exact
+          path="/issues/:issueId"
+          component={IssueDetailContainer}
+        />
+        <PrivateRoute exact path="/labels" component={LabelListContainer} />
+        <PrivateRoute exact path="/issues" component={IssueListContainer} />
         <Route
           path="/users/github/callback"
           render={props => <GitHubCallback {...props} dispatch={dispatch} />}
