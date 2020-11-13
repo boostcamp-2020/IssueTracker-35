@@ -9,6 +9,9 @@ import Assignee from '@/components/issue/assignee';
 import LabelList from '@/components/issue/label';
 import SidebarItem from '@/components/issue/sidebarItem';
 import { UserContext } from '@/store/user';
+import { IssueListContext } from '@/store/issue';
+import { FETCH } from '@/store/issue/actions';
+
 import {
   UPDATE_ASSIGNEE,
   UPDATE_LABEL,
@@ -65,7 +68,6 @@ const AssigneeContainer = styled.div`
 const LabelContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
   margin-bottom: 9px;
 `;
 
@@ -154,22 +156,24 @@ const WriteSidebar = ({ state, dispatch, user }) => {
 };
 
 const DetailSidebar = ({ issue }) => {
+  const { state, dispatch } = useContext(IssueListContext);
+
   const {
     state: { user },
   } = useContext(UserContext);
 
-  const [state, dispatch] = useReducer(reducer, initState);
+  const [sidebarState, sidebarDispatch] = useReducer(reducer, initState);
 
   const initIssue = () => {
     if (issue) {
-      dispatch({ type: INIT, issue });
+      sidebarDispatch({ type: INIT, issue });
     }
   };
 
   useEffect(initIssue, [issue]);
 
   const handleAssigneesChange = async checked => {
-    const origin = state.assignees;
+    const origin = sidebarState.assignees;
     const target = checked;
 
     if (compareKeyOfMap(origin, target)) return;
@@ -179,11 +183,19 @@ const DetailSidebar = ({ issue }) => {
     const response = await issueAPI.changeAssignees(issue.id, assignees);
 
     if (!response) return alert('Assignee 업데이트에 실패하였습니다.');
-    dispatch({ type: UPDATE_ASSIGNEE, assignees: target });
+    sidebarDispatch({ type: UPDATE_ASSIGNEE, assignees: target });
+    dispatch({
+      type: FETCH,
+      issues: state.issues.map(originIssue =>
+        originIssue.id === issue.id
+          ? { ...originIssue, assignees: [...target.values()] }
+          : originIssue
+      ),
+    });
   };
 
   const handleLabelsChange = async checked => {
-    const origin = state.labels;
+    const origin = sidebarState.labels;
     const target = checked;
 
     if (compareKeyOfMap(origin, target)) return;
@@ -193,20 +205,34 @@ const DetailSidebar = ({ issue }) => {
     const response = await issueAPI.changeLabels(issue.id, labels);
 
     if (!response) return alert('Label 업데이트에 실패하였습니다.');
-    dispatch({ type: UPDATE_LABEL, labels: target });
+    sidebarDispatch({ type: UPDATE_LABEL, labels: target });
+
+    dispatch({
+      type: FETCH,
+      issues: state.issues.map(originIssue =>
+        originIssue.id === issue.id
+          ? { ...originIssue, labels: [...target.values()] }
+          : originIssue
+      ),
+    });
   };
 
   const handleMilestoneChange = async checked => {
-    dispatch({ type: UPDATE_MILESTONE, milestone: checked });
+    sidebarDispatch({ type: UPDATE_MILESTONE, milestone: checked });
   };
 
   return (
     <Container>
       <SidebarItem
-        {...assigneeProps(user, state, dispatch, handleAssigneesChange)}
+        {...assigneeProps(
+          user,
+          sidebarState,
+          sidebarDispatch,
+          handleAssigneesChange
+        )}
       />
-      <SidebarItem {...labelProps(state, handleLabelsChange)} />
-      <SidebarItem {...milestoneProps(state, handleMilestoneChange)} />
+      <SidebarItem {...labelProps(sidebarState, handleLabelsChange)} />
+      <SidebarItem {...milestoneProps(sidebarState, handleMilestoneChange)} />
     </Container>
   );
 };
