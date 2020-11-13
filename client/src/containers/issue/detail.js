@@ -49,7 +49,7 @@ const IssueDetailContainer = ({ match }) => {
 
   return (
     <Container>
-      {issue && <IssueDetailHeader issue={issue} />}
+      {issue && <IssueDetailHeader issue={issue} setIssue={setIssue} />}
       <ContentContainer>
         <CommentContainer>
           {issue?.comments?.map(comment => (

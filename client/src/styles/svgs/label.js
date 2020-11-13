@@ -5,9 +5,10 @@ const Svg = styled.svg`
   text-align: center;
   margin-right: 5px;
   vertical-align: text-bottom;
+  fill: ${({ isWhite }) => (isWhite ? '#fff' : 'f000')};
 `;
 
-const LabelIcon = () => {
+const LabelIcon = ({ isWhite }) => {
   return (
     <Svg
       className="octicon octicon-tag"
@@ -16,6 +17,7 @@ const LabelIcon = () => {
       width="16"
       height="16"
       aria-hidden="true"
+      isWhite={isWhite}
     >
       <path
         fillRule="evenodd"

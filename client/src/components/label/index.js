@@ -11,19 +11,21 @@ const Container = styled.div`
   border-radius: 2rem;
   padding: 1px 7px;
   margin-right: 5px;
+  height: ${({ height }) => height};
 `;
 
 const Title = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ isBlack }) => (isBlack ? color.BLACK : color.WHITE)};
+  color: ${({ labelColor }) => `#${color.getBackgroundTextColor(labelColor)}`};
+  white-space: nowrap;
 `;
 
-const Label = ({ label, isBlack = true }) => {
+const Label = ({ label, height = 'auto' }) => {
   return (
     <>
-      <Container labelColor={label.color}>
-        <Title isBlack={isBlack}>{label.title}</Title>
+      <Container height={height} labelColor={label.color}>
+        <Title labelColor={label.color}>{label.title || 'Label Preview'}</Title>
       </Container>
     </>
   );

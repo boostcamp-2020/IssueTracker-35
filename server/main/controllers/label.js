@@ -30,7 +30,7 @@ class LabelController {
     if (!title || typeof title !== 'string') {
       return next(err);
     }
-    if (content && typeof content !== 'string') {
+    if (typeof content !== 'string') {
       return next(err);
     }
     if (!color || typeof color !== 'string') {

@@ -1,10 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import color from '@/styles/colors';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import getTimestamp from '@/utils/timestamp';
 import { Button, Input } from '@/styles/styled';
 import { issueAPI } from '@/api/issue';
+
+import { IssueListContext } from '@/store/issue';
+import { FETCH } from '@/store/issue/actions';
 
 const Container = styled.div`
   display: flex;
@@ -108,10 +111,11 @@ const SaveButton = styled(EditButton)`
   opacity: ${({ isAble }) => (isAble ? 1 : 0.5)};
 `;
 
-const IssueDetailHeader = ({ issue }) => {
+const IssueDetailHeader = ({ issue, setIssue }) => {
   const [isEdit, setEdit] = useState(false);
   const [title, setTitle] = useState(issue.title);
   const [isAble, setAble] = useState(true);
+  const { state, dispatch } = useContext(IssueListContext);
 
   const handleEdit = () => {
     if (!isEdit) return setEdit(true);
@@ -125,9 +129,16 @@ const IssueDetailHeader = ({ issue }) => {
   };
 
   const updateTitle = async () => {
-    // const res = await issueAPI.updateTitle(issue.id, title);
-    // if (!res) alert('수정에 실패했습니다.');
+    const res = await issueAPI.updateTitle(issue.id, title);
+    if (!res) return alert('수정에 실패했습니다.');
 
+    dispatch({
+      type: FETCH,
+      issues: state.issues.map(_issue =>
+        _issue.id === issue.id ? { ..._issue, title } : _issue
+      ),
+    });
+    setIssue({ ...issue, title });
     setEdit(false);
   };
 

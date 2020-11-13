@@ -29,6 +29,7 @@ const Body = styled.div`
   display: flex;
   flex-direction: ${({ isColumn }) => (isColumn ? 'column' : 'row')};
   justify-content: flex-start;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
   font-size: 14px;
   margin: 0 0 10px 0;

@@ -47,19 +47,18 @@ const IssueCenter = styled.div`
 const IssueBody = styled.div`
   display: flex;
   align-item: center;
-  padding: 5px;
+  padding: 3px;
 `;
 
 const IssueHeader = styled.div`
   display: flex;
-  align-item: center;
+  align-items: center;
   padding: 3px 5px;
   justify-content: flex-start;
 `;
 
 const IssueLeft = styled.div`
   display: flex;
-  align-item: center;
   justify-content: flex-start;
   padding: 10px 0 0 5px;
 `;
@@ -100,6 +99,7 @@ const Comment = styled.div`
 
 const CommentCount = styled.p`
   margin: 0 3px;
+  color: ${color.DARK_GRAY};
 `;
 
 const StyledLink = styled(Link)`

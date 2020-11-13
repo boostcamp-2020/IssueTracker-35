@@ -61,7 +61,7 @@ const Timestamp = styled.span`
 `;
 
 const Body = styled.div`
-  padding: 10px;
+  padding: 15px;
 `;
 
 const Owner = styled.div`
@@ -80,6 +80,13 @@ const EditButton = styled(Button)`
   color: ${color.DARK_GRAY};
   height: auto;
   padding: 5px 10px;
+`;
+
+const I = styled.i`
+  color: ${color.GRAY};
+  padding-bottom: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
 `;
 
 const Comment = ({ comment, author }) => {
@@ -106,7 +113,7 @@ const Comment = ({ comment, author }) => {
             {isMine && <EditButton>Edit</EditButton>}
           </HeaderRight>
         </Header>
-        <Body>{comment.content}</Body>
+        <Body>{comment.content || <I>No description provided.</I>}</Body>
       </ContentContainer>
     </Container>
   );

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Button } from '@/styles/styled';
 import { DebouncedInput as ContentInput } from '@/components/issue/input';
 import { UserContext } from '@/store/user';
+import { IssueListContext } from '@/store/issue';
+import { FETCH } from '@/store/issue/actions';
 import { issueAPI } from '@/api/issue';
 import color from '@/styles/colors';
 
@@ -70,6 +72,7 @@ const CommentWriteContainer = ({ issue, setIssue }) => {
   const {
     state: { user },
   } = useContext(UserContext);
+  const { state, dispatch } = useContext(IssueListContext);
 
   const notify = value => {
     if (isAble === !value) setAble(!isAble);
@@ -78,13 +81,10 @@ const CommentWriteContainer = ({ issue, setIssue }) => {
   const submitComment = async () => {
     const content = contentRef.current.value;
 
-    /*
-     const {
+    const {
       data: { id },
     } = await issueAPI.submitComment(issue.id, content);
-     */
 
-    const id = Math.floor(Math.random() * 500);
     const comment = {
       id,
       content,
@@ -92,6 +92,14 @@ const CommentWriteContainer = ({ issue, setIssue }) => {
       owner: user,
     };
 
+    dispatch({
+      type: FETCH,
+      issues: state.issues.map(originIssue =>
+        originIssue.id === issue.id
+          ? { ...originIssue, commentCount: originIssue.commentCount + 1 }
+          : originIssue
+      ),
+    });
     setIssue({ ...issue, comments: issue.comments.concat(comment) });
     setClear({});
   };

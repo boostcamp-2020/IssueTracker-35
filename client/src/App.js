@@ -16,6 +16,7 @@ import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
 import IssueWriteContainer from '@/containers/issue/write';
 import IssueDetailContainer from '@/containers/issue/detail';
+import LabelListContainer from '@/containers/label/list';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');  
@@ -38,9 +39,8 @@ const AppProvider = ({ contexts, children }) =>
   );
 
 const App = () => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
-  const isLoggedIn = !state.token;
   return (
     <>
       <GlobalStyle />
@@ -56,6 +56,7 @@ const App = () => {
           path="/issues/:issueId"
           component={IssueDetailContainer}
         />
+        <PrivateRoute exact path="/labels" component={LabelListContainer} />
         <PrivateRoute exact path="/issues" component={IssueListContainer} />
         <Route
           path="/users/github/callback"
