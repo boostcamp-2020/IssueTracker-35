@@ -4,15 +4,19 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { createGlobalStyle } from 'styled-components';
 import size from '@/styles/sizes';
+import color from '@/styles/colors';
 
 import GlobalStore from '@/store';
 import { UserContext } from '@/store/user';
+import { PrivateRoute, GuestRoute } from '@/utils/accessRoute';
 
 import Header from '@/components/header';
 import LoginContainer from '@/containers/login';
 import GitHubCallback from '@/components/login/github';
 import IssueListContainer from '@/containers/issue/list';
 import IssueWriteContainer from '@/containers/issue/write';
+import IssueDetailContainer from '@/containers/issue/detail';
+import LabelListContainer from '@/containers/label/list';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');  
@@ -20,8 +24,11 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     margin: ${size.HEADER_SIZE} 0 0 0;
     height: calc(100vh - ${size.HEADER_SIZE});
-    background-color: #F6F6F6;
+    background-color: ${color.WHITE};
     font-family: 'Yeon Sung';
+  }
+  * {
+    box-sizing: border-box;
   }
 `;
 
@@ -32,24 +39,25 @@ const AppProvider = ({ contexts, children }) =>
   );
 
 const App = () => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
-  const isLoggedIn = !state.token;
   return (
     <>
       <GlobalStyle />
       <Switch>
-        <Route
-          path="/"
+        <GuestRoute path="/" exact component={LoginContainer} />
+        <PrivateRoute
           exact
-          component={isLoggedIn ? LoginContainer : IssueListContainer}
-        />
-        <Route
           path="/issues/new"
-          exact
-          render={props => <IssueWriteContainer {...props} />}
+          component={IssueWriteContainer}
         />
-        <Route path="/issues" exact component={IssueListContainer} />
+        <PrivateRoute
+          exact
+          path="/issues/:issueId"
+          component={IssueDetailContainer}
+        />
+        <PrivateRoute exact path="/labels" component={LabelListContainer} />
+        <PrivateRoute exact path="/issues" component={IssueListContainer} />
         <Route
           path="/users/github/callback"
           render={props => <GitHubCallback {...props} dispatch={dispatch} />}

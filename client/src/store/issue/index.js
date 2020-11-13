@@ -1,45 +1,35 @@
-import React, { createContext, useReducer } from 'react';
-
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import { issueAPI } from '@/api/issue';
+import { FETCH } from '@/store/issue/actions';
 import { issueListReducer, issueWriteReducer } from './reducer';
+import { UserContext } from '@/store/user';
 
 const IssueListContext = createContext();
 
 const initListState = {
-  issues: [
-    {
-      id: 1,
-      title: '첫 번째 이슈입니다.',
-      content: '첫 번째 내용~~',
-      is_open: true,
-      createdAt: new Date('2020-09-02 17:00'),
-      author: { nickname: '망했어요' },
-      comment_count: 0,
-    },
-    {
-      id: 2,
-      title: '두 번째 이슈입니다.',
-      content: '두 번째 내용~~',
-      is_open: false,
-      author: { nickname: '엉엉' },
-      createdAt: new Date('2020-11-05 18:20'),
-      comment_count: 2,
-    },
-    {
-      id: 3,
-      title: '세 번째 이슈입니다.',
-      content: '세 번째 내용~~',
-      is_open: true,
-      author: { nickname: '퇴근 마렵다' },
-      createdAt: new Date('2020-11-05 18:57'),
-      comment_count: 3,
-    },
-  ],
-  selected: [],
+  issues: [],
+  selected: new Set(),
   timestamp: new Date(),
 };
 
 const IssueListProvider = ({ children }) => {
+  const {
+    state: { user },
+  } = useContext(UserContext);
+
   const [state, dispatch] = useReducer(issueListReducer, initListState);
+
+  const getAllIssues = async () => {
+    if (!user) return;
+
+    const {
+      data: { issues },
+    } = await issueAPI.getAllIssues();
+
+    dispatch({ type: FETCH, issues });
+  };
+
+  useEffect(getAllIssues, [user]);
 
   return (
     <IssueListContext.Provider value={{ state, dispatch }}>

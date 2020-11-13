@@ -13,6 +13,7 @@ router.post(
   passportAuthenticate,
   userController.generateToken
 );
+router.get('/', authenticateUser, userController.getAllUsers);
 router.get('/me', authenticateUser, userController.getOwnInfo);
 
 module.exports = router;

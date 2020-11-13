@@ -1,7 +1,8 @@
 import { requestGET, requestPOST } from '@/api';
 
-const GITHUB_LOGIN_PATH = '/users/login/github';
+const DEFAULT_USER_PATH = '/users';
 const CURRENT_USER_PATH = '/users/me';
+const GITHUB_LOGIN_PATH = '/users/login/github';
 
 export const gitHubLoginAPI = {
   getUrl: () => requestGET(GITHUB_LOGIN_PATH),
@@ -10,4 +11,5 @@ export const gitHubLoginAPI = {
 
 export const userAPI = {
   getCurrentUser: () => requestGET(CURRENT_USER_PATH),
+  getAllUsers: () => requestGET(DEFAULT_USER_PATH),
 };

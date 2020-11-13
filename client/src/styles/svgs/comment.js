@@ -1,4 +1,5 @@
 import React from 'react';
+import color from '@/styles/colors';
 
 const Comment = () => {
   return (
@@ -8,6 +9,7 @@ const Comment = () => {
       width="16"
       height="16"
       aria-hidden="true"
+      fill={color.DARK_GRAY}
     >
       <path
         fillRule="evenodd"

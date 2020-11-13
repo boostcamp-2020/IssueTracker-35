@@ -1,14 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import color from '@/styles/colors';
+import size from '@/styles/sizes';
 import { Textarea } from '@/styles/styled';
 
-import { initState, reducer } from '@/store/comment';
-import {
-  INPUT_CONTENT,
-  SHOW_COUNT,
-  CLEAR_COUNT,
-} from '@/store/comment/actions';
+import { initState, reducer } from '@/store/input';
+import { INPUT_CONTENT, SHOW_COUNT, CLEAR_COUNT } from '@/store/input/actions';
 
 const DELAY = 2000;
 
@@ -17,11 +14,13 @@ const Container = styled.div`
 `;
 
 const ContentInput = styled(Textarea)`
-  width: 99%;
+  width: 100%;
   resize: vertical;
-  height: 400px;
+  height: 200px;
   margin-bottom: 10px;
-  font-size: 1rem;
+  font-size: ${size.DEFAULT_FONT_SIZE};
+  padding: 8px;
+  background-color: ${color.THIN_GRAY};
 `;
 
 const Count = styled.p`
@@ -35,12 +34,18 @@ const Count = styled.p`
   right: 10px;
 `;
 
-const DebouncedInput = ({ contentRef }) => {
+const DebouncedInput = ({ contentRef, notify, clear }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
+  const clearTimer = () => state.timerId && clearTimeout(state.timerId);
+
+  useEffect(() => clearTimer, []);
   useEffect(() => {
-    return () => state.timerId && clearTimeout(state.timerId);
-  }, []);
+    if (clear) {
+      dispatch({ type: INPUT_CONTENT, timerId: clearTimer(), value: '' });
+      notify('');
+    }
+  }, [clear]);
 
   const showCallback = () => {
     dispatch({
@@ -55,6 +60,7 @@ const DebouncedInput = ({ contentRef }) => {
     if (state.timerId)
       clearTimeout(state.timerId); /* debounce INPUT, or cancel CLEAR_COUNT */
     const value = event.target.value;
+    if (notify) notify(value);
     dispatch({
       type: INPUT_CONTENT,
       timerId:

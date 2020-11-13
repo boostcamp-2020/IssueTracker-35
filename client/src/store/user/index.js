@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { userAPI } from '@/api/user';
 import reducer from './reducer';
-import { LOGIN } from './actions';
+import { LOGIN, LOGOUT } from './actions';
 
 const UserContext = createContext();
 
@@ -20,7 +20,11 @@ const UserProvider = ({ children }) => {
       const {
         data: { id, nickname, image },
       } = await userAPI.getCurrentUser();
-      dispatch({ type: LOGIN, token, user: { id, nickname, image } });
+      dispatch(
+        id
+          ? { type: LOGIN, token, user: { id, nickname, image } }
+          : { type: LOGOUT }
+      );
     }
   };
 
